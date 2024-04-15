@@ -1,0 +1,8 @@
+package com.example.flat2d.Misc;
+
+public enum EntityType {
+    //PLAYER RELATED
+    PLAYER, SMALL_EXP, MEDIUM_EXP, BIG_EXP
+    //ENEMIES
+    ,WOLF, HELLHOUND, GHOST,FIRESKULL,BOSS, HELLBEAST, FORESKIN_DRAGON
+}
