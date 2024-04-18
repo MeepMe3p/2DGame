@@ -1,7 +1,9 @@
 package com.example.flat2d.Misc;
 
 import javafx.util.Duration;
-
+/*
+    THIS CLASS IS FOR HANDLING THE THINGS LIKE SPAWNING INTERVALS AND THE SPEEDS OF ENTITTIES CHUCHU
+ */
 public final class Config {
 
 

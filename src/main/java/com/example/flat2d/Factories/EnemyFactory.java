@@ -19,9 +19,12 @@ import javafx.scene.shape.Rectangle;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.WOLF_MOVEMENT_SPEED;
 import static com.example.flat2d.Misc.EntityType.*;
-
+/*
+    THIS FACTORY IS FOR CREATING THE ENEMY ENTITIES WHERE getRandomSpawnPoint() RANDOMLY
+    FINDS A LOCATION FROM IN THE GAME AND SPAWNS IT THERE
+ */
 public class EnemyFactory implements EntityFactory {
-    private static int SPAWN_DISTANCE = 50;
+    private static final int SPAWN_DISTANCE = 50;
     @Spawns("Wolf")
     public Entity spawnWolf(SpawnData data){
 

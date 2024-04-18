@@ -16,16 +16,25 @@ import javafx.scene.shape.Circle;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.EntityType.*;
-
+/*
+    FACTORY FOR CREATING THE EXP ENTITIES WHERE getRandomSpawnPoint() RANDOMLY
+    FINDS A LOCATION FROM IN THE GAME AND SPAWNS IT THERE & THE PLAYER WHICH SPAWNS AT THE MIDDLE
+ */
 public class GameFactory implements EntityFactory {
     private static int SPAWN_DISTANCE = 50;
     @Spawns("Player")
     public Entity spawnPlayer(SpawnData data){
+//        var keyEntity = getGameWorld().create("keyCode", new SpawnData(data.getX(), data.getY()-50).put("key","E"));
+
         var e = entityBuilder()
                 .type(PLAYER)
 //                .viewWithBBox(new Rectangle(32,32))
                 .bbox(new HitBox("hitbox",new Point2D(0,0), BoundingShape.box(32,32)))
                 .with(new PlayerComponent())
+                //        -------- 1152 X 1152 = SIZE OF THE MAP  ------------
+
+                .at(new Point2D(1152/2.0,1152/2.0))
+//                .with("smallExpEntity",smallExpEntity)
                 .collidable()
                 .build();
 
