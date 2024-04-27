@@ -1,19 +1,28 @@
 package com.example.flat2d.components;
 
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.time.LocalTimer;
+import com.example.flat2d.Factories.GameFactory;
+import com.example.flat2d.Misc.EntityType;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
+import java.awt.*;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.Misc.Config.BASIC_DELAY;
 
 public class PlayerComponent extends Component {
     AnimationChannel left,right,up,down,idle;
     AnimatedTexture texture;
     private boolean isLeft,isRight,isUp,isDown;
+//    TODO ADD COMMENTS
+    private LocalTimer skills_timer = newLocalTimer();
 
     public PlayerComponent() {
 /*
@@ -128,5 +137,30 @@ public class PlayerComponent extends Component {
         isDown = false;
         isLeft = false;
         isRight = false;
+    }
+    public void doBasicSkill(Point2D direction){
+        Point2D position = entity.getCenter();
+        Point2D mouseVector = direction.subtract(position);
+
+        shootDirection(mouseVector);
+    }
+
+    private void shootDirection(Point2D direction) {
+        if(skills_timer.elapsed(BASIC_DELAY)){
+            Point2D pos = getEntity().getCenter();
+            //
+            spawnBasic(pos.subtract(new Point2D(direction.getY(), -direction.getX()).normalize()
+                    .multiply(15)), direction);
+
+            skills_timer.capture();;
+        }
+    }
+
+    private Entity spawnBasic(Point2D position,Point2D direction){
+        var location = new SpawnData(position.getX(), position.getY()).put("direction",direction);
+        var e = spawn("BasicSkill", location);
+
+        GameFactory.respawnSkill(e,location);
+        return e;
     }
 }

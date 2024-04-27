@@ -40,10 +40,18 @@ public class Database {
         try(Connection conn = MySQLConnection.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(
                     "INSERT INTO tblUserAccount (username,password) VALUES (?,?)");
+            PreparedStatement statement2 = conn.prepareStatement(
+                    "INSERT INTO tblUserProfile (player_name,level,high_score,exp_points) VALUES(?,?,?,?)"
+            );
             statement.setString(1, username);
             statement.setString(2, password);
+            statement2.setString(1,username);
+            statement2.setInt(2,1);
+            statement2.setInt(3,0);
+            statement2.setInt(4,0);
             try {
                 statement.executeUpdate();
+                statement2.executeUpdate();
             } catch (SQLException e) {
                 return false;
             }

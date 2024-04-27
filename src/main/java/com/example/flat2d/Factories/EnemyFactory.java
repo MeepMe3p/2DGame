@@ -2,10 +2,12 @@ package com.example.flat2d.Factories;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.example.flat2d.GameApp;
@@ -17,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.example.flat2d.Misc.Config.WOLF_MOVEMENT_SPEED;
+import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
 /*
     THIS FACTORY IS FOR CREATING THE ENEMY ENTITIES WHERE getRandomSpawnPoint() RANDOMLY
@@ -32,8 +34,11 @@ public class EnemyFactory implements EntityFactory {
                 .type(WOLF)
                 .at(getRandomSpawnPoint())
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(56,32)))
+//                .viewWithBBox(new Rectangle(32,32,Color.RED))
 //                .viewWithBBox(new Rectangle(32,32, Color.BLUE))
                 .with(new WolfComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(WOLF_HP))
                 .build();
         e.setReusable(true);
         return e;
@@ -75,6 +80,8 @@ public class EnemyFactory implements EntityFactory {
                 .at(getRandomSpawnPoint())
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(122,96)))
                 .with(new ForeskinDragonComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new HealthIntComponent(SKIN_DRAGON))
+
                 .build();
         e.setReusable(true);
         return e;

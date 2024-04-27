@@ -1,0 +1,15 @@
+Point2D methods - for determining the direction, locations chuchu
+--- https://docs.oracle.com/javase/8/javafx/api/javafx/geometry/Point2D.html ----
+
+Inputs - specifically mouse inputs and more
+---- https://github.com/AlmasB/FXGL/wiki/Input-%28FXGL-11%29 ----
+
+Timer Stuff - the run methods in der
+--- https://github.com/AlmasB/FXGL/wiki/Timer-Actions-%28FXGL-11%29 ---
+
+My Custom Menu - the custom menu thingy
+--- https://github.com/AlmasB/FXGL/wiki/Customizing-Menus-%28FXGL-11%29 ---
+--- https://www.youtube.com/watch?v=iWhtz5EUJFk  SKL tungod ani nalingaw kog buhat custom menu sa database activity nato hahahah manual code lang malakas----
+
+ExpireCleanComponent - duration on when the entity disappears
+-----  https://www.youtube.com/watch?v=6zNM2o6didU  9:35 ------

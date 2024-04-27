@@ -9,11 +9,11 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
+import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
 import javafx.scene.input.KeyCode;
@@ -34,12 +34,14 @@ import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
 
 public class GameApp extends GameApplication {
+    public static GameSettings sets;
     Entity player;
     @Override
     protected void initSettings(GameSettings settings) {
+        sets = settings;
         settings.setWidth(720);
         settings.setHeight(720);
-        settings.setTitle("Frog This Sheet");
+        settings.setTitle("Adventures of Sir Vim Zarado");
 //        -------- DEV MODE TO SHOW HITBOXES ------------
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setDeveloperMenuEnabled(true);
@@ -128,6 +130,7 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initGame() {
+        System.out.println("GAMEEE STAAAART");
 //        -------- 0 = SINGLE PLAYER 1 = MULTIPLAYER I HOPE ------------
 
         if (GAME_STATE == 0) {
@@ -137,7 +140,7 @@ public class GameApp extends GameApplication {
 //        -------- DEV MODE TO SHOW HITBOXES ------------
 
             player = spawn("Player");
-            player.setScaleX(1.5);
+            player.setScaleX(1);
 //        -------- FOR THE CAMERA TO FOCUS AT THE PLAYER  ------------
             getGameScene().getViewport().setLazy(true);
             getGameScene().getViewport().setBounds(0, 0, 36 * 32, 36 * 32);
@@ -147,6 +150,7 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
             initSpawnExp();
             initSpawnEnemies();
+            initSpawnSkills();
         }else if(GAME_STATE == 1){
 
 
@@ -156,6 +160,8 @@ public class GameApp extends GameApplication {
     }
 
 
+
+
     @Override
     protected void initPhysics() {
         collisionHandler();
@@ -163,14 +169,37 @@ public class GameApp extends GameApplication {
 //        -------- FOR HANDLING COLLISIONS ------------
     private void collisionHandler(){
         PhysicsWorld physics = getPhysicsWorld();
+//        CollisionHandler bulletEnemy = new CollisionHandler(BASICSKILL, WOLF) {
+//            @Override
+//            protected void onCollisionBegin(Entity bullet, Entity enemy) {
+//                bullet.removeFromWorld();
+//                enemy.removeFromWorld();
+//                HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
+//                hp.setValue(hp.getValue() - 1);
+//
+//                // TODO: duplication with shockwave
+////                if (hp.isZero()) {
+//////                    killEnemy(enemy);
+////                }
+//
+//            }
+//        };
+//        physics.addCollisionHandler(bulletEnemy);
 
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         physics.addCollisionHandler(expToPlayer);
+        BasicToEnemyCollision plToEn = new BasicToEnemyCollision();
+        physics.addCollisionHandler(plToEn);
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
 
+    }
+    private void initSpawnSkills() {
+        run(()->{
+            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+        },BASICATTACK_SPAWN_INTERVAL);
     }
 
     private void initSpawnExp() {
@@ -220,7 +249,7 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("time",0);
-//        vars.put("stageColor", Color.BLACK);
+        vars.put("kills", 0);
         vars.put("exp",0);
     }
 

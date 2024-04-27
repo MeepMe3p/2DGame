@@ -6,12 +6,14 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.Misc.Database;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -35,6 +37,7 @@ public class GameMainMenu extends FXGLMenu {
 //      IMPLEMENTATIONS FOR BUTTONS
         customMenuButton btnPlayGame = new customMenuButton("PLAY", ()->{
             fireNewGame();
+//            getGameController().resumeEngine();
             GAME_STATE = 0;
 //            System.out.println("hello");
         });
@@ -46,6 +49,14 @@ public class GameMainMenu extends FXGLMenu {
                 GAME_STATE = 1;
 //            System.out.println("yaay");
 //               new GameApp();
+            //TODO chat system here for now kay muopen r ashag new scene idk how to exit the game and open again
+            Chatbox cb = new Chatbox();
+            Stage stage = new Stage();
+            Scene sc = new Scene(cb,126,555);
+            stage.setScene(sc);
+            stage.show();
+//            getGameController().pauseEngine();
+            getGameController().exit();
         });
         customTextField tfUsername = new customTextField("Username");
         customTextField tfPassword = new customTextField("Password");
