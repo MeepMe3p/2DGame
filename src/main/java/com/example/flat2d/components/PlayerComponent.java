@@ -56,36 +56,36 @@ public class PlayerComponent extends Component {
  */
     @Override
     public void onUpdate(double tpf) {
-//        if(entity.isActive()){
-////            System.out.println("asdsfa");
-//        }
-        if(isLeft){
-            if(texture.getAnimationChannel()!=left){
-                texture.loopAnimationChannel(left);
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(isLeft){
+                    if(texture.getAnimationChannel()!=left){
+                        texture.loopAnimationChannel(left);
 //                System.out.println("left");
-            }
-        }else if(isRight){
-            if(texture.getAnimationChannel()!=right){
-                texture.loopAnimationChannel(right);
+                    }
+                }else if(isRight){
+                    if(texture.getAnimationChannel()!=right){
+                        texture.loopAnimationChannel(right);
 //                System.out.println("right");
 
-            }
-        }else if(isUp){
-            if(texture.getAnimationChannel()!=up){
-                texture.loopAnimationChannel(up);
+                    }
+                }else if(isUp){
+                    if(texture.getAnimationChannel()!=up){
+                        texture.loopAnimationChannel(up);
 //                System.out.println("up");
-            }
-        }else if(isDown){
-            if(texture.getAnimationChannel()!=down){
-                texture.loopAnimationChannel(down);
+                    }
+                }else if(isDown){
+                    if(texture.getAnimationChannel()!=down){
+                        texture.loopAnimationChannel(down);
 //                System.out.println("down");
+                    }
+                };
             }
-        }/*else if(isIdle){
-            if(texture.getAnimationChannel()!=idle){
-                texture.loopAnimationChannel(idle);
-                System.out.println("idle");
-            }
-        }*/
+        });
+        th.start();
+
+
     }
     /*
      * CALLED AND UPDATES THE PLAYER LOCATION
@@ -144,6 +144,10 @@ public class PlayerComponent extends Component {
 
         shootDirection(mouseVector);
     }
+/*  THIS METHOD'S PURPOSE IS TO SHOOT
+*   shootDirection - everytime timer reaches BASIC_DELAY - .11 secs (for now) it will get the mouse
+*   location and the entity location and subtracts the x and y to know the direction depending
+*   on le quadrant it is in para mahibawan sa direction*/
 
     private void shootDirection(Point2D direction) {
         if(skills_timer.elapsed(BASIC_DELAY)){
@@ -155,7 +159,8 @@ public class PlayerComponent extends Component {
             skills_timer.capture();;
         }
     }
-
+/*  THIS METHOD PURPOSE IS TO SIMPLY SPAWN IT AT TJE LOCATION AND ALSO SETTING THE DIRECTION DEPENDING SA NAKUHA SA BABAW
+* */
     private Entity spawnBasic(Point2D position,Point2D direction){
         var location = new SpawnData(position.getX(), position.getY()).put("direction",direction);
         var e = spawn("BasicSkill", location);

@@ -30,7 +30,8 @@ public final class Config {
     public static final int FORESKIN_DRAGON_SPEED = 50;
 
 
-    // ENEMY HPS
+    // ENTITY HPS
+    public static final int PLAYER_HP = 20;
     public static final int WOLF_HP = 2;
     public static final int SKIN_DRAGON = 5;
 

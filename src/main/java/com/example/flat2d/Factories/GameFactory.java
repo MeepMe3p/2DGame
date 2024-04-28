@@ -8,15 +8,23 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.particle.ParticleComponent;
+import com.almasb.fxgl.particle.ParticleEmitter;
+import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.texture.AnimatedTexture;
 import com.example.flat2d.components.SkillsComponent.BasicComponent;
 import com.example.flat2d.components.PlayerComponent;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.Random;
+import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
@@ -46,7 +54,24 @@ public class GameFactory implements EntityFactory {
     }
     @Spawns("BasicSkill")
     public Entity spawnBasicSkill(SpawnData data){
-        var expireClean = new ExpireCleanComponent(Duration.seconds(2)).animateOpacity();
+//        ParticleEmitter emitter = ParticleEmitters.newImplosionEmitter();
+        ParticleEmitter emitter = ParticleEmitters.newFireEmitter();
+//        emitter.setSize(23,23);
+        emitter.setColor(Color.ORANGE);
+        emitter.setEndColor(Color.DARKRED);
+        emitter.setBlendMode(BlendMode.HARD_LIGHT);
+        emitter.setNumParticles(1);
+        emitter.setMaxEmissions(15);
+        AnimatedTexture texture;
+        emitter.setExpireFunction(new Function<Integer, Duration>() {
+            @Override
+            public Duration apply(Integer integer) {
+                return Duration.seconds(2);
+            }
+        });
+
+
+        var expireClean = new ExpireCleanComponent(Duration.seconds(0.5)).animateOpacity();
         expireClean.pause();
         var e = entityBuilder(data)
                 .type(BASICSKILL)
@@ -56,7 +81,9 @@ public class GameFactory implements EntityFactory {
                 .with(new ProjectileComponent(data.get("direction"), BASICSKILL_MOV_SPEED))
                 .with(new BasicComponent())
                 .with(expireClean)
+//                .with()
                 .build();
+        e.addComponent(new ParticleComponent(emitter));
         e.setReusable(true);
         return e;
     }
@@ -64,6 +91,7 @@ public class GameFactory implements EntityFactory {
     @Spawns("SmallExp")
     public Entity spawnSmallExp(SpawnData data){
         var e = entityBuilder()
+//                .at(FXGLMath.random(0,720),FXGLMath.random(0,720))
                 .type(SMALL_EXP)
                 .viewWithBBox(new Circle(10, Color.BLUE))
                 .collidable()
@@ -88,7 +116,7 @@ public class GameFactory implements EntityFactory {
     public Entity spawnBigExp(SpawnData data){
         var e = entityBuilder()
                 .type(BIG_EXP)
-                .at(getRandomSpawnPoint())
+//                .at(getRandomSpawnPoint())
                 .viewWithBBox(new Circle(10,Color.VIOLET))
 //                .with(new CollidableComponent())
                 .collidable()
@@ -96,13 +124,17 @@ public class GameFactory implements EntityFactory {
         e.setReusable(true);
         return e;
     }
-    private static final Point2D[] expLocations = new Point2D[]{
-            new Point2D(SPAWN_DISTANCE, SPAWN_DISTANCE ),
-            new Point2D(getAppWidth() - SPAWN_DISTANCE, SPAWN_DISTANCE),
-            new Point2D(getAppWidth() - SPAWN_DISTANCE, getAppWidth()),
-            new Point2D(SPAWN_DISTANCE, getAppHeight()-SPAWN_DISTANCE)
-
-    };
+//    private static final Point2D[] expLocations = new Point2D[]{
+//            new Point2D(SPAWN_DISTANCE, SPAWN_DISTANCE ),
+//            new Point2D(getAppWidth() - SPAWN_DISTANCE, SPAWN_DISTANCE),
+//            new Point2D(getAppWidth() - SPAWN_DISTANCE, getAppWidth()),
+//            new Point2D(SPAWN_DISTANCE, getAppHeight()-SPAWN_DISTANCE)
+//
+//    };
+/*
+*   THIS METHOD IS TO REUSE THE ENTITY THAT WAY YOU WONT BE ADDING AND REMOVING ENTITIES
+*   WHICH FUKS UP THE RUNTIME SIMILAR RA SHA SA KATONG PLATFORMER NATO PAGLAST
+*   REFERENCE AT THE REFERENCES FILE PANGITAA LANG*/
 
     public static void respawnSkill(Entity entity, SpawnData data){
         entity.setPosition(data.getX(),data.getY() - 6.5);
@@ -117,9 +149,9 @@ public class GameFactory implements EntityFactory {
         Point2D dir = data.get("direction");
         entity.getComponent(ProjectileComponent.class).setDirection(dir);
     }
-    private Point2D getRandomSpawnPoint() {
-        return expLocations[FXGLMath.random(0,3)];
-    }
+//    private Point2D getRandomSpawnPoint() {
+//        return expLocations[FXGLMath.random(0,3)];
+//    }
 }
 
 

@@ -10,18 +10,30 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsWorld;
+import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
 import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 import static com.almasb.fxgl.dsl.FXGL.inc;
@@ -29,7 +41,6 @@ import static com.almasb.fxgl.dsl.FXGL.loopBGM;
 import static com.almasb.fxgl.dsl.FXGL.run;
 import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.example.flat2d.GameMainMenu.GAME_STATE;
 import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
 
@@ -63,12 +74,12 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initInput() {
-        if(GAME_STATE == 1){
             getInput().addAction(new UserAction("Up") {
                 @Override
                 protected void onAction() {
-//                player.translateY(-5);
+
                     player.getComponent(PlayerComponent.class).move_up();
+//                player.translateY(-5);
                 }
 
                 @Override
@@ -115,25 +126,56 @@ public class GameApp extends GameApplication {
             getInput().addAction(new UserAction("IDK") {
                 @Override
                 protected void onAction() {
-//                player.translateY(5);
-                    FXGL.getGameController().gotoGameMenu();
+                    //todo put this in a method latur nga naay if statement
+
+                    int skillCd = geti("skill_cd");
+                    if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
+                        getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
+                        set("skill_cd",0);
+                        Image img = image("hmmm.jpg");
+                        ImageView bgimg = new ImageView(img);
+//                    bgimg.setVisible(false);
+
+                        bgimg.setFitWidth(720);
+                        bgimg.setFitHeight(720);
+
+//                    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1),bgimg);
+//                    fadeIn.setFromValue(0.0);
+//                    fadeIn.setFromValue(1.0);
+//                    fadeIn.play();
+//                    fadeIn.setOnFinished(actionEvent -> {
+                        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), bgimg);
+                        fadeOut.setFromValue(1.0);
+                        fadeOut.setToValue(0.0);
+                        fadeOut.setOnFinished(e -> bgimg.setVisible(false));
+                        fadeOut.play();
+//                    });
+
+
+                        addUINode(bgimg);
+
+                    }else{
+//                        System.out.println("skill not ready");
+                        System.out.println("Skill: "+skillCd);
+                    }
+
                 }
                 @Override
                 protected void onActionEnd() {
                     player.getComponent(PlayerComponent.class).stop();
                 }
-            }, KeyCode.P);
+            }, MouseButton.SECONDARY);
 
-        }
+
+
     }
 //        -------- INITIATING THE GAME AND THE GAME LOOP ------------
 
     @Override
     protected void initGame() {
-        System.out.println("GAMEEE STAAAART");
-//        -------- 0 = SINGLE PLAYER 1 = MULTIPLAYER I HOPE ------------
+//        System.out.println("GAMEEE STAAAART");
 
-        if (GAME_STATE == 0) {
+
             addEntityBuilders();
 //            System.out.println("fuck yes naconnect button");
             setGameLevel();
@@ -148,13 +190,15 @@ public class GameApp extends GameApplication {
 //        -------- INCREMENTS THE TIME ------------
             run(() -> inc("time", +1), Duration.seconds(1));
 //        -------- SPAWNS THE ENTITIES ------------
-            initSpawnExp();
+//            initSpawnExp();
+        Thread th = new Thread(() -> {
             initSpawnEnemies();
             initSpawnSkills();
-        }else if(GAME_STATE == 1){
+//            System.out.println("went here");
 
+        });
+        th.start();
 
-        }
 
 
     }
@@ -169,22 +213,7 @@ public class GameApp extends GameApplication {
 //        -------- FOR HANDLING COLLISIONS ------------
     private void collisionHandler(){
         PhysicsWorld physics = getPhysicsWorld();
-//        CollisionHandler bulletEnemy = new CollisionHandler(BASICSKILL, WOLF) {
-//            @Override
-//            protected void onCollisionBegin(Entity bullet, Entity enemy) {
-//                bullet.removeFromWorld();
-//                enemy.removeFromWorld();
-//                HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
-//                hp.setValue(hp.getValue() - 1);
-//
-//                // TODO: duplication with shockwave
-////                if (hp.isZero()) {
-//////                    killEnemy(enemy);
-////                }
-//
-//            }
-//        };
-//        physics.addCollisionHandler(bulletEnemy);
+
 
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         physics.addCollisionHandler(expToPlayer);
@@ -196,13 +225,25 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
 
     }
+    public static ArrayList<Entity> enemies = new ArrayList<>();
     private void initSpawnSkills() {
         run(()->{
             player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
         },BASICATTACK_SPAWN_INTERVAL);
+
+        run(()->{
+            Random randy = new Random();
+//            int enemy = randy.nextInt(enemies.size());
+//
+//            Entity e = getGameWorld().getEntities().get(enemy);
+//            spawn("ForeskinDragon", e.getX(),e.getY());
+//            System.out.println("Number of enemies: "+ enemies.size());
+//            enemies.clear();
+        },FORESKIN_DRAGON_SPAWN_INTERVAL);
     }
 
     private void initSpawnExp() {
+
 //        -------- SPAWNS THE EXP ENTITIES EVERY X_SPAWN_INTERVAL ------------
         run(()->{
             spawn("SmallExp");
@@ -227,14 +268,18 @@ public class GameApp extends GameApplication {
 //        run(()->{
 //            spawn wave check le reference
 //        })
+
         run(()->{
-            spawn("Wolf");
-            spawn("Wolf");
-            spawn("Wolf");
-            spawn("Wolf");
+            enemies.add(spawn("Wolf"));
+
+
+//            spawn("Wolf");
+//            spawn("Wolf");
+//            spawn("Wolf");
+
         },WOLF_SPAWN_INTERVAL);
         run(()->{
-            spawn("ForeskinDragon");
+//            spawn("ForeskinDragon");
         },FORESKIN_DRAGON_SPAWN_INTERVAL);
 
     }
@@ -250,7 +295,10 @@ public class GameApp extends GameApplication {
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("time",0);
         vars.put("kills", 0);
+        vars.put("score",0);
+        vars.put("skill_cd",0);
         vars.put("exp",0);
+        vars.put("player_hp",PLAYER_HP);
     }
 
     @Override
@@ -262,13 +310,38 @@ public class GameApp extends GameApplication {
         uiTime.textProperty().bind(getip("time").asString());
         addUINode(uiTime);
 
-        Text uiExp = new Text("");
+        Text tExp = new Text("Exp");
+        Text uiExp = new Text();
         uiExp.setFont(Font.font(20));
         uiExp.setTranslateX(+50);
         uiExp.setTranslateY(+100);
         uiExp.textProperty().bind(getip("exp").asString());
-
         addUINode(uiExp);
+        addUINode(tExp,0,100);
+
+        Text tKills = new Text("Kills: ");
+        Text uiKills = new Text();
+        uiKills.setFont(new Font(20));
+        uiKills.setTranslateX(+50);
+        uiKills.setTranslateY(+150);
+        uiKills.textProperty().bind(getip("kills").asString());
+        addUINode(uiKills);
+        addUINode(tKills,0,150);
+
+        var player_hp = new ProgressBar();
+        player_hp.setFill(Color.LIGHTGREEN);
+        player_hp.setMaxValue(PLAYER_HP);
+        player_hp.setWidth(85);
+        player_hp.currentValueProperty().bind(getip("player_hp"));
+//        player_hp.
+        addUINode(player_hp,50,300);
+        var skill_cd = new ProgressBar();
+        skill_cd.setFill(Color.LIGHTBLUE);
+        skill_cd.setMaxValue(25);
+        skill_cd.setWidth(85);
+        skill_cd.currentValueProperty().bind(getip("skill_cd"));
+        addUINode(skill_cd,50,400);
+
     }
 
     @Override

@@ -7,9 +7,15 @@ Inputs - specifically mouse inputs and more
 Timer Stuff - the run methods in der
 --- https://github.com/AlmasB/FXGL/wiki/Timer-Actions-%28FXGL-11%29 ---
 
-My Custom Menu - the custom menu thingy
+Custom Menu - the custom menu thingy
 --- https://github.com/AlmasB/FXGL/wiki/Customizing-Menus-%28FXGL-11%29 ---
 --- https://www.youtube.com/watch?v=iWhtz5EUJFk  SKL tungod ani nalingaw kog buhat custom menu sa database activity nato hahahah manual code lang malakas----
 
-ExpireCleanComponent - duration on when the entity disappears
+ExpireCleanComponent - duration on when the entity disappears to prevent spawn and remove again and again
 -----  https://www.youtube.com/watch?v=6zNM2o6didU  9:35 ------
+
+Effects - particle effects
+---- https://www.youtube.com/watch?v=yhr1b4061os -----
+
+FadeTransition - fade out
+---- https://www.youtube.com/watch?v=ZxekHqOyKvY ----

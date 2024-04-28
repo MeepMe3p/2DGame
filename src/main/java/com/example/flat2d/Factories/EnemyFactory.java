@@ -8,6 +8,9 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.particle.ParticleComponent;
+import com.almasb.fxgl.particle.ParticleEmitter;
+import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.example.flat2d.GameApp;
@@ -17,6 +20,7 @@ import com.example.flat2d.components.WolfComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.*;
@@ -32,13 +36,15 @@ public class EnemyFactory implements EntityFactory {
 
         var e =  entityBuilder()
                 .type(WOLF)
-                .at(getRandomSpawnPoint())
+//                .at(getRandomSpawnPoint())
+                .at(FXGLMath.random(0,720),FXGLMath.random(0,720))
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(56,32)))
 //                .viewWithBBox(new Rectangle(32,32,Color.RED))
 //                .viewWithBBox(new Rectangle(32,32, Color.BLUE))
                 .with(new WolfComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(WOLF_HP))
+//                .with(new ParticleComponent(emitter))
                 .build();
         e.setReusable(true);
         return e;

@@ -29,6 +29,7 @@ public class WolfComponent extends Component {
 
 
     public WolfComponent(Entity player, int speed) {
+
         this.player = player;
         this.speed = speed;
 //        FOR ANIMATION PURPOSES
@@ -50,12 +51,11 @@ public class WolfComponent extends Component {
     }
 
     private void adjustVelocity(double v) {
-//        GameApp.getPlayer();
+
         Point2D playerDirection = player.getCenter()
                 .subtract(wolf.getCenter())
                 .normalize()
                 .multiply(speed);
-//        System.out.println(playerDirection+"  direction");
         if(playerDirection.getX() > 0){
             wolf.setScaleX(1);
         }else{
@@ -63,7 +63,6 @@ public class WolfComponent extends Component {
         }
         velocity = velocity.add(playerDirection).multiply(v);
         isMoving = true;
-//        System.out.println("fuk you pakita betch");
     }
 
     @Override
@@ -72,12 +71,7 @@ public class WolfComponent extends Component {
             adjustVelocity(tpf);
             adjustDirectionTimer.capture();
         }
-//        if(isMoving){
-//            if(texture.getAnimationChannel()!=wolf_text) {
-//                System.out.println("aaaa");
-//                texture.loopAnimationChannel(wolf_text);
-//            }
-//        }
+
         wolf.translate(velocity);
     }
 
