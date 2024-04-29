@@ -5,7 +5,9 @@ import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.Misc.Database;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -14,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -47,17 +50,40 @@ public class GameMainMenu extends FXGLMenu {
         });
         customMenuButton btnMultiplayer= new customMenuButton("MULTIPLAYER", ()->{
                 GAME_STATE = 1;
-//            System.out.println("yaay");
-//               new GameApp();
-            //TODO chat system here for now kay muopen r ashag new scene idk how to exit the game and open again
-            Chatbox cb = new Chatbox();
-            Stage stage = new Stage();
-            Scene sc = new Scene(cb,126,555);
-            stage.setScene(sc);
-            stage.show();
-//            getGameController().pauseEngine();
-            getGameController().exit();
+////            System.out.println("yaay");
+////               new GameApp();
+//            //TODO chat system here for now kay muopen r ashag new scene idk how to exit the game and open again
+//            Chatbox cb = new Chatbox();
+//            Stage stage = new Stage();
+//            Scene sc = new Scene(cb,126,555);
+//            stage.setScene(sc);
+//            stage.show();
+////            getGameController().pauseEngine();
+//            getGameController().exit();
+            try {
+                // Load the existing FXML file
+                Stage primaryStage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafx_plus_willpower/Sign_In.fxml"));
+                Parent root = loader.load();
+                // Create the main scene
+                Scene mainScene = new Scene(root);
+                mainScene.setFill(Color.TRANSPARENT);
+                primaryStage.initStyle(StageStyle.TRANSPARENT);
+                // Set the main scene for the primary stage
+                primaryStage.setScene(mainScene);
+
+                // Set the title for the primary stage
+                primaryStage.setTitle("Sign In");
+
+                // Show the primary stage
+                primaryStage.show();
+
+                // Open a new stage with a new scene
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
+
         customTextField tfUsername = new customTextField("Username");
         customTextField tfPassword = new customTextField("Password");
 
