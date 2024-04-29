@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Console prompt for the server which states all actions any connected client
  * has taken. This includes connections, disconnections, and messages sent.
  */
-public class ChatServerReturn implements Runnable {
+public class gitChatServerReturn implements Runnable {
 
     Socket socket;
     private Scanner input;
