@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
+import com.example.flat2d.DesignPatterns.User;
 import com.example.flat2d.Misc.Database;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -17,6 +18,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx_plus_willpower.utilities.DatabaseUtilities;
+import javafx_plus_willpower.utilities.SceneUtilities;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -24,6 +27,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 public class GameMainMenu extends FXGLMenu {
     Text tName;
     VBox vbMainMenu, vbAccount, vbSignIn;
+
     public static int GAME_STATE = 1;
     public GameMainMenu() {
         super(MenuType.MAIN_MENU);
@@ -90,7 +94,15 @@ public class GameMainMenu extends FXGLMenu {
 //       ======================= ACCOUNT VBOX BUTTONS ================================
         customMenuButton btnExit = new customMenuButton("EXIT", this::fireExit);
         customMenuButton btnLogin = new customMenuButton("Log In",()->{
-            System.out.println("Login account");
+//            System.out.println("Login account");
+            User user = User.getInstance();
+            System.out.println("Tf: "+tfUsername.getInput()+"  "+ tfPassword.getInput());
+            if(DatabaseUtilities.userCheckerMethod(tfUsername.getInput(),tfPassword.getInput())){
+                user.setUsername(tfUsername.getInput());
+                user.setUserId(1);
+            }
+                System.out.println("Id: "+ user.getUserId()+ "Username: "+ user.getUsername());
+
         });
         customMenuButton btnRegister = new customMenuButton("Register Account",()->{
             System.out.println("Register Account");

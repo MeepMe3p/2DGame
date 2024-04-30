@@ -1,10 +1,10 @@
 package javafx_plus_willpower.utilities;
 
+import com.example.flat2d.DesignPatterns.User;
 import javafx_plus_willpower.record.DatabaseConfig;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.sql.*;
+
 public class DatabaseUtilities {
     private static final DatabaseConfig DATABASE_CONFIG = DatabaseConfig.createWithDefaults();
     private DatabaseUtilities() {
@@ -61,6 +61,24 @@ public class DatabaseUtilities {
             // Set parameters for the prepared statement
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                if(rs.getString("id") == password && rs.getString("username") == username){
+                    User user = User.getInstance();
+                    System.out.println(user.getUserId()+":ID UN: "+user.getUsername());
+//                int id = rs.getInt("id");
+//                String u_name = rs.getString("username");
+                    user.setUserId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    return true;
+                }
+
+                System.out.println("The user id: "+rs.getInt("id"));
+                System.out.println("The username: "+rs.getString("username"));
+
+            }
+//            return true;
 
             // Execute the query and check if a result is found
             return preparedStatement.executeQuery().isBeforeFirst();

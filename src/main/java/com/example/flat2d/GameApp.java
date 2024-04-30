@@ -9,12 +9,15 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
+import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.collisions.BasicToEnemyCollision;
+import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
 import javafx.animation.FadeTransition;
@@ -195,6 +198,8 @@ public class GameApp extends GameApplication {
             initSpawnEnemies();
             initSpawnSkills();
 //            System.out.println("went here");
+            // todo temporary delete later for the level checker
+            initLevelChecker();
 
         });
         th.start();
@@ -214,6 +219,9 @@ public class GameApp extends GameApplication {
     private void collisionHandler(){
         PhysicsWorld physics = getPhysicsWorld();
 
+        PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
+        physics.addCollisionHandler(wolfToPlayer);
+
 
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         physics.addCollisionHandler(expToPlayer);
@@ -223,6 +231,14 @@ public class GameApp extends GameApplication {
 
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
+//        CollisionHandler ch = new CollisionHandler(PLAYER, WOLF) {
+//            @Override
+//            protected void onCollisionBegin(Entity a, Entity b) {
+//                play("enemy-death2.wav");
+//                System.out.println("here");
+//            }
+//        };
+//        physics.addCollisionHandler(ch);
 
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
@@ -260,6 +276,11 @@ public class GameApp extends GameApplication {
             spawn("BigExp");
 //            spawn("BigExp");
         },BIG_EXP_SPAWN_INTERVAL);
+    }
+    private void initLevelChecker(){
+        run(()->{
+
+        },Duration.seconds(1));
     }
 
     private void initSpawnEnemies() {
@@ -313,8 +334,8 @@ public class GameApp extends GameApplication {
         Text tExp = new Text("Exp");
         Text uiExp = new Text();
         uiExp.setFont(Font.font(20));
-        uiExp.setTranslateX(+50);
-        uiExp.setTranslateY(+100);
+        uiExp.setTranslateX(50);
+        uiExp.setTranslateY(100);
         uiExp.textProperty().bind(getip("exp").asString());
         addUINode(uiExp);
         addUINode(tExp,0,100);
@@ -331,16 +352,25 @@ public class GameApp extends GameApplication {
         var player_hp = new ProgressBar();
         player_hp.setFill(Color.LIGHTGREEN);
         player_hp.setMaxValue(PLAYER_HP);
-        player_hp.setWidth(85);
+        player_hp.setWidth(720);
+        player_hp.setHeight(10);
         player_hp.currentValueProperty().bind(getip("player_hp"));
-//        player_hp.
-        addUINode(player_hp,50,300);
+        addUINode(player_hp,0,5);
+
         var skill_cd = new ProgressBar();
-        skill_cd.setFill(Color.LIGHTBLUE);
+        skill_cd.setFill(Color.DARKRED);
         skill_cd.setMaxValue(25);
-        skill_cd.setWidth(85);
+        skill_cd.setWidth(720);
+        skill_cd.setHeight(10);
         skill_cd.currentValueProperty().bind(getip("skill_cd"));
-        addUINode(skill_cd,50,400);
+        addUINode(skill_cd,0,20);
+
+        var player_exp = new ProgressBar();
+        player_exp.setFill(Color.NAVY);
+        player_exp.setMaxValue(10);
+        player_exp.setWidth(85);
+        player_exp.currentValueProperty().bind(getip("exp"));
+        addUINode(player_exp,50,450);
 
     }
 

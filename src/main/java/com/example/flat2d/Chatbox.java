@@ -104,15 +104,15 @@ public class Chatbox extends AnchorPane {
         btnLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                GameApp gp = new GameApp();
-//                gp.initSettings(sets);
-//                gp.initGame();
-//                sets.setSceneFactory(new SceneFactory(){
-//                    @Override
-//                    public FXGLMenu newMainMenu(){
-//                        return new GameMainMenu();
-//                    }
-//                });
+                GameApp gp = new GameApp();
+                gp.initSettings(sets);
+                gp.initGame();
+                sets.setSceneFactory(new SceneFactory(){
+                    @Override
+                    public FXGLMenu newMainMenu(){
+                        return new GameMainMenu();
+                    }
+                });
             }
         });
 //        btnRegister.setOnAction(new EventHandler<ActionEvent>() {

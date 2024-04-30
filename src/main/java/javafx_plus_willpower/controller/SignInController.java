@@ -1,5 +1,6 @@
 package javafx_plus_willpower.controller;
 
+import com.example.flat2d.DesignPatterns.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -40,6 +41,10 @@ public class SignInController implements Initializable, UIUpdateCallback {
                     SceneUtilities.changeScene(actionEvent, CHAT_CONFIG.fxmlFilePath(), CHAT_CONFIG.title(), null, textField_Username.getText(), (loader)->{
                         onUIUpdated(loader);
                     });
+//                    User user = User.getInstance();
+//                    System.out.println("Id: "+ user.getUserId()+ "Username: "+ user.getUsername());
+//
+//                    System.out.println("nisulod");
                 }
             }
         });

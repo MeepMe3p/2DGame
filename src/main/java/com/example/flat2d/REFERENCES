@@ -19,3 +19,18 @@ Effects - particle effects
 
 FadeTransition - fade out
 ---- https://www.youtube.com/watch?v=ZxekHqOyKvY ----
+
+Observer Pattern for playing sounds
+----- https://gameprogrammingpatterns.com/observer.html ---------
+----- https://www.youtube.com/watch?v=hQE8lQk9ikE&t=581s 5 mins ------
+----- https://github.com/AlmasB/FXGL/wiki/Events-and-Communication (events needed for the observer pattern) ----------
+
+
+
+
+
+
+
+ASSETS
+----- SOUND EFFECTS -------
+https://pixabay.com/sound-effects/search/death/
