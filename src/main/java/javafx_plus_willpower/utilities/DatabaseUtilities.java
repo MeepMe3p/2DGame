@@ -6,6 +6,7 @@ import javafx_plus_willpower.record.DatabaseConfig;
 import java.sql.*;
 
 public class DatabaseUtilities {
+    public static User loggedIn = User.getInstance();
     private static final DatabaseConfig DATABASE_CONFIG = DatabaseConfig.createWithDefaults();
     private DatabaseUtilities() {
         // Private constructor to prevent instantiation from outside the class
@@ -64,22 +65,17 @@ public class DatabaseUtilities {
 
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                if(rs.getString("id") == password && rs.getString("username") == username){
+                if(rs.getString("password").equals(password) && rs.getString("username").equals(username)){
                     User user = User.getInstance();
-                    System.out.println(user.getUserId()+":ID UN: "+user.getUsername());
-//                int id = rs.getInt("id");
-//                String u_name = rs.getString("username");
                     user.setUserId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
+                    System.out.println("Database Util ID: "+ user.getUserId()+ "Username: "+ user.getUsername());
+
                     return true;
                 }
 
-                System.out.println("The user id: "+rs.getInt("id"));
-                System.out.println("The username: "+rs.getString("username"));
 
             }
-//            return true;
-
             // Execute the query and check if a result is found
             return preparedStatement.executeQuery().isBeforeFirst();
         } catch (SQLException e) {

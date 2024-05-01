@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -11,7 +12,9 @@ import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
+import com.almasb.fxgl.physics.RaycastResult;
 import com.almasb.fxgl.ui.ProgressBar;
+import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
@@ -20,16 +23,19 @@ import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
+import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -38,6 +44,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
+import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
+import static com.almasb.fxgl.dsl.FXGL.getGameScene;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 import static com.almasb.fxgl.dsl.FXGL.inc;
 import static com.almasb.fxgl.dsl.FXGL.loopBGM;
@@ -131,6 +140,8 @@ public class GameApp extends GameApplication {
                 protected void onAction() {
                     //todo put this in a method latur nga naay if statement
 
+                    System.out.println(player.getPosition());
+
                     int skillCd = geti("skill_cd");
                     if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
                         getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
@@ -147,7 +158,7 @@ public class GameApp extends GameApplication {
 //                    fadeIn.setFromValue(1.0);
 //                    fadeIn.play();
 //                    fadeIn.setOnFinished(actionEvent -> {
-                        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), bgimg);
+                        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), bgimg);
                         fadeOut.setFromValue(1.0);
                         fadeOut.setToValue(0.0);
                         fadeOut.setOnFinished(e -> bgimg.setVisible(false));
@@ -205,7 +216,6 @@ public class GameApp extends GameApplication {
         th.start();
 
 
-
     }
 
 
@@ -242,20 +252,58 @@ public class GameApp extends GameApplication {
 
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
+            Entity oratrice;
+    double endY;
+    Line laser = new Line();
+    boolean or_ready = false;
     private void initSpawnSkills() {
         run(()->{
             player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
         },BASICATTACK_SPAWN_INTERVAL);
 
         run(()->{
-            Random randy = new Random();
-//            int enemy = randy.nextInt(enemies.size());
-//
-//            Entity e = getGameWorld().getEntities().get(enemy);
-//            spawn("ForeskinDragon", e.getX(),e.getY());
-//            System.out.println("Number of enemies: "+ enemies.size());
-//            enemies.clear();
-        },FORESKIN_DRAGON_SPAWN_INTERVAL);
+            if(or_ready){
+                laser.setEndX(getInput().getMouseXWorld());
+                laser.setEndY(getInput().getMouseYWorld());
+
+                laser.setStartY(player.getY());
+                laser.setStartX(player.getX());
+
+                // raycast first param start second param end of raycast
+                RaycastResult result = getPhysicsWorld().raycast(player.getCenter(), getInput().getMousePositionWorld());
+
+                // if the ray hits something
+                result.getPoint().ifPresent(p -> {
+                    laser.setEndX(p.getX());
+                    laser.setEndY(p.getY());
+                    System.out.println("here");
+                });
+
+                endY = getInput().getMouseYWorld();
+                laser.setStroke(Color.RED);
+                laser.setStrokeWidth(5);
+
+
+            }
+        },Duration.seconds(0));
+        run(()->{
+//            oratrice = spawn("Oratrice");
+//            oratrice.setPosition(player.getCenter());
+            GameView g = new GameView(laser, 0);
+//            oratrice.getComponent(OratriceComponent.class).skill_activate(getInput().getMousePositionWorld(),player);
+//            or_ready = !or_ready;
+            if(or_ready){
+                or_ready = false;
+                getGameScene().removeGameView(g);
+                System.out.println("none");
+            }else{
+                getGameScene().addGameView(g);
+                System.out.println("have");
+                or_ready = true;
+            }
+
+
+        },/*ORATRICE_SPAWN_INTERVAL*/Duration.seconds(5));
     }
 
     private void initSpawnExp() {
@@ -277,6 +325,12 @@ public class GameApp extends GameApplication {
 //            spawn("BigExp");
         },BIG_EXP_SPAWN_INTERVAL);
     }
+
+    @Override
+    protected void onUpdate(double tpf) {
+
+    }
+
     private void initLevelChecker(){
         run(()->{
 
@@ -292,6 +346,7 @@ public class GameApp extends GameApplication {
 
         run(()->{
             enemies.add(spawn("Wolf"));
+//            return null;
 
 
 //            spawn("Wolf");
@@ -324,53 +379,30 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text uiTime = new Text("");
-        uiTime.setFont(Font.font(72));
-        uiTime.setTranslateX(FXGL.getAppWidth()/2);
-        uiTime.setTranslateY(+100);
-        uiTime.textProperty().bind(getip("time").asString());
-        addUINode(uiTime);
+        UIFacade facade = new UIFacade();
 
-        Text tExp = new Text("Exp");
-        Text uiExp = new Text();
-        uiExp.setFont(Font.font(20));
-        uiExp.setTranslateX(50);
-        uiExp.setTranslateY(100);
-        uiExp.textProperty().bind(getip("exp").asString());
-        addUINode(uiExp);
-        addUINode(tExp,0,100);
+        Text time = facade.createTimeUI();
+        addUINode(time);
 
-        Text tKills = new Text("Kills: ");
-        Text uiKills = new Text();
-        uiKills.setFont(new Font(20));
-        uiKills.setTranslateX(+50);
-        uiKills.setTranslateY(+150);
-        uiKills.textProperty().bind(getip("kills").asString());
-        addUINode(uiKills);
-        addUINode(tKills,0,150);
+        Text expText = facade.createExpText();
+        addUINode(expText);
 
-        var player_hp = new ProgressBar();
-        player_hp.setFill(Color.LIGHTGREEN);
-        player_hp.setMaxValue(PLAYER_HP);
-        player_hp.setWidth(720);
-        player_hp.setHeight(10);
-        player_hp.currentValueProperty().bind(getip("player_hp"));
-        addUINode(player_hp,0,5);
+        Text exp = facade.createExpUI();
+        addUINode(exp);
 
-        var skill_cd = new ProgressBar();
-        skill_cd.setFill(Color.DARKRED);
-        skill_cd.setMaxValue(25);
-        skill_cd.setWidth(720);
-        skill_cd.setHeight(10);
-        skill_cd.currentValueProperty().bind(getip("skill_cd"));
-        addUINode(skill_cd,0,20);
+        Text killText = facade.createKillText();
+        addUINode(killText);
+        Text killCounter = facade.createKillCounter();
+        addUINode(killCounter);
 
-        var player_exp = new ProgressBar();
-        player_exp.setFill(Color.NAVY);
-        player_exp.setMaxValue(10);
-        player_exp.setWidth(85);
-        player_exp.currentValueProperty().bind(getip("exp"));
-        addUINode(player_exp,50,450);
+        ProgressBar hp = facade.createHPBar();
+        addUINode(hp);
+
+        ProgressBar skill = facade.createSkillCdBar();
+        addUINode(skill);
+
+        ProgressBar exp_bar = facade.createExpBar();
+        addUINode(exp_bar);
 
     }
 

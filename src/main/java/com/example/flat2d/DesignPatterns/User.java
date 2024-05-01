@@ -1,7 +1,7 @@
 package com.example.flat2d.DesignPatterns;
 
 public class User {
-    private static User instance = null;
+    static User instance = null;
     private int userId;
     public String username;
 

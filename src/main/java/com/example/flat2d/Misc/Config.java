@@ -21,12 +21,13 @@ public final class Config {
     public static final Duration MEDIUM_EXP_SPAWN_INTERVAL = Duration.seconds(1);
     public static final Duration BIG_EXP_SPAWN_INTERVAL = Duration.seconds(3);
     public static final Duration BASICATTACK_SPAWN_INTERVAL = Duration.seconds(0.8);
+    public static final Duration ORATRICE_SPAWN_INTERVAL = Duration.seconds(5);
     public static final Duration BASIC_DELAY = Duration.seconds(0.11);
 
 
     //  ENEMY MOVEMENT SPEEDS
     public static final int BASICSKILL_MOV_SPEED = 1000;
-    public static final int WOLF_MOVEMENT_SPEED = 100;
+    public static final int WOLF_MOVEMENT_SPEED = 50;
     public static final int FORESKIN_DRAGON_SPEED = 50;
 
 

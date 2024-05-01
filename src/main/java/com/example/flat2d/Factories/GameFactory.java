@@ -16,10 +16,12 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.example.flat2d.components.SkillsComponent.BasicComponent;
 import com.example.flat2d.components.PlayerComponent;
+import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -80,6 +82,7 @@ public class GameFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(data.get("direction"), BASICSKILL_MOV_SPEED))
                 .with(new BasicComponent())
+
                 .with(expireClean)
 //                .with()
                 .build();
@@ -87,6 +90,24 @@ public class GameFactory implements EntityFactory {
         e.setReusable(true);
         return e;
     }
+    @Spawns("Oratrice")
+    public Entity spawnOratrice(SpawnData data){
+        var expireClean = new ExpireCleanComponent(Duration.seconds(10)).animateOpacity();
+        expireClean.pause();
+        var e = entityBuilder()
+                .type(ORATRICE)
+                .viewWithBBox(new Rectangle(30,5,Color.BLUE))
+//                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box()))
+                .with(new CollidableComponent(true))
+                .with(expireClean)
+                .with(new OratriceComponent())
+                .with(new ProjectileComponent())
+                .build();
+        e.setReusable(true);
+
+        return e;
+    }
+
 
     @Spawns("SmallExp")
     public Entity spawnSmallExp(SpawnData data){

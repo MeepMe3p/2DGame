@@ -18,6 +18,8 @@ import javafx_plus_willpower.utilities.SceneUtilities;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static javafx_plus_willpower.utilities.DatabaseUtilities.loggedIn;
+
 public class SignInController implements Initializable, UIUpdateCallback {
     private static final SignUpConfig SIGN_UP_CONFIG = SignUpConfig.createWithDefaults();
     private static final ChatConfig CHAT_CONFIG = ChatConfig.createWithDefaults();
@@ -38,11 +40,11 @@ public class SignInController implements Initializable, UIUpdateCallback {
                 // If success, go to main.fxml
                 if(DatabaseUtilities.userCheckerMethod(textField_Username.getText(), passwordField_password.getText())){
                     // Switching to the Chat.fxml scene will automatically instantiate the ChatController class.
-                    SceneUtilities.changeScene(actionEvent, CHAT_CONFIG.fxmlFilePath(), CHAT_CONFIG.title(), null, textField_Username.getText(), (loader)->{
-                        onUIUpdated(loader);
-                    });
+//                    SceneUtilities.changeScene(actionEvent, CHAT_CONFIG.fxmlFilePath(), CHAT_CONFIG.title(), null, textField_Username.getText(), (loader)->{
+//                        onUIUpdated(loader);
+//                    });
 //                    User user = User.getInstance();
-//                    System.out.println("Id: "+ user.getUserId()+ "Username: "+ user.getUsername());
+                    System.out.println("Id: "+ loggedIn.getUserId()+ "Username: "+ loggedIn.getUsername());
 //
 //                    System.out.println("nisulod");
                 }

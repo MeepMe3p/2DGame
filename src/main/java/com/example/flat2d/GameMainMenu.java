@@ -23,6 +23,7 @@ import javafx_plus_willpower.utilities.SceneUtilities;
 
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static javafx_plus_willpower.utilities.DatabaseUtilities.loggedIn;
 
 public class GameMainMenu extends FXGLMenu {
     Text tName;
@@ -98,10 +99,11 @@ public class GameMainMenu extends FXGLMenu {
             User user = User.getInstance();
             System.out.println("Tf: "+tfUsername.getInput()+"  "+ tfPassword.getInput());
             if(DatabaseUtilities.userCheckerMethod(tfUsername.getInput(),tfPassword.getInput())){
-                user.setUsername(tfUsername.getInput());
-                user.setUserId(1);
+//                user.setUsername(tfUsername.getInput());
+//                user.setUserId(1);
+                System.out.println("fuck");
             }
-                System.out.println("Id: "+ user.getUserId()+ "Username: "+ user.getUsername());
+                System.out.println("aaId: "+ user.getUserId()+ "Username: "+ user.getUsername());
 
         });
         customMenuButton btnRegister = new customMenuButton("Register Account",()->{
