@@ -2,14 +2,21 @@ package com.example.flat2d.DesignPatterns.Facade;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.ProgressBar;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+//import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.addUINode;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getip;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.PLAYER_HP;
 
 public class UIFacade {
@@ -81,5 +88,48 @@ public class UIFacade {
         player_exp.setTranslateY(20);
         player_exp.currentValueProperty().bind(getip("exp"));
         return player_exp;
+    }
+    public VBox createLevelBox(){
+        VBox container = new VBox();
+        BackgroundFill bgColor = new BackgroundFill(Color.YELLOW, new CornerRadii(1), new Insets(1));
+        Background bg = new Background(bgColor);
+        container.setBackground(bg);
+        container.setPrefWidth(360);
+        container.setPrefHeight(360);
+        container.setTranslateX(200);
+        container.setTranslateY(200);
+        container.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+//                getGameWorld().getU
+                getGameController().resumeEngine();
+//                getGameWorld().get;
+                removeUINode(container);
+            }
+        });
+        return container;
+    }
+    public HBox createSkillBox(String url, String name){
+        HBox skill = new HBox();
+        Image img = image(url);
+//        ImageView img_view = new javafx.scene.image.ImageView();
+        ImageView img_view = new ImageView(img);
+        img_view.setFitHeight(100);
+        img_view.setFitWidth(100);
+        Text text = new Text(name);
+        text.setFont(new Font(20));
+        skill.setAlignment(Pos.CENTER);
+        skill.setSpacing(10);
+        skill.setPadding(new Insets(10));
+        skill.getChildren().addAll(img_view,text);
+//        Text level
+        skill.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+
+        return skill;
     }
 }

@@ -8,11 +8,10 @@ import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsWorld;
-import com.almasb.fxgl.physics.RaycastResult;
+import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.Factories.EnemyFactory;
@@ -29,6 +28,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +40,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -241,69 +242,36 @@ public class GameApp extends GameApplication {
 
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
-//        CollisionHandler ch = new CollisionHandler(PLAYER, WOLF) {
-//            @Override
-//            protected void onCollisionBegin(Entity a, Entity b) {
-//                play("enemy-death2.wav");
-//                System.out.println("here");
-//            }
-//        };
-//        physics.addCollisionHandler(ch);
+
 
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
             Entity oratrice;
-    double endY;
-    Line laser = new Line();
+
     boolean or_ready = false;
-    private void initSpawnSkills() {
-        run(()->{
-            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
-        },BASICATTACK_SPAWN_INTERVAL);
-
-        run(()->{
-            if(or_ready){
-                laser.setEndX(getInput().getMouseXWorld());
-                laser.setEndY(getInput().getMouseYWorld());
-
-                laser.setStartY(player.getY());
-                laser.setStartX(player.getX());
-
-                // raycast first param start second param end of raycast
-                RaycastResult result = getPhysicsWorld().raycast(player.getCenter(), getInput().getMousePositionWorld());
-
-                // if the ray hits something
-                result.getPoint().ifPresent(p -> {
-                    laser.setEndX(p.getX());
-                    laser.setEndY(p.getY());
-                    System.out.println("here");
-                });
-
-                endY = getInput().getMouseYWorld();
-                laser.setStroke(Color.RED);
-                laser.setStrokeWidth(5);
-
-
+    private void spawnOratrice(){
+        oratrice = spawn("Oratrice");
+        run(() -> {
+            if(or_ready) {
+                oratrice.setPosition(player.getPosition());
+                oratrice.rotateBy(1);
+                System.out.println("sulod");
             }
-        },Duration.seconds(0));
-        run(()->{
-//            oratrice = spawn("Oratrice");
-//            oratrice.setPosition(player.getCenter());
-            GameView g = new GameView(laser, 0);
-//            oratrice.getComponent(OratriceComponent.class).skill_activate(getInput().getMousePositionWorld(),player);
-//            or_ready = !or_ready;
-            if(or_ready){
+            run(()->{
                 or_ready = false;
-                getGameScene().removeGameView(g);
-                System.out.println("none");
-            }else{
-                getGameScene().addGameView(g);
-                System.out.println("have");
-                or_ready = true;
-            }
+                oratrice.removeFromWorld();
+            },Duration.seconds(3));
+        }, Duration.seconds(0));
+    }
+    private void initSpawnSkills() {
+        run(() -> {
+            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+        }, BASICATTACK_SPAWN_INTERVAL);
 
-
-        },/*ORATRICE_SPAWN_INTERVAL*/Duration.seconds(5));
+        run(() -> {
+//            spawnOratrice();
+            System.out.println("oratrice spawn");
+        }, ORATRICE_SPAWN_INTERVAL);
     }
 
     private void initSpawnExp() {
@@ -311,18 +279,14 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE EXP ENTITIES EVERY X_SPAWN_INTERVAL ------------
         run(()->{
             spawn("SmallExp");
-//            spawn("SmallExp");
-//            spawn("SmallExp");
-//            spawn("SmallExp");
+
         },SMALL_EXP_SPAWN_INTERVAL);
         run(()->{
             spawn("MediumExp");
-//            spawn("MediumExp");
-//            spawn("MediumExp");
         },MEDIUM_EXP_SPAWN_INTERVAL);
         run(()->{
             spawn("BigExp");
-//            spawn("BigExp");
+
         },BIG_EXP_SPAWN_INTERVAL);
     }
 
@@ -339,20 +303,9 @@ public class GameApp extends GameApplication {
 
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
-
-//        run(()->{
-//            spawn wave check le reference
-//        })
-
         run(()->{
             enemies.add(spawn("Wolf"));
-//            return null;
-
-
-//            spawn("Wolf");
-//            spawn("Wolf");
-//            spawn("Wolf");
-
+            enemies.getLast().getComponent(PhysicsComponent.class).setRaycastIgnored(true);
         },WOLF_SPAWN_INTERVAL);
         run(()->{
 //            spawn("ForeskinDragon");

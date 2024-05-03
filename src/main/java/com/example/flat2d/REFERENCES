@@ -20,6 +20,13 @@ Effects - particle effects
 FadeTransition - fade out
 ---- https://www.youtube.com/watch?v=ZxekHqOyKvY ----
 
+Raycasting - for da ORATRICE MECANIQUE D' ANALYSE CARDINALE
+---- https://www.javadoc.io/doc/com.github.almasb/fxgl/0.4.1/com/almasb/fxgl/physics/PhysicsComponent.html  -----
+
+Limiting the raycast distance of mouse to player
+----- https://byjus.com/maths/distance-formula/ -----
+
+
 Observer Pattern for playing sounds
 ----- https://gameprogrammingpatterns.com/observer.html ---------
 ----- https://www.youtube.com/watch?v=hQE8lQk9ikE&t=581s 5 mins ------

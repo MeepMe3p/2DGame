@@ -20,29 +20,35 @@ public class OratriceComponent extends Component {
 //        Image img = im
     }
 
-    public void skill_activate(Point2D direction, Entity player){
-        System.out.println("ORATRIS MEKANIK DANALIS KARDINAL");
-        Point2D position = player.getCenter();
+    @Override
+    public void onUpdate(double tpf) {
+
+    }
+    public void rotate(Entity e, Point2D direction){
+        e.setPosition(direction);
+    }
+
+    public void skill_activate(Entity e,Point2D direction, Entity player){
+//        System.out.println("ORATRIS MEKANIK DANALIS KARDINAL");
+        Point2D position = player.getPosition();
         Point2D mouseVector = direction.subtract(position);
 
-        shootDirection(mouseVector);
+        shootDirection(e,mouseVector);
     }
 
-    private void shootDirection(Point2D direction) {
+    private void shootDirection(Entity e,Point2D direction) {
         if(skills_timer.elapsed(BASIC_DELAY)){
             Point2D pos = getEntity().getCenter();
-            //
-            spawnOratrice(pos.subtract(new Point2D(direction.getY(), -direction.getX()).normalize()
+            spawnOratrice(e,pos.subtract(new Point2D(direction.getY(), -direction.getX()).normalize()
                     .multiply(15)), direction);
-
-            skills_timer.capture();;
+            skills_timer.capture();
         }
     }
-    private  Entity spawnOratrice(Point2D pos, Point2D direction){
+    private  Entity spawnOratrice(Entity e,Point2D pos, Point2D direction){
         var location = new SpawnData(pos.getX(), pos.getY()).put("direction",direction);
-        var e =  spawn("Oratrice",location);
-        GameFactory.respawnSkill(e,location);
-        return e;
+        var a =  spawn("Oratrice",location);
+        GameFactory.respawnSkill(a,location);
+        return a;
 
     }
 }

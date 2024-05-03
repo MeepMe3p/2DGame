@@ -96,7 +96,7 @@ public class GameFactory implements EntityFactory {
         expireClean.pause();
         var e = entityBuilder()
                 .type(ORATRICE)
-                .viewWithBBox(new Rectangle(30,5,Color.BLUE))
+                    .viewWithBBox(new Rectangle(50,300,Color.BLUE))
 //                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box()))
                 .with(new CollidableComponent(true))
                 .with(expireClean)
@@ -104,6 +104,8 @@ public class GameFactory implements EntityFactory {
                 .with(new ProjectileComponent())
                 .build();
         e.setReusable(true);
+        e.setRotationOrigin(new Point2D(25,25));
+//        e.rot
 
         return e;
     }
@@ -145,13 +147,7 @@ public class GameFactory implements EntityFactory {
         e.setReusable(true);
         return e;
     }
-//    private static final Point2D[] expLocations = new Point2D[]{
-//            new Point2D(SPAWN_DISTANCE, SPAWN_DISTANCE ),
-//            new Point2D(getAppWidth() - SPAWN_DISTANCE, SPAWN_DISTANCE),
-//            new Point2D(getAppWidth() - SPAWN_DISTANCE, getAppWidth()),
-//            new Point2D(SPAWN_DISTANCE, getAppHeight()-SPAWN_DISTANCE)
-//
-//    };
+
 /*
 *   THIS METHOD IS TO REUSE THE ENTITY THAT WAY YOU WONT BE ADDING AND REMOVING ENTITIES
 *   WHICH FUKS UP THE RUNTIME SIMILAR RA SHA SA KATONG PLATFORMER NATO PAGLAST
@@ -170,6 +166,7 @@ public class GameFactory implements EntityFactory {
         Point2D dir = data.get("direction");
         entity.getComponent(ProjectileComponent.class).setDirection(dir);
     }
+//    public static void adjustPos()
 //    private Point2D getRandomSpawnPoint() {
 //        return expLocations[FXGLMath.random(0,3)];
 //    }
