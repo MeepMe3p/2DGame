@@ -41,7 +41,7 @@ public class EnemyFactory implements EntityFactory {
                 .with(new WolfComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(WOLF_HP))
-                .with(new PhysicsComponent())
+//                .with(new PhysicsComponent())
 //                .with(new ParticleComponent(emitter))
                 .build();
         e.setReusable(true);

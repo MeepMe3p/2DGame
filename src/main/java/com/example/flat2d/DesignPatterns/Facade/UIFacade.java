@@ -18,6 +18,8 @@ import java.awt.geom.Point2D;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.PLAYER_HP;
+import static com.example.flat2d.Misc.EntityType.BASICSKILL;
+import static com.example.flat2d.Misc.EntityType.ORATRICE;
 
 public class UIFacade {
     public Text createTimeUI(){
@@ -101,6 +103,7 @@ public class UIFacade {
         container.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                getGameWorld().getEntitiesByType(ORATRICE,BASICSKILL).clear();
 //                getGameWorld().getU
                 getGameController().resumeEngine();
 //                getGameWorld().get;

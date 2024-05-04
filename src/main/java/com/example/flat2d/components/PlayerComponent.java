@@ -144,8 +144,9 @@ public class PlayerComponent extends Component {
 
         shootDirection(mouseVector);
     }
-/*  THIS METHOD'S PURPOSE IS TO SHOOT
-*   shootDirection - everytime timer reaches BASIC_DELAY - .11 secs (for now) it will get the mouse
+/**  THIS METHOD'S PURPOSE IS TO SHOOT
+*   shootDirection - everytime timer reaches BASIC_DELAY -
+ *   0.11 secs (for now) it will get the mouse
 *   location and the entity location and subtracts the x and y to know the direction depending
 *   on le quadrant it is in para mahibawan sa direction*/
 
@@ -159,7 +160,7 @@ public class PlayerComponent extends Component {
             skills_timer.capture();;
         }
     }
-/*  THIS METHOD PURPOSE IS TO SIMPLY SPAWN IT AT TJE LOCATION AND ALSO SETTING THE DIRECTION DEPENDING SA NAKUHA SA BABAW
+/**  THIS METHOD PURPOSE IS TO SIMPLY SPAWN IT AT TJE LOCATION AND ALSO SETTING THE DIRECTION DEPENDING SA NAKUHA SA BABAW
 * */
     private Entity spawnBasic(Point2D position,Point2D direction){
         var location = new SpawnData(position.getX(), position.getY()).put("direction",direction);

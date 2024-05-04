@@ -4,11 +4,10 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
@@ -17,31 +16,20 @@ import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
-import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
-import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -59,7 +47,7 @@ import static com.example.flat2d.Misc.EntityType.*;
 
 public class GameApp extends GameApplication {
     public static GameSettings sets;
-    Entity player;
+    static Entity player;
     @Override
     protected void initSettings(GameSettings settings) {
         sets = settings;
@@ -269,10 +257,64 @@ public class GameApp extends GameApplication {
         }, BASICATTACK_SPAWN_INTERVAL);
 
         run(() -> {
-//            spawnOratrice();
-            System.out.println("oratrice spawn");
+            oratrice = spawn("Oratrice");
+//                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
+
         }, ORATRICE_SPAWN_INTERVAL);
+        run(() -> {
+            var cool = spawn("Cool");
+            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+            if (!ents.isEmpty()) {
+                var e = ents.get(FXGL.random(0, ents.size() - 1));
+                cool.setPosition(e.getPosition());
+//                System.out.println("cool: " + cool.getPosition());
+
+            }
+        }, COOL_SPAWN_INTERVAL);
+        run(() -> {
+            var normal = spawn("Normal");
+            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+            if (!ents.isEmpty()) {
+                var e = ents.get(FXGL.random(0, ents.size() - 1));
+                normal.setPosition(e.getPosition());
+//                System.out.println("normal: " + normal.getPosition());
+            }
+        }, NORMAL_SPAWN_INTERVAL);
+        run(()->{
+            var e = spawn("BinaryTree");
+            e.setPosition(player.getCenter());
+            System.out.println(e.getPosition());
+
+        }, Duration.seconds(2));
+        run(()->{
+            var stack = spawn("Stack");
+            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+            if (!ents.isEmpty()) {
+                var e = ents.get(FXGL.random(0, ents.size() - 1));
+                stack.setPosition(e.getPosition());
+            }
+        },STACK_SPAWN_INTERVAL);
+        run(()->{
+            var q =spawn("Queue");
+            Random randy = new Random(4);
+            switch (randy.nextInt()){
+                case 0:
+                    q.setPosition(player.getPosition().add(-720,-720));
+                    break;
+                case 1:
+                    q.setPosition(player.getPosition().add(720,720));
+                    break;
+                case 2:
+                    q.setPosition(player.getPosition().add(-720,720));
+                    break;
+                case 3:
+                    q.setPosition(player.getPosition().add(720,-720));
+                    break;
+
+            }
+        },QUEUE_SPAWN_INTERVAL);
     }
+
 
     private void initSpawnExp() {
 
@@ -305,7 +347,7 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         run(()->{
             enemies.add(spawn("Wolf"));
-            enemies.getLast().getComponent(PhysicsComponent.class).setRaycastIgnored(true);
+//            enemies.getLast().getComponent(PhysicsComponent.class).setRaycastIgnored(true);
         },WOLF_SPAWN_INTERVAL);
         run(()->{
 //            spawn("ForeskinDragon");
@@ -363,7 +405,10 @@ public class GameApp extends GameApplication {
     protected void onPreInit() {
         //TODO ADD MUSIC
         FXGL.getSettings().setGlobalMusicVolume(0.25);
-        loopBGM("bgm-music.mp3");
+        Music m = loopBGM("bgm-music.mp3");
+        // so that music continues even if game is paused
+        m.setDisposed$fxgl_core(true);
+
     }
     private void addEntityBuilders() {
         //TODO ADD ENTITIES
@@ -377,7 +422,7 @@ public class GameApp extends GameApplication {
         launch(args);
     }
 
-    public Entity getPlayer() {
+    public static Entity getPlayer() {
         return player;
     }
 
