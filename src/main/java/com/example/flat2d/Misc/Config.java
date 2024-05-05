@@ -1,7 +1,7 @@
 package com.example.flat2d.Misc;
 
 import javafx.util.Duration;
-/*
+/**
     THIS CLASS IS FOR HANDLING THE THINGS LIKE SPAWNING INTERVALS AND THE SPEEDS OF ENTITTIES CHUCHU
  */
 public final class Config {
@@ -20,13 +20,19 @@ public final class Config {
     public static final Duration SMALL_EXP_SPAWN_INTERVAL = Duration.seconds(0.25);
     public static final Duration MEDIUM_EXP_SPAWN_INTERVAL = Duration.seconds(1);
     public static final Duration BIG_EXP_SPAWN_INTERVAL = Duration.seconds(3);
+
     public static final Duration BASICATTACK_SPAWN_INTERVAL = Duration.seconds(0.8);
-    public static final Duration ORATRICE_SPAWN_INTERVAL = Duration.seconds(5);
+    public static final Duration ORATRICE_SPAWN_INTERVAL = Duration.seconds(6);
+    public static final Duration COOL_SPAWN_INTERVAL = Duration.seconds(7);
+    public static final Duration NORMAL_SPAWN_INTERVAL = Duration.seconds(7);
+    public static final Duration STACK_SPAWN_INTERVAL = Duration.seconds(2);
+    public static final Duration QUEUE_SPAWN_INTERVAL = Duration.seconds(10);
     public static final Duration BASIC_DELAY = Duration.seconds(0.11);
 
 
     //  ENEMY MOVEMENT SPEEDS
     public static final int BASICSKILL_MOV_SPEED = 1000;
+    public static final int QUEUE_MOV_SPEED = 1000;
     public static final int WOLF_MOVEMENT_SPEED = 50;
     public static final int FORESKIN_DRAGON_SPEED = 50;
 

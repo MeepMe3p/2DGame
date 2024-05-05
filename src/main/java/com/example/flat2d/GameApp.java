@@ -4,45 +4,34 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsWorld;
-import com.almasb.fxgl.physics.RaycastResult;
+import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
-import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
-import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -60,7 +49,7 @@ import static com.example.flat2d.Misc.EntityType.*;
 
 public class GameApp extends GameApplication {
     public static GameSettings sets;
-    Entity player;
+    static Entity player;
     @Override
     protected void initSettings(GameSettings settings) {
         sets = settings;
@@ -243,88 +232,105 @@ public class GameApp extends GameApplication {
 
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
-//        CollisionHandler ch = new CollisionHandler(PLAYER, WOLF) {
-//            @Override
-//            protected void onCollisionBegin(Entity a, Entity b) {
-//                play("enemy-death2.wav");
-//                System.out.println("here");
-//            }
-//        };
-//        physics.addCollisionHandler(ch);
+
 
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
             Entity oratrice;
-    double endY;
-    Line laser = new Line();
+
     boolean or_ready = false;
-    private void initSpawnSkills() {
-        run(()->{
-            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
-        },BASICATTACK_SPAWN_INTERVAL);
-
-        run(()->{
-            if(or_ready){
-                laser.setEndX(getInput().getMouseXWorld());
-                laser.setEndY(getInput().getMouseYWorld());
-
-                laser.setStartY(player.getY());
-                laser.setStartX(player.getX());
-
-                // raycast first param start second param end of raycast
-                RaycastResult result = getPhysicsWorld().raycast(player.getCenter(), getInput().getMousePositionWorld());
-
-                // if the ray hits something
-                result.getPoint().ifPresent(p -> {
-                    laser.setEndX(p.getX());
-                    laser.setEndY(p.getY());
-                    System.out.println("here");
-                });
-
-                endY = getInput().getMouseYWorld();
-                laser.setStroke(Color.RED);
-                laser.setStrokeWidth(5);
-
-
+    private void spawnOratrice(){
+        oratrice = spawn("Oratrice");
+        run(() -> {
+            if(or_ready) {
+                oratrice.setPosition(player.getPosition());
+                oratrice.rotateBy(1);
+                System.out.println("sulod");
             }
-        },Duration.seconds(0));
-        run(()->{
-//            oratrice = spawn("Oratrice");
-//            oratrice.setPosition(player.getCenter());
-            GameView g = new GameView(laser, 0);
-//            oratrice.getComponent(OratriceComponent.class).skill_activate(getInput().getMousePositionWorld(),player);
-//            or_ready = !or_ready;
-            if(or_ready){
+            run(()->{
                 or_ready = false;
-                getGameScene().removeGameView(g);
-                System.out.println("none");
-            }else{
-                getGameScene().addGameView(g);
-                System.out.println("have");
-                or_ready = true;
-            }
-
-
-        },/*ORATRICE_SPAWN_INTERVAL*/Duration.seconds(5));
+                oratrice.removeFromWorld();
+            },Duration.seconds(3));
+        }, Duration.seconds(0));
     }
+    private void initSpawnSkills() {
+        run(() -> {
+            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+        }, BASICATTACK_SPAWN_INTERVAL);
+
+        run(() -> {
+            oratrice = spawn("Oratrice");
+//                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
+
+        }, ORATRICE_SPAWN_INTERVAL);
+        run(() -> {
+            var cool = spawn("Cool");
+            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+            if (!ents.isEmpty()) {
+                var e = ents.get(FXGL.random(0, ents.size() - 1));
+                cool.setPosition(e.getPosition());
+//                System.out.println("cool: " + cool.getPosition());
+
+            }
+        }, COOL_SPAWN_INTERVAL);
+        run(() -> {
+            var normal = spawn("Normal");
+            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+            if (!ents.isEmpty()) {
+                var e = ents.get(FXGL.random(0, ents.size() - 1));
+                normal.setPosition(e.getPosition());
+//                System.out.println("normal: " + normal.getPosition());
+            }
+        }, NORMAL_SPAWN_INTERVAL);
+        run(()->{
+            var e = spawn("BinaryTree");
+            e.setPosition(player.getCenter());
+            System.out.println(e.getPosition());
+
+        }, Duration.seconds(2));
+        run(()->{
+            var stack = spawn("Stack");
+            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+            if (!ents.isEmpty()) {
+                var e = ents.get(FXGL.random(0, ents.size() - 1));
+                stack.setPosition(e.getPosition());
+            }
+        },STACK_SPAWN_INTERVAL);
+        run(()->{
+            var q =spawn("Queue");
+            Random randy = new Random(4);
+            switch (randy.nextInt()){
+                case 0:
+                    q.setPosition(player.getPosition().add(-720,-720));
+                    break;
+                case 1:
+                    q.setPosition(player.getPosition().add(720,720));
+                    break;
+                case 2:
+                    q.setPosition(player.getPosition().add(-720,720));
+                    break;
+                case 3:
+                    q.setPosition(player.getPosition().add(720,-720));
+                    break;
+
+            }
+        },QUEUE_SPAWN_INTERVAL);
+    }
+
 
     private void initSpawnExp() {
 
 //        -------- SPAWNS THE EXP ENTITIES EVERY X_SPAWN_INTERVAL ------------
         run(()->{
             spawn("SmallExp");
-//            spawn("SmallExp");
-//            spawn("SmallExp");
-//            spawn("SmallExp");
+
         },SMALL_EXP_SPAWN_INTERVAL);
         run(()->{
             spawn("MediumExp");
-//            spawn("MediumExp");
-//            spawn("MediumExp");
         },MEDIUM_EXP_SPAWN_INTERVAL);
         run(()->{
             spawn("BigExp");
-//            spawn("BigExp");
+
         },BIG_EXP_SPAWN_INTERVAL);
     }
 
@@ -341,20 +347,9 @@ public class GameApp extends GameApplication {
 
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
-
-//        run(()->{
-//            spawn wave check le reference
-//        })
-
         run(()->{
             enemies.add(spawn("Wolf"));
-//            return null;
-
-
-//            spawn("Wolf");
-//            spawn("Wolf");
-//            spawn("Wolf");
-
+//            enemies.getLast().getComponent(PhysicsComponent.class).setRaycastIgnored(true);
         },WOLF_SPAWN_INTERVAL);
         run(()->{
 //            spawn("ForeskinDragon");
@@ -412,7 +407,10 @@ public class GameApp extends GameApplication {
     protected void onPreInit() {
         //TODO ADD MUSIC
         FXGL.getSettings().setGlobalMusicVolume(0.25);
-        loopBGM("bgm-music.mp3");
+        Music m = loopBGM("bgm-music.mp3");
+        // so that music continues even if game is paused
+        m.setDisposed$fxgl_core(true);
+
     }
     private void addEntityBuilders() {
         //TODO ADD ENTITIES
@@ -426,7 +424,7 @@ public class GameApp extends GameApplication {
         launch(args);
     }
 
-    public Entity getPlayer() {
+    public static Entity getPlayer() {
         return player;
     }
 }

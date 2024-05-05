@@ -76,7 +76,7 @@ public class WolfComponent extends Component {
 
         wolf.translate(velocity);
 
-        wolf.getComponent(PhysicsComponent.class).overwritePosition(velocity.add(wolf.getPosition()));
+//        wolf.getComponent(PhysicsComponent.class).overwritePosition(velocity.add(wolf.getPosition()));
 
     }
 

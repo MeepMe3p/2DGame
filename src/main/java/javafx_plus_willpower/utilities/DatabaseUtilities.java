@@ -66,10 +66,9 @@ public class DatabaseUtilities {
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
                 if(rs.getString("password").equals(password) && rs.getString("username").equals(username)){
-                    User user = User.getInstance();
-                    user.setUserId(rs.getInt("id"));
-                    user.setUsername(rs.getString("username"));
-                    System.out.println("Database Util ID: "+ user.getUserId()+ "Username: "+ user.getUsername());
+                    loggedIn.setUserId(rs.getInt("id"));
+                    loggedIn.setUsername(rs.getString("username"));
+                    System.out.println("Database Util ID: "+ loggedIn.getUserId()+ "Username: "+ loggedIn.getUsername());
 
                     return true;
                 }

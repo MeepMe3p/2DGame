@@ -17,13 +17,29 @@ ExpireCleanComponent - duration on when the entity disappears to prevent spawn a
 Effects - particle effects
 ---- https://www.youtube.com/watch?v=yhr1b4061os -----
 
-FadeTransition - fade out
+FadeTransition - fade out (0w^)
 ---- https://www.youtube.com/watch?v=ZxekHqOyKvY ----
+
+
+ --- void oof but hey can be useful i guess -----
+Raycasting - for da ORATRICE MECANIQUE D' ANALYSE CARDINALE
+---- https://www.javadoc.io/doc/com.github.almasb/fxgl/0.4.1/com/almasb/fxgl/physics/PhysicsComponent.html  -----
+
+Limiting the raycast distance of mouse to player
+----- https://byjus.com/maths/distance-formula/ -----
+
+ --- void oof but hey can be useful i guess -----
 
 Observer Pattern for playing sounds
 ----- https://gameprogrammingpatterns.com/observer.html ---------
 ----- https://www.youtube.com/watch?v=hQE8lQk9ikE&t=581s 5 mins ------
 ----- https://github.com/AlmasB/FXGL/wiki/Events-and-Communication (events needed for the observer pattern) ----------
+
+very very very huge thanks to this repository for me to know how the fxgl methods work huhuhu with little to
+no tutorials in youtube, documentation, and stack overflow...and despite ang comments in this repo maka ingon ka
+ug whut how does this even work? yet kay we managed to make it work and create this 😭😭😭😭
+----- https://github.com/AlmasB/FXGL by Almas Baimagambetov idolcakes (0w0) -------
+
 
 
 

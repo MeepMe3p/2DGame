@@ -3,6 +3,7 @@ package com.example.flat2d.Factories;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
+import com.almasb.fxgl.dsl.components.ProjectileWithAccelerationComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -13,25 +14,30 @@ import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PolygonShapeData;
 import com.almasb.fxgl.texture.AnimatedTexture;
-import com.example.flat2d.components.SkillsComponent.BasicComponent;
+import com.example.flat2d.components.SkillsComponent.*;
 import com.example.flat2d.components.PlayerComponent;
-import com.example.flat2d.components.SkillsComponent.OratriceComponent;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.Random;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
+import static com.example.flat2d.Misc.Config.QUEUE_MOV_SPEED;
 import static com.example.flat2d.Misc.EntityType.*;
-/*
+/**
     FACTORY FOR CREATING THE EXP ENTITIES WHERE getRandomSpawnPoint() RANDOMLY
     FINDS A LOCATION FROM IN THE GAME AND SPAWNS IT THERE & THE PLAYER WHICH SPAWNS AT THE MIDDLE
  */
@@ -96,18 +102,80 @@ public class GameFactory implements EntityFactory {
         expireClean.pause();
         var e = entityBuilder()
                 .type(ORATRICE)
-                .viewWithBBox(new Rectangle(30,5,Color.BLUE))
+                    .viewWithBBox(new Rectangle(50,300,Color.BLUE))
 //                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box()))
                 .with(new CollidableComponent(true))
-                .with(expireClean)
+//                .with(expireClean)
+                .with(new ExpireCleanComponent(Duration.seconds(3)))
                 .with(new OratriceComponent())
                 .with(new ProjectileComponent())
                 .build();
-        e.setReusable(true);
+//        e.setReusable(true);
+        e.setRotationOrigin(new Point2D(25,25));
+//        e.rot
 
         return e;
     }
+    @Spawns("Cool")
+    public Entity spawnCool(SpawnData data){
+        var e = entityBuilder()
+                .viewWithBBox(new Circle(60,Color.BLUE))
+                .with(new CoolComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(2)))
+                .with(new CollidableComponent())
+                .build();
+        e.setReusable(true);
+        return e;
+    }
 
+    @Spawns("Normal")
+    public Entity spawnNormal(SpawnData data){
+        var e = entityBuilder()
+                .viewWithBBox(new Circle(80,Color.RED))
+                .with(new NormalComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(4)))
+                .with(new CollidableComponent())
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("Stack")
+    public Entity spawnStack(SpawnData data){
+        var e = entityBuilder()
+                .viewWithBBox(new Rectangle(30,90,Color.PINK))
+                .bbox(new HitBox(new Point2D(0,0),BoundingShape.circle(20)))
+                .with(new CollidableComponent())
+                .with(new StackComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(1)))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("Queue")
+    public Entity spawnQueue(SpawnData data){
+        var e = entityBuilder()
+                .viewWithBBox(new Rectangle(50,50,Color.GRAY))
+                .with(new CollidableComponent())
+                //todo implement something nga muspawn depends sa mouse
+                .with(new ProjectileWithAccelerationComponent(new Point2D(1,0),QUEUE_MOV_SPEED))
+                .with(new ExpireCleanComponent(Duration.seconds(4)))
+                .with(new QueueComponent())
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("BinaryTree")
+    public Entity spawnTree(SpawnData data){
+        Polygon triangle = new Polygon(100,200,300,200,100);
+        triangle.setFill(Color.GREEN);
+        var e = entityBuilder()
+//                .viewWithBBox()
+                .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.polygon(new Point2D(0,0),new Point2D(200,50),new Point2D(200,-50))))
+                .with(new BinaryTreeComponent())
+                .build();
+        e.setReusable(true);
+        return e;
+    }
 
     @Spawns("SmallExp")
     public Entity spawnSmallExp(SpawnData data){
@@ -145,13 +213,7 @@ public class GameFactory implements EntityFactory {
         e.setReusable(true);
         return e;
     }
-//    private static final Point2D[] expLocations = new Point2D[]{
-//            new Point2D(SPAWN_DISTANCE, SPAWN_DISTANCE ),
-//            new Point2D(getAppWidth() - SPAWN_DISTANCE, SPAWN_DISTANCE),
-//            new Point2D(getAppWidth() - SPAWN_DISTANCE, getAppWidth()),
-//            new Point2D(SPAWN_DISTANCE, getAppHeight()-SPAWN_DISTANCE)
-//
-//    };
+
 /*
 *   THIS METHOD IS TO REUSE THE ENTITY THAT WAY YOU WONT BE ADDING AND REMOVING ENTITIES
 *   WHICH FUKS UP THE RUNTIME SIMILAR RA SHA SA KATONG PLATFORMER NATO PAGLAST
@@ -170,6 +232,7 @@ public class GameFactory implements EntityFactory {
         Point2D dir = data.get("direction");
         entity.getComponent(ProjectileComponent.class).setDirection(dir);
     }
+//    public static void adjustPos()
 //    private Point2D getRandomSpawnPoint() {
 //        return expLocations[FXGLMath.random(0,3)];
 //    }

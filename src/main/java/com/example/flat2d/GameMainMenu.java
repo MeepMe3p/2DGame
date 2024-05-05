@@ -103,7 +103,7 @@ public class GameMainMenu extends FXGLMenu {
 //                user.setUserId(1);
                 System.out.println("fuck");
             }
-                System.out.println("aaId: "+ user.getUserId()+ "Username: "+ user.getUsername());
+                System.out.println("aaId: "+ loggedIn.getUserId()+ "Username: "+ loggedIn.getUsername());
 
         });
         customMenuButton btnRegister = new customMenuButton("Register Account",()->{

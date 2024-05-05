@@ -3,7 +3,7 @@ package com.example.flat2d.DesignPatterns.Observer;
 import com.almasb.fxgl.entity.Entity;
 import javafx.event.Event;
 import javafx.event.EventType;
-/*  These are the custom events for all the sounds*/
+/**  These are the custom events for all the sounds*/
 public class SoundEvent extends Event {
     private Entity dead_entity;
     public static final EventType<SoundEvent> ANY = new EventType<>(Event.ANY, "DEATH_EVENT");

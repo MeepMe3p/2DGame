@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
-/*  COMPONENT FOR THE BASIC ATTACK ANIMATIONS AND STUFF SIMILAR TO PLAYER COMP
+/**  COMPONENT FOR THE BASIC ATTACK ANIMATIONS AND STUFF SIMILAR TO PLAYER COMP
 * */
 public class BasicComponent extends Component {
     AnimationChannel attack;
