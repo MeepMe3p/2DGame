@@ -9,7 +9,7 @@ public record DatabaseConfig(
 ){
     private DatabaseConfig() {
         this(
-                "jdbc:mysql://localhost:3306/dboop_capstone",
+                "jdbc:mysql://localhost:3307/dboop_capstone",
                 "root",
                 "",
                 "tbluseraccount",

@@ -20,6 +20,8 @@ public class SignUpController implements Initializable {
 
     private static final SignInConfig SIGN_IN_CONFIG = SignInConfig.createWithDefaults();
     @FXML
+    public Button btnAlreadyHaveAnAccount;
+    @FXML
     private TextField textField_UserName;
     @FXML
     private PasswordField passwordField_Password;
@@ -69,6 +71,13 @@ public class SignUpController implements Initializable {
                         });
                     }
                 }
+            }
+        });
+        btnAlreadyHaveAnAccount.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                SceneUtilities.changeScene(actionEvent, SIGN_IN_CONFIG.fxmlFilePath(), SIGN_IN_CONFIG.title(),
+                        null, null, null);
             }
         });
     }
