@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -27,27 +28,25 @@ import static javafx_plus_willpower.utilities.DatabaseUtilities.loggedIn;
 
 public class GameMainMenu extends FXGLMenu {
     Text tName;
-    VBox vbMainMenu, vbAccount, vbSignIn;
+    VBox vbMainMenu, vbAccount, vbSignIn,vbHighscore;
+    HBox hbUserDetails;
+    String userLoggedIn;
+    String idLoggedIn;
+
+
 
     public static int GAME_STATE = 1;
     public GameMainMenu() {
         super(MenuType.MAIN_MENU);
         Image img = image("background/backg.jpg");
         Texture bg = new Texture(img);
-//
-//        tName = new Text("Name: My name");
-//        tName.setTranslateX(700);
-//        tName.setTranslateY(50);
-//        tName.getText().setFil
 
 
 
 //      IMPLEMENTATIONS FOR BUTTONS
         customMenuButton btnPlayGame = new customMenuButton("PLAY", ()->{
             fireNewGame();
-//            getGameController().resumeEngine();
             GAME_STATE = 0;
-//            System.out.println("hello");
         });
         customMenuButton btnAccount = new customMenuButton("Account", ()->{
             vbAccount.setVisible(true);
@@ -55,16 +54,6 @@ public class GameMainMenu extends FXGLMenu {
         });
         customMenuButton btnMultiplayer= new customMenuButton("MULTIPLAYER", ()->{
                 GAME_STATE = 1;
-////            System.out.println("yaay");
-////               new GameApp();
-//            //TODO chat system here for now kay muopen r ashag new scene idk how to exit the game and open again
-//            Chatbox cb = new Chatbox();
-//            Stage stage = new Stage();
-//            Scene sc = new Scene(cb,126,555);
-//            stage.setScene(sc);
-//            stage.show();
-////            getGameController().pauseEngine();
-//            getGameController().exit();
             try {
                 // Load the existing FXML file
                 Stage primaryStage = new Stage();
@@ -127,15 +116,17 @@ public class GameMainMenu extends FXGLMenu {
 ;
 //        box.set
 /*IMPLEMENTATIONS FOR VBOXES THE THINGIES THAT SHOW UP WHEN YOU INTERACT LOL
-* vbMainMenu = the first thing you will see once you open the game
-* vbRegister = the register form
-* vbSignIn = the sign_in form
-* */
+ * vbMainMenu = the first thing you will see once you open the game
+ * vbRegister = the register form -------- void
+ * vbSignIn = the sign_in form ----------- void
+ * vbHighscore = the highscore
+ */
 
+//======= VB MAIN MENU - this is the first thing you will see play, account,etc =============== //
         vbMainMenu = new VBox(10,btnPlayGame,btnAccount,btnMultiplayer,btnExit);
         vbMainMenu.setTranslateY(500);
         vbMainMenu.setTranslateX(50);
-
+// ==========================================================================================//
 
 //      Account Related Stuff for sign in and register
 
@@ -148,15 +139,34 @@ public class GameMainMenu extends FXGLMenu {
         vbAccount.setTranslateY(500);
         vbAccount.setTranslateX(50);
         vbAccount.setVisible(false);
-// ===================================
+// =========================================================================
+
+//=========== HbUserDetails - the thing at the top part ==============================//
+        Image user_pic = image("profile-pic.jpg");
+        ImageView ivUser_pic = new ImageView(user_pic);
+        Text tUser_id = new Text("--");
+        Text tUser_name = new Text("No user currently logged in");
+        tUser_name.setFill(Color.WHITE);
+        tUser_name.setFill(Color.WHITE);
+        ivUser_pic.setFitHeight(120);
+        ivUser_pic.setPreserveRatio(true);
+        if(loggedIn != null){
+            tUser_id.setText(String.valueOf(loggedIn.getUserId()));
+            tUser_name.setText(loggedIn.getUsername());
+            System.out.println(loggedIn);
+        }
+        hbUserDetails = new HBox(ivUser_pic,tUser_id,tUser_name);
+        hbUserDetails.setTranslateX(30);
+        hbUserDetails.setTranslateY(30);
+        hbUserDetails.setAlignment(Pos.CENTER_LEFT);
+// ==================================================================================//
+
+/*      Stack pane where everything is the vboxes are  this is the overall backgdground
+        TODO design this
+ */
         StackPane menu = new StackPane(vbMainMenu, vbAccount);
-//        menu.setTranslateX(360);
-//        menu.setTranslateY(360);
-
-        getContentRoot().getChildren().add(bg);
-        getContentRoot().getChildren().addAll(menu/*,tName*/);
-
-
+        getContentRoot().getChildren().addAll(bg,menu,hbUserDetails);
+        menu.setTranslateX(360);
     }
     private static class customMenuButton extends StackPane {
         String name;

@@ -2,6 +2,7 @@ package com.example.flat2d.Factories;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
@@ -18,6 +19,7 @@ import com.example.flat2d.components.EnemyComponent.WolfComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.*;
@@ -45,6 +47,17 @@ public class EnemyFactory implements EntityFactory {
 //                .with(new ParticleComponent(emitter))
                 .build();
         e.setReusable(true);
+        e.setOnNotActive(new Runnable() {
+            @Override
+            public void run() {
+//                getGameWorld().addEntityFactory(new EffectFactory());
+                Entity em = spawn("EnemyHit");
+                em.setPosition(e.getPosition());
+
+                spawnDeath(em,e.getCenter());
+
+            }
+        });
         return e;
     }
     private static final Point2D[] spawnPoints = new Point2D[]{
@@ -85,11 +98,34 @@ public class EnemyFactory implements EntityFactory {
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(122,96)))
                 .with(new ForeskinDragonComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new HealthIntComponent(SKIN_DRAGON))
+                .with(new CollidableComponent(true))
 
                 .build();
         e.setReusable(true);
+        e.setOnNotActive(new Runnable() {
+            @Override
+            public void run() {
+//                getGameWorld().addEntityFactory(new EffectFactory());
+                Entity em = spawn("EnemyHit");
+                em.setPosition(e.getPosition());
+
+                spawnDeath(em,e.getCenter());
+
+            }
+        });
         return e;
 
+    }
+    private void spawnDeath(Entity entity, Point2D location) {
+        entity.setPosition(location);
+        entity.setOpacity(1);
+        entity.setVisible(true);
+
+        entity.removeComponent(ExpireCleanComponent.class);
+
+        var expireClean = new ExpireCleanComponent(Duration.seconds(0.5)).animateOpacity();
+        expireClean.pause();
+        entity.addComponent(expireClean);
     }
 
 }

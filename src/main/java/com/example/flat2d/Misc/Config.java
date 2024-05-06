@@ -29,6 +29,9 @@ public final class Config {
     public static final Duration QUEUE_SPAWN_INTERVAL = Duration.seconds(10);
     public static final Duration BASIC_DELAY = Duration.seconds(0.11);
 
+    //  DAMAGE OF SKILLS
+    public static final int ORATRICE_DEFAULT_DMG = 5;
+
 
     //  ENEMY MOVEMENT SPEEDS
     public static final int BASICSKILL_MOV_SPEED = 1000;

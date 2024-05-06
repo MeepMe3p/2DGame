@@ -2,11 +2,12 @@ package javafx_plus_willpower.utilities;
 
 import com.example.flat2d.DesignPatterns.User;
 import javafx_plus_willpower.record.DatabaseConfig;
+import java.sql.DriverManager;
 
 import java.sql.*;
 
 public class DatabaseUtilities {
-    public static User loggedIn = User.getInstance();
+    public static User loggedIn;
     private static final DatabaseConfig DATABASE_CONFIG = DatabaseConfig.createWithDefaults();
     private DatabaseUtilities() {
         // Private constructor to prevent instantiation from outside the class
@@ -66,9 +67,11 @@ public class DatabaseUtilities {
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
                 if(rs.getString("password").equals(password) && rs.getString("username").equals(username)){
+                    loggedIn = User.getInstance();
                     loggedIn.setUserId(rs.getInt("id"));
                     loggedIn.setUsername(rs.getString("username"));
                     System.out.println("Database Util ID: "+ loggedIn.getUserId()+ "Username: "+ loggedIn.getUsername());
+
 
                     return true;
                 }

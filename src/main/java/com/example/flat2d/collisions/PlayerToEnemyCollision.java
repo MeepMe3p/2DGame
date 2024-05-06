@@ -14,15 +14,22 @@ public class PlayerToEnemyCollision extends CollisionHandler {
 
     @Override
     protected void onCollisionBegin(Entity player, Entity enemy) {
-        System.out.println("aaaa");
+//        System.out.println("aaaa");
 
         int hp = geti("player_hp");
         inc("player_hp",-5);
         System.out.println("Player hp: "+hp);
         if(hp <= 0){
-            killPlayer();
+//            killPlayer();
+        }
+        if (System.nanoTime() > geti("lastHitTime") + 1000000000) {
+            set("lastHitTime", (int)System.nanoTime());
+            inc("player_hp", -1);
+//            System.out.println("is colliding");
         }
     }
+
+
 
     private void killPlayer() {
 //        todo create a lose menu

@@ -23,9 +23,9 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 public class BasicToEnemyCollision extends CollisionHandler {
     private SoundObserver observer;
 //        EntityFactory ef = addEntityFactory();
-    public BasicToEnemyCollision() {
-        super(EntityType.BASICSKILL, EntityType.WOLF);
-        getGameWorld().addEntityFactory(new EffectFactory());
+    public BasicToEnemyCollision(Object a, Object b) {
+        super(a,b);
+//        getGameWorld().addEntityFactory(new EffectFactory());
         observer = new SoundObserver();
 
     }
@@ -34,9 +34,13 @@ public class BasicToEnemyCollision extends CollisionHandler {
     @Override
     protected void onCollisionBegin(Entity basic, Entity enemy) {
         basic.removeFromWorld();
-//        System.out.println("colliddeeee");;
         HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
         hp.setValue(hp.getValue()-3);
+        if(enemy.getTypeComponent().isType(EntityType.WOLF)){
+//            System.out.println("wolf is hit");
+        }else if(enemy.getTypeComponent().isType(EntityType.FORESKIN_DRAGON)){
+//            System.out.println("foreskin is hit");
+        }
 
         if(hp.isZero()){
             killEnemy(enemy);
@@ -47,22 +51,15 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 observer.onNotify(event);
                 }
             }).start();
-
-
-
-
-
-
-
         }
     }
 
     private void killEnemy(Entity enemy) {
 
-        Entity em = spawn("EnemyHit");
-        em.setPosition(enemy.getCenter());
-
-        spawnDeath(em,enemy.getCenter());
+//        Entity em = spawn("EnemyHit");
+//        em.setPosition(enemy.getCenter());
+//
+//        spawnDeath(em,enemy.getCenter());
 
 
         Entity e;
@@ -72,15 +69,9 @@ public class BasicToEnemyCollision extends CollisionHandler {
         }else{
             set("skill_cd",25);
         }
-//        getEventBus().addEventHandler(new EventType<>(DeathEvent.WOLF));
-//        System.out.println("before");
-//        observer.
-//        System.out.println("after");
         inc("kills",1);
-//        getEventBus().fireEvent(new Event(DeathEvent.WOLF));
         Random randy = new Random();
         int type = randy.nextInt(3);
-//        Entity e;
         switch (type){
             case 0:
                 e = spawn("SmallExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
@@ -102,15 +93,15 @@ public class BasicToEnemyCollision extends CollisionHandler {
 
     }
 
-    private void spawnDeath(Entity entity, Point2D location) {
-        entity.setPosition(location);
-        entity.setOpacity(1);
-        entity.setVisible(true);
-
-        entity.removeComponent(ExpireCleanComponent.class);
-
-        var expireClean = new ExpireCleanComponent(Duration.seconds(0.5)).animateOpacity();
-        expireClean.pause();
-        entity.addComponent(expireClean);
-    }
+//    private void spawnDeath(Entity entity, Point2D location) {
+//        entity.setPosition(location);
+//        entity.setOpacity(1);
+//        entity.setVisible(true);
+//
+//        entity.removeComponent(ExpireCleanComponent.class);
+//
+//        var expireClean = new ExpireCleanComponent(Duration.seconds(0.5)).animateOpacity();
+//        expireClean.pause();
+//        entity.addComponent(expireClean);
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.flat2d.DesignPatterns.Facade;
 
+import com.almasb.fxgl.core.concurrent.Async;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.ProgressBar;
 import javafx.event.EventHandler;
@@ -103,19 +104,25 @@ public class UIFacade {
         container.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+//                val sched = Executors.
                 getGameWorld().getEntitiesByType(ORATRICE,BASICSKILL).clear();
-//                getGameWorld().getU
-                getGameController().resumeEngine();
+//                getGameController().resumeEngine();
+
 //                getGameWorld().get;
                 removeUINode(container);
             }
         });
         return container;
     }
-    public HBox createSkillBox(String url, String name){
+    public HBox createSkillBox(String url, String name) {
         HBox skill = new HBox();
         Image img = image(url);
 //        ImageView img_view = new javafx.scene.image.ImageView();
+
+        BackgroundFill bgColor = new BackgroundFill(Color.BEIGE, new CornerRadii(1), new Insets(1));
+        Background bg = new Background(bgColor);
+        skill.setBackground(bg);
+
         ImageView img_view = new ImageView(img);
         img_view.setFitHeight(100);
         img_view.setFitWidth(100);
@@ -124,7 +131,11 @@ public class UIFacade {
         skill.setAlignment(Pos.CENTER);
         skill.setSpacing(10);
         skill.setPadding(new Insets(10));
-        skill.getChildren().addAll(img_view,text);
+
+//        skill.setPrefWidth(100);
+//        skill.setPrefHeight(100);
+
+        skill.getChildren().addAll(img_view, text);
 //        Text level
         skill.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -135,4 +146,5 @@ public class UIFacade {
 
         return skill;
     }
+
 }

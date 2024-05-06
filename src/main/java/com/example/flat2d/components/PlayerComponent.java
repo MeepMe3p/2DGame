@@ -23,13 +23,12 @@ public class PlayerComponent extends Component {
     private boolean isLeft,isRight,isUp,isDown;
 //    TODO ADD COMMENTS
     private LocalTimer skills_timer = newLocalTimer();
+    /** IMAGE = TO GET THE IMAGE PATHS TO BE USED FOR THE ANIMATIONS
+     *    ANIMATIONCHANNEL = CLASS FOR HANDLING THE IMAGE AND SEPARATING THEM BY PARTS
+     *    TEXTURE & ANIMATEDTEXTURE = FOR ASSETS AND LOADING THEM **/
 
     public PlayerComponent() {
-/*
-*    IMAGE = TO GET THE IMAGE PATHS TO BE USED FOR THE ANIMATIONS
-*    ANIMATIONCHANNEL = CLASS FOR HANDLING THE IMAGE AND SEPARATING THEM BY PARTS
-*    TEXTURE & ANIMATEDTEXTURE = FOR ASSETS AND LOADING THEM
-*/
+
         Image movement = image("lecatmoves.png");
         Image down_anim = image("CatOne.png");
         Image left_anim = image("CatTwo.png");
@@ -103,8 +102,9 @@ public class PlayerComponent extends Component {
         setAllFalse();
         isRight = true;
 //        System.out.println(entity.getX());
-        if(entity.getX() < 1117) {
+        if(entity.getX() < 2226) {
             entity.setScaleX(1.5);
+//            System.out.println(entity.getX());
             entity.translateX(1);
         }
     }
@@ -121,8 +121,9 @@ public class PlayerComponent extends Component {
         setAllFalse();
         isDown = true;
 //        System.out.println(entity.getY());
-        if(entity.getY() <= 1116) {
+        if(entity.getY() <= 2270) {
             entity.setScaleX(1.5);
+//            System.out.println(entity.getY());
             entity.translateY(1);
         }
     }

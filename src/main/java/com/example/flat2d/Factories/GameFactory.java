@@ -53,12 +53,20 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox("hitbox",new Point2D(0,0), BoundingShape.box(32,32)))
                 .with(new PlayerComponent())
                 //        -------- 1152 X 1152 = SIZE OF THE MAP  ------------
-                .at(new Point2D(1152/2.0,1152/2.0))
+                .at(new Point2D(2304/2.0,2304/2.0))
 //                .with("smallExpEntity",smallExpEntity)
                 .collidable()
                 .build();
 
         return e;
+    }
+    @Spawns("wall")
+    public Entity spawnWall(SpawnData data){
+        return entityBuilder(data)
+                .type(WALL)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new CollidableComponent())
+                .build();
     }
     @Spawns("BasicSkill")
     public Entity spawnBasicSkill(SpawnData data){
@@ -102,8 +110,8 @@ public class GameFactory implements EntityFactory {
         expireClean.pause();
         var e = entityBuilder()
                 .type(ORATRICE)
-                    .viewWithBBox(new Rectangle(50,300,Color.BLUE))
-//                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box()))
+//                    .viewWithBBox(new Rectangle(50,300,Color.BLUE))
+                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box(360,90)))
                 .with(new CollidableComponent(true))
 //                .with(expireClean)
                 .with(new ExpireCleanComponent(Duration.seconds(3)))
@@ -111,7 +119,7 @@ public class GameFactory implements EntityFactory {
                 .with(new ProjectileComponent())
                 .build();
 //        e.setReusable(true);
-        e.setRotationOrigin(new Point2D(25,25));
+        e.setRotationOrigin(new Point2D(30,50));
 //        e.rot
 
         return e;
@@ -119,9 +127,10 @@ public class GameFactory implements EntityFactory {
     @Spawns("Cool")
     public Entity spawnCool(SpawnData data){
         var e = entityBuilder()
-                .viewWithBBox(new Circle(60,Color.BLUE))
+//                .viewWithBBox(new Circle(60,Color.BLUE))
+                .bbox(new HitBox("hitbox",BoundingShape.circle(30)))
                 .with(new CoolComponent())
-                .with(new ExpireCleanComponent(Duration.seconds(2)))
+                .with(new ExpireCleanComponent(Duration.seconds(3)))
                 .with(new CollidableComponent())
                 .build();
         e.setReusable(true);

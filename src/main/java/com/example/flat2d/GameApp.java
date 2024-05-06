@@ -8,19 +8,21 @@ import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
+import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Database;
 import com.example.flat2d.collisions.BasicToEnemyCollision;
+import com.example.flat2d.collisions.OratriceToEnemy;
 import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
+import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,12 +30,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang3.SerializationUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGL.getAppWidth;
@@ -62,6 +60,7 @@ public class GameApp extends GameApplication {
 //        -------- FOR MAIN MENU PURPOSES ------------
 
         settings.setMainMenuEnabled(true);
+
 //        GAME_STATE = 1;
         settings.setSceneFactory(new SceneFactory(){
             @Override
@@ -77,123 +76,130 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initInput() {
-            getInput().addAction(new UserAction("Up") {
-                @Override
-                protected void onAction() {
+        getInput().addAction(new UserAction("Up") {
+            @Override
+            protected void onAction() {
 
-                    player.getComponent(PlayerComponent.class).move_up();
+                player.getComponent(PlayerComponent.class).move_up();
 //                player.translateY(-5);
-                }
+            }
 
-                @Override
-                protected void onActionEnd() {
-                    player.getComponent(PlayerComponent.class).stop();
-                }
-            }, KeyCode.W);
-            getInput().addAction(new UserAction("Right") {
-                @Override
-                protected void onAction() {
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stop();
+            }
+        }, KeyCode.W);
+        getInput().addAction(new UserAction("Right") {
+            @Override
+            protected void onAction() {
 //                player.translateX(5);
-                    player.getComponent(PlayerComponent.class).move_right();
+                player.getComponent(PlayerComponent.class).move_right();
 
-                }
-                @Override
-                protected void onActionEnd() {
-                    player.getComponent(PlayerComponent.class).stop();
-                }
-            }, KeyCode.D);
-            getInput().addAction(new UserAction("Left") {
-                @Override
-                protected void onAction() {
+            }
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stop();
+            }
+        }, KeyCode.D);
+        getInput().addAction(new UserAction("Left") {
+            @Override
+            protected void onAction() {
 //                player.translateX(-5);
-                    player.getComponent(PlayerComponent.class).move_left();
+                player.getComponent(PlayerComponent.class).move_left();
 
-                }
-                @Override
-                protected void onActionEnd() {
-                    player.getComponent(PlayerComponent.class).stop();
-                }
-            }, KeyCode.A);
-            getInput().addAction(new UserAction("Down") {
-                @Override
-                protected void onAction() {
+            }
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stop();
+            }
+        }, KeyCode.A);
+        getInput().addAction(new UserAction("Down") {
+            @Override
+            protected void onAction() {
 //                player.translateY(5);
-                    player.getComponent(PlayerComponent.class).move_down();
+                player.getComponent(PlayerComponent.class).move_down();
 
-                }
-                @Override
-                protected void onActionEnd() {
-                    player.getComponent(PlayerComponent.class).stop();
-                }
-            }, KeyCode.S);
-            getInput().addAction(new UserAction("IDK") {
-                @Override
-                protected void onAction() {
-                    //todo put this in a method latur nga naay if statement
+            }
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stop();
+            }
+        }, KeyCode.S);
+        getInput().addAction(new UserAction("IDK") {
+            @Override
+            protected void onAction() {
+                //todo put this in a method latur nga naay if statement
 
-                    System.out.println(player.getPosition());
+//                System.out.println(player.getPosition());
 
-                    int skillCd = geti("skill_cd");
-                    if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
-                        getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
-                        set("skill_cd",0);
-                        Image img = image("hmmm.jpg");
-                        ImageView bgimg = new ImageView(img);
+                int skillCd = geti("skill_cd");
+                if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
+                    getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
+                    set("skill_cd",0);
+                    Image img = image("hmmm.jpg");
+                    ImageView bgimg = new ImageView(img);
 //                    bgimg.setVisible(false);
 
-                        bgimg.setFitWidth(720);
-                        bgimg.setFitHeight(720);
+                    bgimg.setFitWidth(720);
+                    bgimg.setFitHeight(720);
 
 //                    FadeTransition fadeIn = new FadeTransition(Duration.seconds(1),bgimg);
 //                    fadeIn.setFromValue(0.0);
 //                    fadeIn.setFromValue(1.0);
 //                    fadeIn.play();
 //                    fadeIn.setOnFinished(actionEvent -> {
-                        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), bgimg);
-                        fadeOut.setFromValue(1.0);
-                        fadeOut.setToValue(0.0);
-                        fadeOut.setOnFinished(e -> bgimg.setVisible(false));
-                        fadeOut.play();
+                    FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), bgimg);
+                    fadeOut.setFromValue(1.0);
+                    fadeOut.setToValue(0.0);
+                    fadeOut.setOnFinished(e -> bgimg.setVisible(false));
+                    fadeOut.play();
 //                    });
 
 
-                        addUINode(bgimg);
+                    addUINode(bgimg);
 
-                    }else{
+                }else{
 //                        System.out.println("skill not ready");
-                        System.out.println("Skill: "+skillCd);
-                    }
+                    System.out.println("Skill: "+skillCd);
+                }
 
-                }
-                @Override
-                protected void onActionEnd() {
-                    player.getComponent(PlayerComponent.class).stop();
-                }
-            }, MouseButton.SECONDARY);
+            }
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stop();
+            }
+        }, MouseButton.SECONDARY);
 
 
 
     }
 //        -------- INITIATING THE GAME AND THE GAME LOOP ------------
 
+    public static Map <String, Integer> skills;
+    public static int[] skillLevels = new int[5];
     @Override
     protected void initGame() {
-//        System.out.println("GAMEEE STAAAART");
+        int count = 0;
+        skillLevels[1] = 2;
+        for(int i: skillLevels){
+            count++;
+            System.out.println("Elem: "+count+": "+i);
+        }
 
 
-            addEntityBuilders();
-//            System.out.println("fuck yes naconnect button");
-            setGameLevel();
+        addEntityBuilders();
+        setGameLevel();
 //        -------- DEV MODE TO SHOW HITBOXES ------------
 
-            player = spawn("Player");
-            player.setScaleX(1);
+        player = spawn("Player");
+//            player.setOnNotActive();
+        player.setScaleX(1);
 //        -------- FOR THE CAMERA TO FOCUS AT THE PLAYER  ------------
-            getGameScene().getViewport().setLazy(true);
-            getGameScene().getViewport().setBounds(0, 0, 36 * 32, 36 * 32);
-            getGameScene().getViewport().bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
+        getGameScene().getViewport().setLazy(true);
+        getGameScene().getViewport().setBounds(0, 0, 72 * 32, 72 * 32);
+        getGameScene().getViewport().bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
 //        -------- INCREMENTS THE TIME ------------
-            run(() -> inc("time", +1), Duration.seconds(1));
+        run(() -> inc("time", +1), Duration.seconds(1));
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
@@ -215,19 +221,25 @@ public class GameApp extends GameApplication {
     @Override
     protected void initPhysics() {
         collisionHandler();
-}
-//        -------- FOR HANDLING COLLISIONS ------------
+    }
+    //        -------- FOR HANDLING COLLISIONS ------------
     private void collisionHandler(){
         PhysicsWorld physics = getPhysicsWorld();
 
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
+        OratriceToEnemy orToEn = new OratriceToEnemy();
+        OratriceToEnemy oToE = new OratriceToEnemy();
         physics.addCollisionHandler(wolfToPlayer);
+        physics.addCollisionHandler(oToE);
+
 
 
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         physics.addCollisionHandler(expToPlayer);
-        BasicToEnemyCollision plToEn = new BasicToEnemyCollision();
+        BasicToEnemyCollision plToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
+
         physics.addCollisionHandler(plToEn);
+        physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
@@ -236,12 +248,13 @@ public class GameApp extends GameApplication {
 
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
-            Entity oratrice;
+    Entity oratrice;
 
     boolean or_ready = false;
     private void spawnOratrice(){
         oratrice = spawn("Oratrice");
         run(() -> {
+            System.out.println("oratrcice spawn");
             if(or_ready) {
                 oratrice.setPosition(player.getPosition());
                 oratrice.rotateBy(1);
@@ -260,6 +273,9 @@ public class GameApp extends GameApplication {
 
         run(() -> {
             oratrice = spawn("Oratrice");
+
+            oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
+            System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
 //                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
 
         }, ORATRICE_SPAWN_INTERVAL);
@@ -349,6 +365,7 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         run(()->{
             enemies.add(spawn("Wolf"));
+//            return null;
 //            enemies.getLast().getComponent(PhysicsComponent.class).setRaycastIgnored(true);
         },WOLF_SPAWN_INTERVAL);
         run(()->{
@@ -359,7 +376,8 @@ public class GameApp extends GameApplication {
 //        -------- SETS THE LEVEL ------------
 
     private void setGameLevel() {
-        Level level = setLevelFromMap("tmx/map-iguess.tmx");
+        Level level = setLevelFromMap("tmx/2DGameTiledMap.tmx");
+
 
     }
 
@@ -372,6 +390,14 @@ public class GameApp extends GameApplication {
         vars.put("skill_cd",0);
         vars.put("exp",0);
         vars.put("player_hp",PLAYER_HP);
+        vars.put("lastHitTime", 0);
+
+        vars.put("Basic",1);
+        vars.put("Oratrice",0);
+        vars.put("Stack",0);
+        vars.put("Queue",0);
+        vars.put("Tree",0);
+
     }
 
     @Override
@@ -416,6 +442,8 @@ public class GameApp extends GameApplication {
         //TODO ADD ENTITIES
         getGameWorld().addEntityFactory(new GameFactory());
         getGameWorld().addEntityFactory(new EnemyFactory());
+        getGameWorld().addEntityFactory(new EffectFactory());
+
     }
 
 
@@ -427,4 +455,5 @@ public class GameApp extends GameApplication {
     public static Entity getPlayer() {
         return player;
     }
+
 }
