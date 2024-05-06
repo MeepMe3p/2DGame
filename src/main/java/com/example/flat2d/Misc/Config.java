@@ -30,6 +30,7 @@ public final class Config {
     public static final Duration BASIC_DELAY = Duration.seconds(0.11);
 
     //  DAMAGE OF SKILLS
+    public static final int BASIC_DEFAULT_DMG = 3;
     public static final int ORATRICE_DEFAULT_DMG = 5;
 
 

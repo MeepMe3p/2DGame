@@ -35,8 +35,10 @@ public class EnemyFactory implements EntityFactory {
 
         var e =  entityBuilder()
                 .type(WOLF)
+                .type(ENEMY)
 //                .at(getRandomSpawnPoint())
-                .at(FXGLMath.random(0,720),FXGLMath.random(0,720))
+                .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
+
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(56,32)))
 //                .viewWithBBox(new Rectangle(32,32,Color.RED))
 //                .viewWithBBox(new Rectangle(32,32, Color.BLUE))

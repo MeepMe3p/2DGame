@@ -5,10 +5,14 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.example.flat2d.GameApp;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
+import java.awt.*;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class CoolComponent extends Component{
     AnimationChannel animation;
@@ -29,7 +33,9 @@ public class CoolComponent extends Component{
     }
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(player.getPosition());
+        entity.getTransformComponent().setScaleOrigin(new Point2D(0,0));
+        texture.setX(-50);
+        texture.setY(-100);
         entity.getViewComponent().addChild(texture);
         entity.setRotation(270);
 

@@ -16,11 +16,13 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PolygonShapeData;
 import com.almasb.fxgl.texture.AnimatedTexture;
+import com.example.flat2d.GameApp;
 import com.example.flat2d.components.SkillsComponent.*;
 import com.example.flat2d.components.PlayerComponent;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -34,14 +36,14 @@ import java.util.Random;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
-import static com.example.flat2d.Misc.Config.QUEUE_MOV_SPEED;
+import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
 /**
     FACTORY FOR CREATING THE EXP ENTITIES WHERE getRandomSpawnPoint() RANDOMLY
     FINDS A LOCATION FROM IN THE GAME AND SPAWNS IT THERE & THE PLAYER WHICH SPAWNS AT THE MIDDLE
  */
 public class GameFactory implements EntityFactory {
+    Entity player = GameApp.getPlayer();
     private static int SPAWN_DISTANCE = 50;
     @Spawns("Player")
     public Entity spawnPlayer(SpawnData data){
@@ -119,7 +121,6 @@ public class GameFactory implements EntityFactory {
                 .with(new ProjectileComponent())
                 .build();
 //        e.setReusable(true);
-        e.setRotationOrigin(new Point2D(30,50));
 //        e.rot
 
         return e;
@@ -128,12 +129,17 @@ public class GameFactory implements EntityFactory {
     public Entity spawnCool(SpawnData data){
         var e = entityBuilder()
 //                .viewWithBBox(new Circle(60,Color.BLUE))
+//                .at(getGameWorld().getClosestEntity(GameApp.getPlayer(),e->e.isType(WOLF)))
+//                .at(getGameWorld().getEntitiesInRange(new Rectangle2D(player.getX(),player.getY(),720,720)).getFirst().getPosition())
                 .bbox(new HitBox("hitbox",BoundingShape.circle(30)))
                 .with(new CoolComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(3)))
                 .with(new CollidableComponent())
                 .build();
         e.setReusable(true);
+//        Rectangle r2d = new Rectangle(player.getX(),player.getY(),720,720);
+//        System.out.println(player.getPosition());
+//        getGameScene().addUINode(r2d);
         return e;
     }
 

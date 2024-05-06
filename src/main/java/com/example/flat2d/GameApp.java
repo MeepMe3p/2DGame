@@ -6,6 +6,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
+import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
@@ -13,6 +14,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
+import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
@@ -175,7 +177,8 @@ public class GameApp extends GameApplication {
     }
 //        -------- INITIATING THE GAME AND THE GAME LOOP ------------
 
-    public static Map <String, Integer> skills;
+//    public static Map <String, Integer> skills;
+    public static SoundObserver observer = new SoundObserver();
     public static int[] skillLevels = new int[5];
     @Override
     protected void initGame() {
@@ -205,9 +208,6 @@ public class GameApp extends GameApplication {
         Thread th = new Thread(() -> {
             initSpawnEnemies();
             initSpawnSkills();
-//            System.out.println("went here");
-            // todo temporary delete later for the level checker
-            initLevelChecker();
 
         });
         th.start();
@@ -227,10 +227,9 @@ public class GameApp extends GameApplication {
         PhysicsWorld physics = getPhysicsWorld();
 
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
-        OratriceToEnemy orToEn = new OratriceToEnemy();
         OratriceToEnemy oToE = new OratriceToEnemy();
         physics.addCollisionHandler(wolfToPlayer);
-        physics.addCollisionHandler(oToE);
+//        physics.addCollisionHandler(oToE);
 
 
 
@@ -279,16 +278,34 @@ public class GameApp extends GameApplication {
 //                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
 
         }, ORATRICE_SPAWN_INTERVAL);
+        // debug purpopses uncomment dis or comment
+//        runOnce(() -> {
+//            var cool = spawn("Cool");
+//            Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
+//
+//            closest.ifPresent(close->{
+//                var e = close.getPosition();
+//                cool.setPosition(e);
+//                System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
+//                System.out.println(cool.getPosition()+"the position of cool");
+//
+//            });
+//            return null;
+//        }, COOL_SPAWN_INTERVAL);
         run(() -> {
             var cool = spawn("Cool");
-            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
-            if (!ents.isEmpty()) {
-                var e = ents.get(FXGL.random(0, ents.size() - 1));
-                cool.setPosition(e.getPosition());
-//                System.out.println("cool: " + cool.getPosition());
+            Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
 
-            }
+             closest.ifPresent(close->{
+                var e = close.getPosition();
+                cool.setPosition(e);
+                 System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
+                 System.out.println(cool.getPosition()+"the position of cool");
+
+            });
+
         }, COOL_SPAWN_INTERVAL);
+//        debug purposes ==============================
         run(() -> {
             var normal = spawn("Normal");
             List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
@@ -301,7 +318,7 @@ public class GameApp extends GameApplication {
         run(()->{
             var e = spawn("BinaryTree");
             e.setPosition(player.getCenter());
-            System.out.println(e.getPosition());
+//            System.out.println(e.getPosition());
 
         }, Duration.seconds(2));
         run(()->{
@@ -350,23 +367,22 @@ public class GameApp extends GameApplication {
         },BIG_EXP_SPAWN_INTERVAL);
     }
 
-    @Override
-    protected void onUpdate(double tpf) {
 
-    }
 
-    private void initLevelChecker(){
-        run(()->{
-
-        },Duration.seconds(1));
-    }
 
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
+        // debug purposes comment or uncomment
+//        runOnce(()->{
+////            enemies.add(spawn("Wolf"));
+//            var e = spawn("Wolf");
+//            e.setPosition(player.getPosition());
+//
+//            System.out.println(e.getPosition()+"wolf spawn");
+//            return null;
+//        },Duration.seconds(0));
         run(()->{
             enemies.add(spawn("Wolf"));
-//            return null;
-//            enemies.getLast().getComponent(PhysicsComponent.class).setRaycastIgnored(true);
         },WOLF_SPAWN_INTERVAL);
         run(()->{
 //            spawn("ForeskinDragon");

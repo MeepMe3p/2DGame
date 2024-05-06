@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
+import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.components.SkillChecker;
 import javafx.geometry.Insets;
@@ -38,19 +39,37 @@ public class PlayerToExpCollision extends CollisionHandler {
         if(player_exp >= 5){
             set("exp",0);
 //            getGameController().pauseEngine();
-//            getGameWorld().getEntities().parallelStream().
-//            getGameTimer().clear();
 //            //todo open a vbox or something
             UIFacade uiFacade = new UIFacade();
             VBox lvlup = uiFacade.createLevelBox();
 
             Random randy = new Random();
 
-            int skillNum = randy.nextInt(4);
+            int skillNum = randy.nextInt(5);
             switch (skillNum){
                 case 0:
-                    if(!skillChecker.unavailableSkill1()){
-
+                    if(GameApp.skillLevels[0] != 2){
+                        GameApp.skillLevels[0] += 1;
+                    }
+                    break;
+                case 1:
+                    if(GameApp.skillLevels[1] != 2){
+                        GameApp.skillLevels[1] += 1;
+                    }
+                    break;
+                case 2:
+                    if(GameApp.skillLevels[2] != 2){
+                        GameApp.skillLevels[2] += 1;
+                    }
+                    break;
+                case 3:
+                    if(GameApp.skillLevels[3] != 2){
+                        GameApp.skillLevels[3] += 1;
+                    }
+                    break;
+                case 4:
+                    if(GameApp.skillLevels[4] != 2){
+                        GameApp.skillLevels[4] += 1;
                     }
                     break;
             }
