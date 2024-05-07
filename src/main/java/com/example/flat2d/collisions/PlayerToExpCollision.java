@@ -43,40 +43,11 @@ public class PlayerToExpCollision extends CollisionHandler {
             UIFacade uiFacade = new UIFacade();
             VBox lvlup = uiFacade.createLevelBox();
 
-            Random randy = new Random();
 
-            int skillNum = randy.nextInt(5);
-            switch (skillNum){
-                case 0:
-                    if(GameApp.skillLevels[0] != 2){
-                        GameApp.skillLevels[0] += 1;
-                    }
-                    break;
-                case 1:
-                    if(GameApp.skillLevels[1] != 2){
-                        GameApp.skillLevels[1] += 1;
-                    }
-                    break;
-                case 2:
-                    if(GameApp.skillLevels[2] != 2){
-                        GameApp.skillLevels[2] += 1;
-                    }
-                    break;
-                case 3:
-                    if(GameApp.skillLevels[3] != 2){
-                        GameApp.skillLevels[3] += 1;
-                    }
-                    break;
-                case 4:
-                    if(GameApp.skillLevels[4] != 2){
-                        GameApp.skillLevels[4] += 1;
-                    }
-                    break;
-            }
 
-            HBox sk1 = uiFacade.createSkillBox("skil.png","Skill 1");
-            HBox sk2 = uiFacade.createSkillBox("skil.png","Skill 1");
-            HBox sk3 = uiFacade.createSkillBox("skil.png","Skill 1");
+            HBox sk1 = uiFacade.createSkillBox("skil.png");
+            HBox sk2 = uiFacade.createSkillBox("skil.png");
+            HBox sk3 = uiFacade.createSkillBox("skil.png");
             lvlup.getChildren().addAll(sk1,sk2,sk3);
             addUINode(lvlup);
 

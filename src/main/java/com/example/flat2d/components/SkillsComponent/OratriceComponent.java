@@ -29,7 +29,8 @@ public class OratriceComponent extends Component {
         level = 0;
         Image atk = image("water_cannon-Sheet.png");
 
-        animation = new AnimationChannel(atk,6,990,180, Duration.seconds(1),4,5);
+
+        animation = new AnimationChannel(atk,30,495,90, Duration.seconds(3),0,29);
         texture = new AnimatedTexture(animation);
         texture.loop();
     }
@@ -37,7 +38,8 @@ public class OratriceComponent extends Component {
     @Override
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(player.getPosition());
-        texture.setY(-45);
+        texture.setY(-8);
+
         entity.getViewComponent().addChild(texture);
         entity.setRotationOrigin(new Point2D(-25,45));
 
@@ -45,6 +47,7 @@ public class OratriceComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        texture.setFitWidth(350);
         entity.rotateBy(1);
         entity.setPosition(player.getPosition().add(50,-30));
 

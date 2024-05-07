@@ -16,6 +16,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PolygonShapeData;
 import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.SkillsComponent.*;
 import com.example.flat2d.components.PlayerComponent;
@@ -24,6 +25,7 @@ import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -113,7 +115,7 @@ public class GameFactory implements EntityFactory {
         var e = entityBuilder()
                 .type(ORATRICE)
 //                    .viewWithBBox(new Rectangle(50,300,Color.BLUE))
-                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box(360,90)))
+                .bbox(new HitBox("hitbox",new Point2D(0,0),BoundingShape.box(360,70)))
                 .with(new CollidableComponent(true))
 //                .with(expireClean)
                 .with(new ExpireCleanComponent(Duration.seconds(3)))
@@ -137,9 +139,7 @@ public class GameFactory implements EntityFactory {
                 .with(new CollidableComponent())
                 .build();
         e.setReusable(true);
-//        Rectangle r2d = new Rectangle(player.getX(),player.getY(),720,720);
-//        System.out.println(player.getPosition());
-//        getGameScene().addUINode(r2d);
+
         return e;
     }
 
@@ -147,6 +147,7 @@ public class GameFactory implements EntityFactory {
     public Entity spawnNormal(SpawnData data){
         var e = entityBuilder()
                 .viewWithBBox(new Circle(80,Color.RED))
+//                .viewWithBBox(new Texture(new Image("bug")))
                 .with(new NormalComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(4)))
                 .with(new CollidableComponent())

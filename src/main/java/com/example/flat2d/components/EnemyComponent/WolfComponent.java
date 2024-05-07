@@ -1,6 +1,7 @@
 package com.example.flat2d.components.EnemyComponent;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -76,6 +77,11 @@ public class WolfComponent extends Component {
 
 //        wolf.getComponent(PhysicsComponent.class).overwritePosition(velocity.add(wolf.getPosition()));
 
+    }
+    public int takeDamage(double taken){
+        int hp = entity.getComponent(HealthIntComponent.class).getValue();
+        entity.getComponent(HealthIntComponent.class).setValue((int) (hp - taken));
+        return hp;
     }
 
 

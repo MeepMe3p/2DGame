@@ -31,14 +31,24 @@ public class PlayerComponent extends Component {
 
         Image movement = image("lecatmoves.png");
         Image down_anim = image("CatOne.png");
-        Image left_anim = image("CatTwo.png");
+        Image left_anim = image("CatThree.png");
         Image right_anim = image("CatThree.png");
         Image up_anim = image("CatFour.png");
+//        Image movement = image("lecatmoves.png");
+//        Image down_anim = image("FrontSirSeratoAsset.png");
+//        Image left_anim = image("SideSirSeratoAsset.png");
+//        Image right_anim = image("SideSirSeratoAsset.png");
+//        Image up_anim = image("BackSirSeratoAsset.png");
         idle = new AnimationChannel(movement, 2, 32, 32, Duration.seconds(1), 6, 7);
         right = new AnimationChannel(right_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
         left = new AnimationChannel(left_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
         down = new AnimationChannel(down_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
         up = new AnimationChannel(up_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
+//        idle = new AnimationChannel(movement, 8, 64, 120, Duration.seconds(1), 0, 7);
+//        right = new AnimationChannel(right_anim, 8, 64, 120, Duration.seconds(1), 0, 7);
+//        left = new AnimationChannel(left_anim, 8, 64, 120, Duration.seconds(1), 0, 7);
+//        down = new AnimationChannel(down_anim, 8, 64, 120, Duration.seconds(1), 0, 7);
+//        up = new AnimationChannel(up_anim, 8, 64, 120, Duration.seconds(1), 0, 7);
         texture = new AnimatedTexture(right);
         texture.loop();
     }
@@ -48,13 +58,17 @@ public class PlayerComponent extends Component {
     @Override
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(16, 16));
+//        texture.setFitHeight(60);
         entity.getViewComponent().addChild(texture);
+//        texture.setFitHeight();
     }
 /*
  *   FOR UPDATING THE PLAYER DEPENDING ON WHAT IS THE STATE IT IS IN
  */
     @Override
     public void onUpdate(double tpf) {
+        texture.setFitHeight(90);
+        texture.setFitWidth(50);
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -93,7 +107,7 @@ public class PlayerComponent extends Component {
         setAllFalse();
         isLeft = true;
         if(entity.getX() >= 0 ) {
-            entity.setScaleX(1.5);
+            entity.setScaleX(-1);
             entity.translateX(-1);
         }
     }
@@ -103,7 +117,7 @@ public class PlayerComponent extends Component {
         isRight = true;
 //        System.out.println(entity.getX());
         if(entity.getX() < 2226) {
-            entity.setScaleX(1.5);
+            entity.setScaleX(1);
 //            System.out.println(entity.getX());
             entity.translateX(1);
         }
@@ -113,7 +127,7 @@ public class PlayerComponent extends Component {
         isUp = true;
 //        System.out.println(entity.getY());
         if(entity.getY() > 0) {
-            entity.setScaleX(1.5);
+            entity.setScaleX(-1);
             entity.translateY(-1);
         }
     }
@@ -122,7 +136,7 @@ public class PlayerComponent extends Component {
         isDown = true;
 //        System.out.println(entity.getY());
         if(entity.getY() <= 2270) {
-            entity.setScaleX(1.5);
+            entity.setScaleX(1);
 //            System.out.println(entity.getY());
             entity.translateY(1);
         }
@@ -131,7 +145,7 @@ public class PlayerComponent extends Component {
     public void stop(){
         entity.translateX(0);
         entity.translateY(0);
-        entity.setScaleX(1.5);
+        entity.setScaleX(1);
     }
     public void setAllFalse(){
         isUp = false;

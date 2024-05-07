@@ -47,5 +47,9 @@ public final class Config {
     public static final int SKIN_DRAGON = 5;
 
 
+    // SKILL MULTIPLIERS
+    public static final double DMG_MULTIPLIER = 1.5;
+
+
 
 }

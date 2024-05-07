@@ -2,8 +2,10 @@ package com.example.flat2d;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
+import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
+import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.DesignPatterns.User;
 import com.example.flat2d.Misc.Database;
 import final_project_socket.handler.AuthenticationHandler;
@@ -37,11 +39,12 @@ public class GameMainMenu extends FXGLMenu {
         super(MenuType.MAIN_MENU);
         Image img = image("background/backg.jpg");
         Texture bg = new Texture(img);
-
-
-
 //      IMPLEMENTATIONS FOR BUTTONS
         customMenuButton btnPlayGame = new customMenuButton("PLAY", ()->{
+            getAudioPlayer().stopAllMusic();
+            Music m = loopBGM("game-music.mp3");
+            m.setDisposed$fxgl_core(true);
+
             fireNewGame();
             GAME_STATE = 0;
         });

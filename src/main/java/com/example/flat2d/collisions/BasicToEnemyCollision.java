@@ -37,14 +37,17 @@ public class BasicToEnemyCollision extends CollisionHandler {
     @Override
     protected void onCollisionBegin(Entity basic, Entity enemy) {
         basic.removeFromWorld();
+        System.out.println("collided with wolf basic");
         HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
-        int dmg = Config.BASIC_DEFAULT_DMG + (int)(GameApp.skillLevels[1] * 1.5);
-        hp.setValue(hp.getValue()-3);
+        int dmg = Config.BASIC_DEFAULT_DMG + (int)(GameApp.skillLevels[0] * Config.DMG_MULTIPLIER);
+        hp.setValue(hp.getValue()-dmg);
+
         if(enemy.getTypeComponent().isType(EntityType.WOLF)){
 //            System.out.println("wolf is hit");
         }else if(enemy.getTypeComponent().isType(EntityType.FORESKIN_DRAGON)){
 //            System.out.println("foreskin is hit");
         }
+
         if(hp.isZero()){
             killEnemy(enemy);
             new Thread(new Runnable() {
@@ -87,15 +90,5 @@ public class BasicToEnemyCollision extends CollisionHandler {
         enemy.removeFromWorld();
     }
 
-//    private void spawnDeath(Entity entity, Point2D location) {
-//        entity.setPosition(location);
-//        entity.setOpacity(1);
-//        entity.setVisible(true);
-//
-//        entity.removeComponent(ExpireCleanComponent.class);
-//
-//        var expireClean = new ExpireCleanComponent(Duration.seconds(0.5)).animateOpacity();
-//        expireClean.pause();
-//        entity.addComponent(expireClean);
-//    }
+
 }

@@ -34,7 +34,7 @@ public class EnemyFactory implements EntityFactory {
     public Entity spawnWolf(SpawnData data){
 
         var e =  entityBuilder()
-                .type(WOLF)
+//                .type(WOLF)
                 .type(ENEMY)
 //                .at(getRandomSpawnPoint())
                 .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))

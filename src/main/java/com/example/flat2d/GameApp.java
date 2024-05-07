@@ -10,6 +10,7 @@ import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
+import com.almasb.fxgl.entity.level.tiled.Layer;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.ui.ProgressBar;
@@ -31,6 +32,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -137,9 +140,11 @@ public class GameApp extends GameApplication {
 
                 int skillCd = geti("skill_cd");
                 if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
+                    Sound ms = FXGL.getAssetLoader().loadSound("skill_sound.mp3");
+                    getAudioPlayer().playSound(ms);
                     getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
                     set("skill_cd",0);
-                    Image img = image("hmmm.jpg");
+                    Image img = image("UltiAsset.jpg.png");
                     ImageView bgimg = new ImageView(img);
 //                    bgimg.setVisible(false);
 
@@ -170,6 +175,7 @@ public class GameApp extends GameApplication {
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
+
             }
         }, MouseButton.SECONDARY);
 
@@ -180,11 +186,28 @@ public class GameApp extends GameApplication {
 
 //    public static Map <String, Integer> skills;
     public static SoundObserver observer = new SoundObserver();
-    public static int[] skillLevels = new int[5];
+    // 0 - basic 1 - oratrice 2 - coolNor 3 - Stack 4 - queue 5- tree    6 - hp 7 - damage 8 - heal
+    public static int[] skillLevels = new int[9];
     @Override
     protected void initGame() {
+
+//      debug ============================================================================
+
+//        UIFacade uiFacade = new UIFacade();
+//        VBox lvlup = uiFacade.createLevelBox();
+//
+//
+//
+//        HBox sk1 = uiFacade.createSkillBox("skil.png");
+//        HBox sk2 = uiFacade.createSkillBox("skil.png");
+//        HBox sk3 = uiFacade.createSkillBox("skil.png");
+//        lvlup.getChildren().addAll(sk1,sk2,sk3);
+//        FXGL.addUINode(lvlup);
+////        FXGL.getGameController().pauseEngine();
+//      debug =========================================================================
+
         int count = 0;
-        skillLevels[1] = 2;
+//        skillLevels[1] = 2;
         for(int i: skillLevels){
             count++;
             System.out.println("Elem: "+count+": "+i);
@@ -230,7 +253,7 @@ public class GameApp extends GameApplication {
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
         OratriceToEnemy oToE = new OratriceToEnemy();
         physics.addCollisionHandler(wolfToPlayer);
-//        physics.addCollisionHandler(oToE);
+        physics.addCollisionHandler(oToE);
 
 
 
@@ -240,6 +263,9 @@ public class GameApp extends GameApplication {
 
         physics.addCollisionHandler(plToEn);
         physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
+        physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,ENEMY));
+        physics.addCollisionHandler(oToE.copyFor(ORATRICE,ENEMY));
+
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
@@ -250,32 +276,25 @@ public class GameApp extends GameApplication {
     public static ArrayList<Entity> enemies = new ArrayList<>();
     Entity oratrice;
 
-    boolean or_ready = false;
-    private void spawnOratrice(){
-        oratrice = spawn("Oratrice");
-        run(() -> {
-            System.out.println("oratrcice spawn");
-            if(or_ready) {
-                oratrice.setPosition(player.getPosition());
-                oratrice.rotateBy(1);
-                System.out.println("sulod");
-            }
-            run(()->{
-                or_ready = false;
-                oratrice.removeFromWorld();
-            },Duration.seconds(3));
-        }, Duration.seconds(0));
-    }
+
     private void initSpawnSkills() {
         run(() -> {
             player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+            if(skillLevels[0]>=2){
+                run(()->{
+
+                    player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+                },Duration.seconds(1));
+
+            }
         }, BASICATTACK_SPAWN_INTERVAL);
 
         run(() -> {
-            oratrice = spawn("Oratrice");
-
-            oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
-            System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
+            if(skillLevels[1] >= 1){
+                oratrice = spawn("Oratrice");
+                oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
+                System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
+            }
 //                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
 
         }, ORATRICE_SPAWN_INTERVAL);
@@ -294,58 +313,72 @@ public class GameApp extends GameApplication {
 //            return null;
 //        }, COOL_SPAWN_INTERVAL);
         run(() -> {
-            var cool = spawn("Cool");
-            Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
+            if(skillLevels[2] >= 1){
+                var cool = spawn("Cool");
+                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
 
-             closest.ifPresent(close->{
-                var e = close.getPosition();
-                cool.setPosition(e);
-                 System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
-                 System.out.println(cool.getPosition()+"the position of cool");
+                 closest.ifPresent(close->{
+                    var e = close.getPosition();
+                    cool.setPosition(e);
+                     System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
+                     System.out.println(cool.getPosition()+"the position of cool");
 
-            });
+                });
+
+            }
 
         }, COOL_SPAWN_INTERVAL);
 //        debug purposes ==============================
         run(() -> {
-            var normal = spawn("Normal");
-            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
-            if (!ents.isEmpty()) {
-                var e = ents.get(FXGL.random(0, ents.size() - 1));
-                normal.setPosition(e.getPosition());
-//                System.out.println("normal: " + normal.getPosition());
+            if(skillLevels[2] >= 1){
+                var normal = spawn("Normal");
+                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
+
+                closest.ifPresent(close->{
+                    var e = close.getPosition();
+                    normal.setPosition(e);
+                    System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
+                    System.out.println(normal.getPosition()+"the position of cool");
+
+                });
             }
         }, NORMAL_SPAWN_INTERVAL);
         run(()->{
+            if(skillLevels[3] >= 1) {
+                var stack = spawn("Stack");
+                List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+                if (!ents.isEmpty()) {
+                    var e = ents.get(FXGL.random(0, ents.size() - 1));
+                    stack.setPosition(e.getPosition());
+
+                }
+            }
+        },STACK_SPAWN_INTERVAL);
+        run(()->{
+
             var e = spawn("BinaryTree");
             e.setPosition(player.getCenter());
 //            System.out.println(e.getPosition());
 
         }, Duration.seconds(2));
         run(()->{
-            var stack = spawn("Stack");
-            List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
-            if (!ents.isEmpty()) {
-                var e = ents.get(FXGL.random(0, ents.size() - 1));
-                stack.setPosition(e.getPosition());
-            }
-        },STACK_SPAWN_INTERVAL);
-        run(()->{
-            var q =spawn("Queue");
-            Random randy = new Random(4);
-            switch (randy.nextInt()){
-                case 0:
-                    q.setPosition(player.getPosition().add(-720,-720));
-                    break;
-                case 1:
-                    q.setPosition(player.getPosition().add(720,720));
-                    break;
-                case 2:
-                    q.setPosition(player.getPosition().add(-720,720));
-                    break;
-                case 3:
-                    q.setPosition(player.getPosition().add(720,-720));
-                    break;
+            if(skillLevels[4] >= 1){
+                var q =spawn("Queue");
+                Random randy = new Random(4);
+                switch (randy.nextInt()){
+                    case 0:
+                        q.setPosition(player.getPosition().add(-720,-720));
+                        break;
+                    case 1:
+                        q.setPosition(player.getPosition().add(720,720));
+                        break;
+                    case 2:
+                        q.setPosition(player.getPosition().add(-720,720));
+                        break;
+                    case 3:
+                        q.setPosition(player.getPosition().add(720,-720));
+                        break;
+                }
 
             }
         },QUEUE_SPAWN_INTERVAL);
@@ -449,10 +482,11 @@ public class GameApp extends GameApplication {
     @Override
     protected void onPreInit() {
         //TODO ADD MUSIC
-        FXGL.getSettings().setGlobalMusicVolume(0.25);
-        Music m = loopBGM("bgm-music.mp3");
+        FXGL.getSettings().setGlobalMusicVolume(0.5);
+        getSettings().setGlobalSoundVolume(0.25);
+        Music m = loopBGM("opening.mp3");
         // so that music continues even if game is paused
-        m.setDisposed$fxgl_core(true);
+//        m.setDisposed$fxgl_core(true);
 
     }
     private void addEntityBuilders() {

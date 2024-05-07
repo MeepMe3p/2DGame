@@ -26,9 +26,7 @@ public class OratriceToEnemy extends CollisionHandler {
         HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
         // todo: for now kay wala pay defense ang kontra so all take the same damage implement dis later ohkeh
         hp.setValue(hp.getValue() - damage);
-        if(enemy.getTypeComponent().isType(EntityType.WOLF)){
-            System.out.println("wolf hit");
-        }
+
         if(hp.isZero()){
             killEnemy(enemy);
             new Thread(new Runnable() {
