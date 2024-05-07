@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.DesignPatterns.User;
 import com.example.flat2d.Misc.Database;
+import final_project_socket.handler.AuthenticationHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -19,12 +20,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx_plus_willpower.utilities.DatabaseUtilities;
-import javafx_plus_willpower.utilities.SceneUtilities;
-
-
+import static final_project_socket.handler.AuthenticationHandler.loggedIn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static javafx_plus_willpower.utilities.DatabaseUtilities.loggedIn;
 
 public class GameMainMenu extends FXGLMenu {
     Text tName;
@@ -57,7 +54,7 @@ public class GameMainMenu extends FXGLMenu {
             try {
                 // Load the existing FXML file
                 Stage primaryStage = new Stage();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/javafx_plus_willpower/Sign_In.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/final_project_socket/fxml/Sign_In.fxml"));
                 Parent root = loader.load();
                 // Create the main scene
                 Scene mainScene = new Scene(root);
@@ -87,7 +84,7 @@ public class GameMainMenu extends FXGLMenu {
 //            System.out.println("Login account");
             User user = User.getInstance();
             System.out.println("Tf: "+tfUsername.getInput()+"  "+ tfPassword.getInput());
-            if(DatabaseUtilities.userCheckerMethod(tfUsername.getInput(),tfPassword.getInput())){
+            if(AuthenticationHandler.userCheckerMethod(tfUsername.getInput(),tfPassword.getInput())){
 //                user.setUsername(tfUsername.getInput());
 //                user.setUserId(1);
                 System.out.println("fuck");

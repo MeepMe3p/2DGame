@@ -25,6 +25,7 @@ import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
+import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -464,7 +465,7 @@ public class GameApp extends GameApplication {
 
 
     public static void main(String[] args) {
-        Database.initDb();
+        CreateTable.createTable();
         launch(args);
     }
 

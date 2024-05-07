@@ -1,9 +1,0 @@
-/* Style for AnchorPane */
-.anchor-pane {
-    -fx-background-color: transparent;
-}
-
-/* Style for all parent AnchorPane scenes */
-.parent > .anchor-pane {
-    -fx-background-color: transparent;
-}
