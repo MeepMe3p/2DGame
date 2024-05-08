@@ -419,7 +419,7 @@ public class GameApp extends GameApplication {
             enemies.add(spawn("Wolf"));
         },WOLF_SPAWN_INTERVAL);
         run(()->{
-//            spawn("ForeskinDragon");
+            spawn("ForeskinDragon");
         },FORESKIN_DRAGON_SPAWN_INTERVAL);
 
     }

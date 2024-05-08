@@ -12,6 +12,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -44,10 +46,15 @@ public class PlayerToExpCollision extends CollisionHandler {
             VBox lvlup = uiFacade.createLevelBox();
 
 
-
-            HBox sk1 = uiFacade.createSkillBox("skil.png");
-            HBox sk2 = uiFacade.createSkillBox("skil.png");
-            HBox sk3 = uiFacade.createSkillBox("skil.png");
+            Random randy = new Random();
+            HashSet<Integer> set = new HashSet<Integer>();
+            while(set.size() != 3){
+                set.add( randy.nextInt(5));
+            }
+            Iterator<Integer> it = set.iterator();
+            HBox sk1 = uiFacade.createSkillBox("skil.png", it.next());
+            HBox sk2 = uiFacade.createSkillBox("skil.png", it.next());
+            HBox sk3 = uiFacade.createSkillBox("skil.png", it.next());
             lvlup.getChildren().addAll(sk1,sk2,sk3);
             addUINode(lvlup);
 

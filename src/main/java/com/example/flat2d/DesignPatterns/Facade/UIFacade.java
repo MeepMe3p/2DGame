@@ -95,7 +95,6 @@ public class UIFacade {
         player_exp.currentValueProperty().bind(getip("exp"));
         return player_exp;
     }
-        Random randy = new Random();
     public VBox createLevelBox(){
         VBox container = new VBox();
         BackgroundFill bgColor = new BackgroundFill(Color.YELLOW, new CornerRadii(1), new Insets(1));
@@ -115,7 +114,7 @@ public class UIFacade {
         });
         return container;
     }
-    public HBox createSkillBox(String url) {
+    public HBox createSkillBox(String url, int lvl) {
         HBox skill = new HBox();
         Image img = image(url);
         BackgroundFill bgColor = new BackgroundFill(Color.BEIGE, new CornerRadii(1), new Insets(1));
@@ -133,8 +132,6 @@ public class UIFacade {
 
 //        skill.setPrefWidth(100);
 //        skill.setPrefHeight(100);
-
-        int lvl = randy.nextInt(5);
         int check = skillChecker(lvl);
 
         switch (check){
