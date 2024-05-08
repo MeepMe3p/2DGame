@@ -46,6 +46,8 @@ public class BasicToEnemyCollision extends CollisionHandler {
 //            System.out.println("wolf is hit");
         }else if(enemy.getTypeComponent().isType(EntityType.FORESKIN_DRAGON)){
 //            System.out.println("foreskin is hit");
+        }else if(enemy.getTypeComponent().isType(EntityType.HELLHOUND)){
+            // TODO: HP-- ? OF HELL HOUND
         }
 
         if(hp.isZero()){

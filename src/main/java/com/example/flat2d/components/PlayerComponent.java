@@ -67,8 +67,8 @@ public class PlayerComponent extends Component {
  */
     @Override
     public void onUpdate(double tpf) {
-        texture.setFitHeight(90);
-        texture.setFitWidth(50);
+//        texture.setFitHeight(90);
+//        texture.setFitWidth(50);
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {

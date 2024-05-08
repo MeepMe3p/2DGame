@@ -40,12 +40,13 @@ public final class Config {
     public static final int WOLF_MOVEMENT_SPEED = 50;
     public static final int FORESKIN_DRAGON_SPEED = 50;
 
+    public static final int HELL_HOUND_COMPONENT = 100;
 
     // ENTITY HPS
     public static final int PLAYER_HP = 20;
     public static final int WOLF_HP = 2;
     public static final int SKIN_DRAGON = 5;
-
+    public static final int HELL_HOUND_HP = 10;
 
     // SKILL MULTIPLIERS
     public static final double DMG_MULTIPLIER = 1.5;

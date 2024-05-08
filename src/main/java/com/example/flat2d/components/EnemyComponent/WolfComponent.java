@@ -15,8 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getWorldProperties;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class WolfComponent extends Component {
     private Point2D velocity = Point2D.ZERO;
@@ -57,6 +56,7 @@ public class WolfComponent extends Component {
                 .subtract(wolf.getCenter())
                 .normalize()
                 .multiply(speed);
+//        System.out.println(playerDirection);
         if(playerDirection.getX() > 0){
             wolf.setScaleX(1);
         }else{
@@ -83,6 +83,4 @@ public class WolfComponent extends Component {
         entity.getComponent(HealthIntComponent.class).setValue((int) (hp - taken));
         return hp;
     }
-
-
 }

@@ -252,6 +252,7 @@ public class GameApp extends GameApplication {
 
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
         OratriceToEnemy oToE = new OratriceToEnemy();
+
         physics.addCollisionHandler(wolfToPlayer);
         physics.addCollisionHandler(oToE);
 
@@ -262,6 +263,8 @@ public class GameApp extends GameApplication {
         BasicToEnemyCollision plToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
 
         physics.addCollisionHandler(plToEn);
+
+        physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,HELLHOUND));
         physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
         physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,ENEMY));
         physics.addCollisionHandler(oToE.copyFor(ORATRICE,ENEMY));
@@ -281,9 +284,9 @@ public class GameApp extends GameApplication {
         run(() -> {
             player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
             if(skillLevels[0]>=2){
-                run(()->{
-
+                runOnce(()->{
                     player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+                    return null;
                 },Duration.seconds(1));
 
             }
@@ -421,6 +424,9 @@ public class GameApp extends GameApplication {
         run(()->{
             spawn("ForeskinDragon");
         },FORESKIN_DRAGON_SPAWN_INTERVAL);
+        run(()->{
+            spawn("HellHound");
+        }, HELL_HOUND_SPAWN_INTERVAL);
 
     }
 //        -------- SETS THE LEVEL ------------
@@ -499,7 +505,7 @@ public class GameApp extends GameApplication {
 
 
     public static void main(String[] args) {
-        CreateTable.createTable();
+//        CreateTable.createTable();
         launch(args);
     }
 

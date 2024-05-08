@@ -14,6 +14,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemyComponent.ForeskinDragonComponent;
+import com.example.flat2d.components.EnemyComponent.HellBeastComponent;
 import com.example.flat2d.components.EnemyComponent.HellHoundComponent;
 import com.example.flat2d.components.EnemyComponent.WolfComponent;
 import javafx.geometry.Point2D;
@@ -77,9 +78,11 @@ public class EnemyFactory implements EntityFactory {
     public Entity spawnHellHound(SpawnData data){
         return entityBuilder()
                 .type(HELLHOUND)
-                .viewWithBBox(new Rectangle(32,32,Color.ORANGE))
+                .viewWithBBox(new Rectangle(32,32,Color.BLACK))
                 .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(32,32)))
-                .with(new HellHoundComponent())
+                .with(new HellHoundComponent(FXGL.<GameApp>getAppCast().getPlayer(),HELL_HOUND_COMPONENT))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(HELL_HOUND_HP))
                 .build();
     }
     @Spawns("HellBeast")
@@ -88,7 +91,7 @@ public class EnemyFactory implements EntityFactory {
                 .type(HELLBEAST)
                 .viewWithBBox(new Rectangle(32,32, Color.RED))
                 .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(32,32)))
-                .with(new HellHoundComponent())
+                .with(new HellBeastComponent())
                 .build();
     }
     @Spawns("ForeskinDragon")
