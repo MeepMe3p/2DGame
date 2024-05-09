@@ -209,6 +209,20 @@ public class UIFacade {
                 GameApp.skillLevels[check] +=1 ;
             }
         });
+        skill.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                skill.setPrefWidth(120);
+                skill.setPrefHeight(120);
+                skill.setRotate(2);
+            }
+        });
+        skill.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                skill.setRotate(0);
+            }
+        });
 
         return skill;
     }

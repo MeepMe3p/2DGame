@@ -27,6 +27,8 @@ public class PlayerToEnemyCollision extends CollisionHandler {
             inc("player_hp", -1);
 //            System.out.println("is colliding");
         }
+//        getGameWorld().getEntitiesInRange()
+//        player.getPosition().distance()
     }
 
 

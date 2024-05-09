@@ -46,18 +46,21 @@ import static com.example.flat2d.Misc.EntityType.*;
  */
 public class GameFactory implements EntityFactory {
     Entity player = GameApp.getPlayer();
+
     private static int SPAWN_DISTANCE = 50;
     @Spawns("Player")
     public Entity spawnPlayer(SpawnData data){
-//        var keyEntity = getGameWorld().create("keyCode", new SpawnData(data.getX(), data.getY()-50).put("key","E"));
 
         var e = entityBuilder()
                 .type(PLAYER)
-//                .viewWithBBox(new Rectangle(32,32))
-                .bbox(new HitBox("hitbox",new Point2D(0,0), BoundingShape.box(32,32)))
+//                .viewWithBBox(new Rectangle(32,32))\
+                .bbox(new HitBox("hitbox",new Point2D(10,0),BoundingShape.circle(15)))
+                .bbox(new HitBox("hitbox",new Point2D(15,31), BoundingShape.box(20,57)))
                 .with(new PlayerComponent())
                 //        -------- 1152 X 1152 = SIZE OF THE MAP  ------------
-                .at(new Point2D(2304/2.0,2304/2.0))
+//                .at(new Point2D(2304/2.0,2304/2.0))
+                .at(new Point2D(360,360))
+
 //                .with("smallExpEntity",smallExpEntity)
                 .collidable()
                 .build();
@@ -248,10 +251,14 @@ public class GameFactory implements EntityFactory {
         Point2D dir = data.get("direction");
         entity.getComponent(ProjectileComponent.class).setDirection(dir);
     }
-//    public static void adjustPos()
-//    private Point2D getRandomSpawnPoint() {
-//        return expLocations[FXGLMath.random(0,3)];
-//    }
+    @Spawns("Glitch")
+    public Entity spawnGlitch(SpawnData data){
+        var e = entityBuilder()
+                .with(new GlitchComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(60)))
+                .build();
+        return e;
+    }
 }
 
 

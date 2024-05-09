@@ -1,3 +1,6 @@
+I treat this file as something like a journal basin diay magamit self puhon atleast magets gamay hahahaha goodluck pagbasa if imo
+ ni balikon future self hahahaha- signed by elijah idk
+
 Point2D methods - for determining the direction, locations chuchu
 --- https://docs.oracle.com/javase/8/javafx/api/javafx/geometry/Point2D.html ----
 
@@ -7,12 +10,20 @@ Inputs - specifically mouse inputs and more
 Timer Stuff - the run methods in der
 --- https://github.com/AlmasB/FXGL/wiki/Timer-Actions-%28FXGL-11%29 ---
 
+Spawning locations - based ani i tried to visualize sa geogebra and i noticed nga ang (assuming 360,360 position)
+ left border of viewport is always  x - 360 and y - (0-720) size of viewport, so i thought nga mag random ko sa y from (0-720) and x-360 - (random idk 0-depends)   - x + y
+ top border = x = 0-720 y = 720+random      + x + y
+ right = x = 720 + random y = 0-720         +x  + y
+ bottom = x = random 0-720 y = 0-720 - random       +x - y
+---- https://www.construct.net/en/forum/construct-2/how-do-i-18/effective-spawn-enemies-off-119782  scroll down the name is asmodean ---------
+
 Custom Menu - the custom menu thingy
 --- https://github.com/AlmasB/FXGL/wiki/Customizing-Menus-%28FXGL-11%29 ---
 --- https://www.youtube.com/watch?v=iWhtz5EUJFk  SKL tungod ani nalingaw kog buhat custom menu sa database activity nato hahahah manual code lang malakas----
 
 ExpireCleanComponent - duration on when the entity disappears to prevent spawn and remove again and again
 -----  https://www.youtube.com/watch?v=6zNM2o6didU  9:35 ------
+
 
 Effects - particle effects
 ---- https://www.youtube.com/watch?v=yhr1b4061os -----

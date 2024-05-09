@@ -30,6 +30,7 @@ import static com.example.flat2d.Misc.EntityType.*;
     FINDS A LOCATION FROM IN THE GAME AND SPAWNS IT THERE
  */
 public class EnemyFactory implements EntityFactory {
+//    Point2D player = FXGL.<GameApp>getAppCast().getPlayer().getPosition();
     private static final int SPAWN_DISTANCE = 50;
     @Spawns("Wolf")
     public Entity spawnWolf(SpawnData data){
@@ -38,6 +39,7 @@ public class EnemyFactory implements EntityFactory {
 //                .type(WOLF)
                 .type(ENEMY)
 //                .at(getRandomSpawnPoint())
+//                .at(player.add(new Point2D(FXGL.random(-720,720),FXGL.random(-720,720))))
                 .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
 
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(56,32)))
@@ -50,6 +52,8 @@ public class EnemyFactory implements EntityFactory {
 //                .with(new ParticleComponent(emitter))
                 .build();
         e.setReusable(true);
+
+//        System.out.println("the position of the player is : " +FXGL.<GameApp>getAppCast().getPlayer().getPosition());
         e.setOnNotActive(new Runnable() {
             @Override
             public void run() {

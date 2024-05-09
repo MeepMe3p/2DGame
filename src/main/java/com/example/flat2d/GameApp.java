@@ -4,10 +4,12 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.entity.level.tiled.Layer;
@@ -24,19 +26,25 @@ import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.OratriceToEnemy;
 import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
+import com.example.flat2d.components.EnemyComponent.WolfComponent;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.*;
 
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
@@ -185,6 +193,7 @@ public class GameApp extends GameApplication {
 //        -------- INITIATING THE GAME AND THE GAME LOOP ------------
 
 //    public static Map <String, Integer> skills;
+    // global observer design pattern for all sounds
     public static SoundObserver observer = new SoundObserver();
     // 0 - basic 1 - oratrice 2 - coolNor 3 - Stack 4 - queue 5- tree    6 - hp 7 - damage 8 - heal
     public static int[] skillLevels = new int[9];
@@ -220,21 +229,35 @@ public class GameApp extends GameApplication {
 
         player = spawn("Player");
 //            player.setOnNotActive();
-        player.setScaleX(1);
 //        -------- FOR THE CAMERA TO FOCUS AT THE PLAYER  ------------
         getGameScene().getViewport().setLazy(true);
         getGameScene().getViewport().setBounds(0, 0, 72 * 32, 72 * 32);
         getGameScene().getViewport().bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
 //        -------- INCREMENTS THE TIME ------------
         run(() -> inc("time", +1), Duration.seconds(1));
+
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
             initSpawnEnemies();
-            initSpawnSkills();
+//            initSpawnSkills();
 
         });
         th.start();
+        runOnce(()->{
+//            File file = new File("src/main/resources/textures/glitch.mp4");
+//            Media media = new Media(file.toURI().toString());
+//            MediaPlayer mp = new MediaPlayer(media);
+//            MediaView mv = new MediaView(mp);
+//            mp.setCycleCount(MediaPlayer.INDEFINITE);
+//            mp.play();
+//            mv.setFitHeight(720);
+//            mv.setFitWidth(720);
+//            GameView gv = new GameView(mv,1);
+//            getGameScene().addGameView(gv);
+
+            return null;
+        },Duration.seconds(10));
 
 
     }
@@ -263,8 +286,6 @@ public class GameApp extends GameApplication {
         BasicToEnemyCollision plToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
 
         physics.addCollisionHandler(plToEn);
-
-        physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,HELLHOUND));
         physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
         physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,ENEMY));
         physics.addCollisionHandler(oToE.copyFor(ORATRICE,ENEMY));
@@ -281,30 +302,30 @@ public class GameApp extends GameApplication {
 
 
     private void initSpawnSkills() {
-        run(() -> {
-            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
-            if(skillLevels[0]>=2){
-                runOnce(()->{
-                    player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
-                    return null;
-                },Duration.seconds(1));
-
-            }
-        }, BASICATTACK_SPAWN_INTERVAL);
-
-        run(() -> {
-            if(skillLevels[1] >= 1){
-                oratrice = spawn("Oratrice");
-                oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
-                System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
-            }
-//                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
-
-        }, ORATRICE_SPAWN_INTERVAL);
-        // debug purpopses uncomment dis or comment
-//        runOnce(() -> {
-//            var cool = spawn("Cool");
-//            Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
+//        run(() -> {
+//            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+//            if(skillLevels[0]>=2){
+//                run(()->{
+//
+//                    player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+//                },Duration.seconds(1));
+//
+//            }
+//        }, BASICATTACK_SPAWN_INTERVAL);
+//
+//        run(() -> {
+//            if(skillLevels[1] >= 1){
+//                oratrice = spawn("Oratrice");
+//                oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
+//                System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
+//            }
+////                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
+//
+//        }, ORATRICE_SPAWN_INTERVAL);
+//        run(() -> {
+//            if(skillLevels[2] >= 1){
+//                var normal = spawn("Normal");
+//                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
 //
 //            closest.ifPresent(close->{
 //                var e = close.getPosition();
@@ -312,9 +333,49 @@ public class GameApp extends GameApplication {
 //                System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
 //                System.out.println(cool.getPosition()+"the position of cool");
 //
-//            });
-//            return null;
-//        }, COOL_SPAWN_INTERVAL);
+//                });
+//            }
+//        }, NORMAL_SPAWN_INTERVAL);
+//        run(()->{
+//            if(skillLevels[3] >= 1) {
+//                var stack = spawn("Stack");
+//                List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+//                if (!ents.isEmpty()) {
+//                    var e = ents.get(FXGL.random(0, ents.size() - 1));
+//                    stack.setPosition(e.getPosition());
+//
+//                }
+//            }
+//        },STACK_SPAWN_INTERVAL);
+//        run(()->{
+//
+//            var e = spawn("BinaryTree");
+//            e.setPosition(player.getCenter());
+////            System.out.println(e.getPosition());
+//
+//        }, Duration.seconds(2));
+//        run(()->{
+//            if(skillLevels[4] >= 1){
+//                var q =spawn("Queue");
+//                Random randy = new Random(4);
+//                switch (randy.nextInt()){
+//                    case 0:
+//                        q.setPosition(player.getPosition().add(-720,-720));
+//                        break;
+//                    case 1:
+//                        q.setPosition(player.getPosition().add(720,720));
+//                        break;
+//                    case 2:
+//                        q.setPosition(player.getPosition().add(-720,720));
+//                        break;
+//                    case 3:
+//                        q.setPosition(player.getPosition().add(720,-720));
+//                        break;
+//                }
+//
+//            }
+//        },QUEUE_SPAWN_INTERVAL);
+        // debug purpopses uncomment dis or comment
         run(() -> {
             if(skillLevels[2] >= 1){
                 var cool = spawn("Cool");
@@ -331,60 +392,19 @@ public class GameApp extends GameApplication {
             }
 
         }, COOL_SPAWN_INTERVAL);
+//        run(() -> {
+//            if(skillLevels[1] >= 0){
+//                oratrice = spawn("Oratrice");
+//                oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
+//                System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
+//            }
+////                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
+//
+//
+//        }, Duration.seconds(4));
 //        debug purposes ==============================
-        run(() -> {
-            if(skillLevels[2] >= 1){
-                var normal = spawn("Normal");
-                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
 
-                closest.ifPresent(close->{
-                    var e = close.getPosition();
-                    normal.setPosition(e);
-                    System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
-                    System.out.println(normal.getPosition()+"the position of cool");
 
-                });
-            }
-        }, NORMAL_SPAWN_INTERVAL);
-        run(()->{
-            if(skillLevels[3] >= 1) {
-                var stack = spawn("Stack");
-                List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
-                if (!ents.isEmpty()) {
-                    var e = ents.get(FXGL.random(0, ents.size() - 1));
-                    stack.setPosition(e.getPosition());
-
-                }
-            }
-        },STACK_SPAWN_INTERVAL);
-        run(()->{
-
-            var e = spawn("BinaryTree");
-            e.setPosition(player.getCenter());
-//            System.out.println(e.getPosition());
-
-        }, Duration.seconds(2));
-        run(()->{
-            if(skillLevels[4] >= 1){
-                var q =spawn("Queue");
-                Random randy = new Random(4);
-                switch (randy.nextInt()){
-                    case 0:
-                        q.setPosition(player.getPosition().add(-720,-720));
-                        break;
-                    case 1:
-                        q.setPosition(player.getPosition().add(720,720));
-                        break;
-                    case 2:
-                        q.setPosition(player.getPosition().add(-720,720));
-                        break;
-                    case 3:
-                        q.setPosition(player.getPosition().add(720,-720));
-                        break;
-                }
-
-            }
-        },QUEUE_SPAWN_INTERVAL);
     }
 
 
@@ -410,20 +430,18 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-//        runOnce(()->{
-////            enemies.add(spawn("Wolf"));
-//            var e = spawn("Wolf");
-//            e.setPosition(player.getPosition());
-//
-//            System.out.println(e.getPosition()+"wolf spawn");
+        run(()->{
+//            enemies.add(spawn("Wolf"));
+            var e = spawn("Wolf");
+//            System.out.println("SPAWNNNNNNNNN");
 //            return null;
-//        },Duration.seconds(0));
-        run(()->{
-            enemies.add(spawn("Wolf"));
-        },WOLF_SPAWN_INTERVAL);
-        run(()->{
-            spawn("ForeskinDragon");
-        },FORESKIN_DRAGON_SPAWN_INTERVAL);
+        },Duration.seconds(2));
+//        run(()->{
+//            enemies.add(spawn("Wolf"));
+//        },WOLF_SPAWN_INTERVAL);
+//        run(()->{
+//            spawn("ForeskinDragon");
+//        },FORESKIN_DRAGON_SPAWN_INTERVAL);
         run(()->{
             spawn("HellHound");
         }, HELL_HOUND_SPAWN_INTERVAL);

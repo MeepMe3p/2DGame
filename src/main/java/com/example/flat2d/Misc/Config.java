@@ -48,8 +48,10 @@ public final class Config {
     public static final int SKIN_DRAGON = 5;
     public static final int HELL_HOUND_HP = 10;
 
-    // SKILL MULTIPLIERS
+    // MULTIPLIERS
+    public static final double SPAWN_DISTANCE = 100;
     public static final double DMG_MULTIPLIER = 1.5;
+    public static final double EXP_MULTIPLIER = 1.5;
 
 
 

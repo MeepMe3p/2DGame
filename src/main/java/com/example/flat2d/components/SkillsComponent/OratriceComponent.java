@@ -41,7 +41,8 @@ public class OratriceComponent extends Component {
         texture.setY(-8);
 
         entity.getViewComponent().addChild(texture);
-        entity.setRotationOrigin(new Point2D(-25,45));
+//        entity.setRotationOrigin(new Point2D(-25,45));
+        entity.setRotationOrigin(new Point2D(-20,40));
 
     }
 
@@ -49,7 +50,8 @@ public class OratriceComponent extends Component {
     public void onUpdate(double tpf) {
         texture.setFitWidth(350);
         entity.rotateBy(1);
-        entity.setPosition(player.getPosition().add(50,-30));
+        entity.setPosition(player.getPosition().add(50,-10));
+//        entity.setPosition(player.getPosition().add(50,-30));
 
 
 
