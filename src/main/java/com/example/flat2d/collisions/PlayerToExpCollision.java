@@ -1,27 +1,26 @@
 package com.example.flat2d.collisions;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
-import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.EntityType;
-import com.example.flat2d.components.SkillChecker;
-import javafx.geometry.Insets;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
-import java.awt.*;
+import java.sql.SQLOutput;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.GameApp.exp_bar;
+import static com.example.flat2d.GameApp.facade;
+import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.MEDIUM_EXP;
 import static com.example.flat2d.Misc.EntityType.SMALL_EXP;
 
 public class PlayerToExpCollision extends CollisionHandler {
-    SkillChecker skillChecker = new SkillChecker();
+//    SkillChecker skillChecker = new SkillChecker();
     public PlayerToExpCollision() {
         super(EntityType.PLAYER, SMALL_EXP);
     }
@@ -38,7 +37,15 @@ public class PlayerToExpCollision extends CollisionHandler {
             inc("exp",+3);
         }
         int player_exp = geti("exp");
-        if(player_exp >= 5){
+        int player_level =  geti("player_level");
+        int needed = (int) ((Math.pow(player_level,2) + player_level) + EXP_MULTIPLIER);
+        set("exp_needed",needed);
+        System.out.println(player_exp+" / " + needed);
+        if(player_exp >= needed){
+            removeUINode(exp_bar);
+            exp_bar = facade.createExpBar();
+            addUINode(exp_bar);
+            inc("player_level",1);
             set("exp",0);
 //            getGameController().pauseEngine();
 //            //todo open a vbox or something
@@ -58,7 +65,12 @@ public class PlayerToExpCollision extends CollisionHandler {
             lvlup.getChildren().addAll(sk1,sk2,sk3);
             addUINode(lvlup);
 
-            set("player_hp",Integer.MAX_VALUE);
+            set("player_hp",IMMUNITY);
+            run(()->{
+                set("player_hp", 20+ geti("hp_boost")*HP_MULTIPLIER);
+                System.out.println(geti("player_hp"));
+                return null;
+            }, Duration.seconds(3));
             System.out.println(geti("player_hp"));
         }
 

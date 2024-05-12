@@ -38,20 +38,24 @@ public final class Config {
     public static final int BASICSKILL_MOV_SPEED = 1000;
     public static final int QUEUE_MOV_SPEED = 1000;
     public static final int WOLF_MOVEMENT_SPEED = 50;
+    public static final int TURTLE_MOVEMENT_SPEED = 50;
     public static final int FORESKIN_DRAGON_SPEED = 50;
 
     public static final int HELL_HOUND_COMPONENT = 100;
 
     // ENTITY HPS
+    public static final int IMMUNITY = Integer.MAX_VALUE;
     public static final int PLAYER_HP = 20;
     public static final int WOLF_HP = 2;
     public static final int SKIN_DRAGON = 5;
     public static final int HELL_HOUND_HP = 10;
 
     // MULTIPLIERS
+
     public static final double SPAWN_DISTANCE = 100;
     public static final double DMG_MULTIPLIER = 1.5;
-    public static final double EXP_MULTIPLIER = 1.5;
+    public static final int HP_MULTIPLIER = 20;
+    public static final int EXP_MULTIPLIER = 10;
 
 
 

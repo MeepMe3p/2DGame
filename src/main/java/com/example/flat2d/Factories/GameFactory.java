@@ -1,7 +1,11 @@
 package com.example.flat2d.Factories;
 
+import com.almasb.fxgl.audio.Audio;
+import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.dsl.components.ProjectileWithAccelerationComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -17,6 +21,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PolygonShapeData;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.Texture;
+import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.SkillsComponent.*;
 import com.example.flat2d.components.PlayerComponent;
@@ -57,11 +62,11 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox("hitbox",new Point2D(10,0),BoundingShape.circle(15)))
                 .bbox(new HitBox("hitbox",new Point2D(15,31), BoundingShape.box(20,57)))
                 .with(new PlayerComponent())
+                .with(new HealthIntComponent(PLAYER_HP))
                 //        -------- 1152 X 1152 = SIZE OF THE MAP  ------------
 //                .at(new Point2D(2304/2.0,2304/2.0))
                 .at(new Point2D(360,360))
 
-//                .with("smallExpEntity",smallExpEntity)
                 .collidable()
                 .build();
 
@@ -79,7 +84,6 @@ public class GameFactory implements EntityFactory {
     public Entity spawnBasicSkill(SpawnData data){
 //        ParticleEmitter emitter = ParticleEmitters.newImplosionEmitter();
         ParticleEmitter emitter = ParticleEmitters.newFireEmitter();
-//        emitter.setSize(23,23);
         emitter.setColor(Color.ORANGE);
         emitter.setEndColor(Color.DARKRED);
         emitter.setBlendMode(BlendMode.HARD_LIGHT);
@@ -125,8 +129,9 @@ public class GameFactory implements EntityFactory {
                 .with(new OratriceComponent())
                 .with(new ProjectileComponent())
                 .build();
-//        e.setReusable(true);
-//        e.rot
+        e.setReusable(true);
+
+
 
         return e;
     }
@@ -249,6 +254,7 @@ public class GameFactory implements EntityFactory {
         expireClean.pause();
         entity.addComponent(expireClean);
         Point2D dir = data.get("direction");
+//        System.out.println(dir);
         entity.getComponent(ProjectileComponent.class).setDirection(dir);
     }
     @Spawns("Glitch")
@@ -259,6 +265,7 @@ public class GameFactory implements EntityFactory {
                 .build();
         return e;
     }
+
 }
 
 

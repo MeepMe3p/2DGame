@@ -29,13 +29,13 @@ public class OratriceToEnemy extends CollisionHandler {
 
         if(hp.isZero()){
             killEnemy(enemy);
-            new Thread(new Runnable() {
-                SoundEvent event = new SoundEvent(SoundEvent.WOLF,enemy);
-                @Override
-                public void run() {
-                    GameApp.observer.onNotify(event);
-                }
-            }).start();
+//            new Thread(new Runnable() {
+//                SoundEvent event = new SoundEvent(SoundEvent.WOLF,enemy);
+//                @Override
+//                public void run() {
+//                    GameApp.observer.onNotify(event);
+//                }
+//            }).start();
         }
     }
     private void killEnemy(Entity enemy) {

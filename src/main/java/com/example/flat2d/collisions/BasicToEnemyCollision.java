@@ -37,7 +37,7 @@ public class BasicToEnemyCollision extends CollisionHandler {
     @Override
     protected void onCollisionBegin(Entity basic, Entity enemy) {
         basic.removeFromWorld();
-        System.out.println("collided with wolf basic");
+//        System.out.println("collided with wolf basic");
         HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
         int dmg = Config.BASIC_DEFAULT_DMG + (int)(GameApp.skillLevels[0] * Config.DMG_MULTIPLIER);
         hp.setValue(hp.getValue()-dmg);
@@ -47,7 +47,9 @@ public class BasicToEnemyCollision extends CollisionHandler {
         }else if(enemy.getTypeComponent().isType(EntityType.FORESKIN_DRAGON)){
 //            System.out.println("foreskin is hit");
         }else if(enemy.getTypeComponent().isType(EntityType.HELLHOUND)){
-            // TODO: HP-- ? OF HELL HOUND
+            /* TODO: HP-- ? OF HELL HOUND === (elijah's response nope no need sila tanan type kay enemy ang mga minus
+             * kay mag depdend sa health int component
+             */
         }
 
         if(hp.isZero()){

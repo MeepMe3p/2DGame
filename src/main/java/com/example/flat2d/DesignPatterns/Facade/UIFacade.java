@@ -26,6 +26,7 @@ import static com.example.flat2d.Misc.EntityType.BASICSKILL;
 import static com.example.flat2d.Misc.EntityType.ORATRICE;
 
 public class UIFacade {
+
     public Text createTimeUI(){
         Text uiTime = new Text("");
         uiTime.setFont(Font.font(72));
@@ -88,7 +89,7 @@ public class UIFacade {
     public ProgressBar createExpBar(){
         var player_exp = new ProgressBar();
         player_exp.setFill(Color.NAVY);
-        player_exp.setMaxValue(10);
+        player_exp.setMaxValue(geti("exp_needed"));
         player_exp.setWidth(360);
         player_exp.setTranslateX(360);
         player_exp.setTranslateY(20);
@@ -174,7 +175,7 @@ public class UIFacade {
             case 5:
                 if(GameApp.skillLevels[5] != 2){
                     System.out.println("Ckeck: "+ check);
-                    GameApp.skillLevels[5] += 1;
+//                    GameApp.skillLevels[5] += 1;
                     text.setText("Tree");
 
                 }
@@ -192,7 +193,6 @@ public class UIFacade {
             case 8:
                 GameApp.skillLevels[8] += 1;
                 text.setText("Heal");
-
                 break;
 
         }
@@ -206,7 +206,16 @@ public class UIFacade {
 //                }else{
 //
 //                }
-                GameApp.skillLevels[check] +=1 ;
+                if(check == 6){
+                    inc("hp_boose",1);
+                }else if(check == 7){
+                    inc("dmg_boost",1);
+                }else if(check == 8){
+                    set("player_hp", PLAYER_HP + geti("hp_boost")*20);
+                }else {
+                    GameApp.skillLevels[check] += 1;
+
+                }
             }
         });
         skill.setOnMouseEntered(new EventHandler<MouseEvent>() {

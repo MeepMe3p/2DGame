@@ -51,7 +51,7 @@ public class WolfComponent extends Component {
     public void onAdded() {
         wolf = entity;
         Rectangle2D r2d = getGameScene().getViewport().getVisibleArea();
-        System.out.println("maxX: "+r2d.getMaxX()+"maxY: "+r2d.getMaxY()+"MinX: "+r2d.getMinX()+"minY: "+r2d.getMinY());
+//        System.out.println("maxX: "+r2d.getMaxX()+"maxY: "+r2d.getMaxY()+"MinX: "+r2d.getMinX()+"minY: "+r2d.getMinY());
 //        wolf.setPosition();
         wolf.getViewComponent().addChild(texture);
 //        for(int i=0;i<10;i++){
@@ -68,7 +68,8 @@ public class WolfComponent extends Component {
          For more information please contact me kay ganahan ko kachat addd me on fb elijah rei
          go to references */
 
-        int randy = FXGL.random(0,3);
+        int randy = FXGL.random(1,4);
+//        int randy = 4;
         double x = player.getX() + 360;
         double y = player.getY() + 360;
         double e_x,e_y;
@@ -76,34 +77,43 @@ public class WolfComponent extends Component {
             case 1:
                 e_x =  FXGL.random(0,SPAWN_DISTANCE)-(player.getX()-360);
                 wolf.setPosition(new Point2D(e_x,FXGL.random(player.getY()-360,player.getY()+360)));
+//                System.out.println("left");
 //                System.out.println(wolf.getPosition()+" this is the final postion");
                 break;
             case 2:
-                e_y =  FXGL.random(0,SPAWN_DISTANCE)+(player.getY()+360);
+//                e_y =  FXGL.random(0,SPAWN_DISTANCE)+(player.getY()+360);
+                e_y =  FXGL.random(0,SPAWN_DISTANCE)-(player.getY()-360);
                 wolf.setPosition(new Point2D(FXGL.random(player.getX()-360,player.getX()+360),e_y));
+//                System.out.println("top");
+
 //                System.out.println("Spawn at:"+wolf.getPosition());
 //                System.out.println(wolf.getPosition()+" this is the final postion");
                 break;
             case 3:
                 e_x =  FXGL.random(0,SPAWN_DISTANCE)+(player.getX()+360);
                 wolf.setPosition(new Point2D(e_x,FXGL.random(player.getY()-360,player.getY()+360)));
+//                System.out.println("right");
+
 //                System.out.println("Spawn at:"+wolf.getPosition());
 //                System.out.println(wolf.getPosition()+" this is the final postion");
                 break;
             case 4:
-                e_y =  FXGL.random(0,SPAWN_DISTANCE)-(player.getY()-360);
+//                e_y =  FXGL.random(0,SPAWN_DISTANCE)-(player.getY()-360);
+                e_y =  FXGL.random(0,SPAWN_DISTANCE)+(player.getY()+360);
+
                 wolf.setPosition(new Point2D(FXGL.random(player.getX()-360,player.getX()+360),e_y));
+//                System.out.println("bot");
 //                System.out.println("Spawn at:"+wolf.getPosition());
 //                System.out.println(wolf.getPosition()+" this is the final postion");
                 break;
 
 
         }
-        System.out.println("Spawn at:"+wolf.getPosition());
+//        System.out.println("Spawn at:"+wolf.getPosition());
 
 //        wolf.setPosition(new Point2D(player.getX()-360,player.getY()+360));
         run(()->{
-            System.out.println(entity.getPosition());
+//            System.out.println(entity.getPosition());
             return null;
         },Duration.seconds(1));
         adjustVelocity(0.016);

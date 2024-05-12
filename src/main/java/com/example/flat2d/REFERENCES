@@ -17,6 +17,13 @@ Spawning locations - based ani i tried to visualize sa geogebra and i noticed ng
  bottom = x = random 0-720 y = 0-720 - random       +x - y
 ---- https://www.construct.net/en/forum/construct-2/how-do-i-18/effective-spawn-enemies-off-119782  scroll down the name is asmodean ---------
 
+EXP Multiplier = i cant think of anything so i ended up using dis nalang gamit ano bga firnula
+        for(int i=0;i<10;i++){
+            int a = 1;
+            int res = ((a*(i*i)) + i) + 10 ;
+            System.out.println("Level "+ i + ": "+ res);
+        }
+
 Custom Menu - the custom menu thingy
 --- https://github.com/AlmasB/FXGL/wiki/Customizing-Menus-%28FXGL-11%29 ---
 --- https://www.youtube.com/watch?v=iWhtz5EUJFk  SKL tungod ani nalingaw kog buhat custom menu sa database activity nato hahahah manual code lang malakas----
@@ -61,3 +68,4 @@ ug whut how does this even work? yet kay we managed to make it work and create t
 ASSETS
 ----- SOUND EFFECTS -------
 https://pixabay.com/sound-effects/search/death/
+https://sounds.pond5.com/fountain-constant-high-pressure-running-sound-effect-116223950_nw_prev.m4a

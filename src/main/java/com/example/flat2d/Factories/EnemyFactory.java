@@ -13,10 +13,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.example.flat2d.GameApp;
-import com.example.flat2d.components.EnemyComponent.ForeskinDragonComponent;
-import com.example.flat2d.components.EnemyComponent.HellBeastComponent;
-import com.example.flat2d.components.EnemyComponent.HellHoundComponent;
-import com.example.flat2d.components.EnemyComponent.WolfComponent;
+import com.example.flat2d.components.EnemyComponent.*;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -124,6 +121,15 @@ public class EnemyFactory implements EntityFactory {
         });
         return e;
 
+    }
+    @Spawns("Turtle")
+    public Entity spawnTurtle(SpawnData data){
+        var e = entityBuilder()
+                .bbox(new HitBox(BoundingShape.box(64,50)))
+                .with(new TurtleComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
+                .build();
+        e.setReusable(true);
+        return e;
     }
     private void spawnDeath(Entity entity, Point2D location) {
         entity.setPosition(location);

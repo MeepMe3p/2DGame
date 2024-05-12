@@ -180,6 +180,7 @@ public class PlayerComponent extends Component {
 * */
     private Entity spawnBasic(Point2D position,Point2D direction){
         var location = new SpawnData(position.getX(), position.getY()).put("direction",direction);
+//        System.out.println(direction);
         var e = spawn("BasicSkill", location);
 
         GameFactory.respawnSkill(e,location);

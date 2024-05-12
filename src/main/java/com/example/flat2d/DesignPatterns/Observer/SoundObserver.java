@@ -18,7 +18,7 @@ public class SoundObserver implements CustomObserver {
             SoundEvent dev = (SoundEvent) event;
             Entity ent = dev.getDead_entity();
 
-            if(ent.getType().toString().equals("WOLF")){
+            if(ent.getType().toString().equals("ENEMY")){
                 playSound();
             }
 
@@ -30,6 +30,8 @@ public class SoundObserver implements CustomObserver {
         runOnce(()->{
             Sound ms = FXGL.getAssetLoader().loadSound("enemy-death2.wav");
             getAudioPlayer().playSound(ms);
+//            System.out.println("went hereeeee");
+
             return null;
         },Duration.seconds(0));
     }

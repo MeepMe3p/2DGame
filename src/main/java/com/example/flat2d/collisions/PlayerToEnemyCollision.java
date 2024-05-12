@@ -9,7 +9,7 @@ import static com.example.flat2d.Misc.Config.PLAYER_HP;
 
 public class PlayerToEnemyCollision extends CollisionHandler {
     public PlayerToEnemyCollision() {
-        super(EntityType.PLAYER, EntityType.WOLF);
+        super(EntityType.PLAYER, EntityType.ENEMY);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class PlayerToEnemyCollision extends CollisionHandler {
         inc("player_hp",-5);
         System.out.println("Player hp: "+hp);
         if(hp <= 0){
-//            killPlayer();
+            killPlayer();
         }
         if (System.nanoTime() > geti("lastHitTime") + 1000000000) {
             set("lastHitTime", (int)System.nanoTime());

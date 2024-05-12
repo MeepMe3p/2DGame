@@ -37,8 +37,10 @@ public class GameMainMenu extends FXGLMenu {
     public static int GAME_STATE = 1;
     public GameMainMenu() {
         super(MenuType.MAIN_MENU);
-        Image img = image("background/backg.jpg");
+        Image img = image("background/main-screen.jpg");
         Texture bg = new Texture(img);
+        bg.setFitWidth(720);
+        bg.setFitHeight(720);
 //      IMPLEMENTATIONS FOR BUTTONS
         customMenuButton btnPlayGame = new customMenuButton("PLAY", ()->{
             getAudioPlayer().stopAllMusic();

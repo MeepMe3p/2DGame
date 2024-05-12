@@ -32,6 +32,7 @@ import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -148,8 +149,8 @@ public class GameApp extends GameApplication {
 
                 int skillCd = geti("skill_cd");
                 if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
-                    Sound ms = FXGL.getAssetLoader().loadSound("skill_sound.mp3");
-                    getAudioPlayer().playSound(ms);
+//                    Sound ms = FXGL.getAssetLoader().loadSound("skill_sound.mp3");
+//                    getAudioPlayer().playSound(ms);
                     getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
                     set("skill_cd",0);
                     Image img = image("UltiAsset.jpg.png");
@@ -215,13 +216,6 @@ public class GameApp extends GameApplication {
 ////        FXGL.getGameController().pauseEngine();
 //      debug =========================================================================
 
-        int count = 0;
-//        skillLevels[1] = 2;
-        for(int i: skillLevels){
-            count++;
-            System.out.println("Elem: "+count+": "+i);
-        }
-
 
         addEntityBuilders();
         setGameLevel();
@@ -244,7 +238,7 @@ public class GameApp extends GameApplication {
 
         });
         th.start();
-        runOnce(()->{
+//        runOnce(()->{
 //            File file = new File("src/main/resources/textures/glitch.mp4");
 //            Media media = new Media(file.toURI().toString());
 //            MediaPlayer mp = new MediaPlayer(media);
@@ -252,12 +246,16 @@ public class GameApp extends GameApplication {
 //            mp.setCycleCount(MediaPlayer.INDEFINITE);
 //            mp.play();
 //            mv.setFitHeight(720);
+////            mv.setViewport(new Rectangle2D(0,0,720,720));
 //            mv.setFitWidth(720);
-//            GameView gv = new GameView(mv,1);
-//            getGameScene().addGameView(gv);
-
-            return null;
-        },Duration.seconds(10));
+//            mv.setTranslateX(0);
+//            mv.setTranslateY(0);
+////            GameView gv = new GameView(mv,1);
+//            System.out.println(file.canRead());
+//            addUINode(mv);
+//
+//            return null;
+//        },Duration.seconds(10));
 
 
     }
@@ -282,12 +280,15 @@ public class GameApp extends GameApplication {
 
 
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
+        BasicToEnemyCollision bsToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
+        PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
         physics.addCollisionHandler(expToPlayer);
-        BasicToEnemyCollision plToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
-
+        physics.addCollisionHandler(bsToEn);
         physics.addCollisionHandler(plToEn);
-        physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
-        physics.addCollisionHandler(plToEn.copyFor(BASICSKILL,ENEMY));
+
+        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
+        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
+        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,ENEMY));
         physics.addCollisionHandler(oToE.copyFor(ORATRICE,ENEMY));
 
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
@@ -302,51 +303,63 @@ public class GameApp extends GameApplication {
 
 
     private void initSpawnSkills() {
-//        run(() -> {
-//            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
-//            if(skillLevels[0]>=2){
-//                run(()->{
+        run(() -> {
+            player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+            if (skillLevels[0] >= 2) {
+                run(() -> {
+
+                    player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
+                }, Duration.seconds(1));
+
+            }
+        }, BASICATTACK_SPAWN_INTERVAL);
 //
-//                    player.getComponent(PlayerComponent.class).doBasicSkill(getInput().getMousePositionWorld());
-//                },Duration.seconds(1));
-//
-//            }
-//        }, BASICATTACK_SPAWN_INTERVAL);
-//
-//        run(() -> {
-//            if(skillLevels[1] >= 1){
-//                oratrice = spawn("Oratrice");
-//                oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
-//                System.out.println("Level is: "+oratrice.getComponent(OratriceComponent.class).getLevel());
-//            }
-////                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
-//
-//        }, ORATRICE_SPAWN_INTERVAL);
-//        run(() -> {
-//            if(skillLevels[2] >= 1){
-//                var normal = spawn("Normal");
-//                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
-//
-//            closest.ifPresent(close->{
-//                var e = close.getPosition();
-//                cool.setPosition(e);
-//                System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
-//                System.out.println(cool.getPosition()+"the position of cool");
-//
-//                });
-//            }
-//        }, NORMAL_SPAWN_INTERVAL);
-//        run(()->{
-//            if(skillLevels[3] >= 1) {
-//                var stack = spawn("Stack");
-//                List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
-//                if (!ents.isEmpty()) {
-//                    var e = ents.get(FXGL.random(0, ents.size() - 1));
-//                    stack.setPosition(e.getPosition());
-//
-//                }
-//            }
-//        },STACK_SPAWN_INTERVAL);
+        run(() -> {
+            if (skillLevels[1] >= 1) {
+                oratrice = spawn("Oratrice");
+                oratrice.getComponent(OratriceComponent.class).setLevel(skillLevels[1]);
+                System.out.println("Level is: " + oratrice.getComponent(OratriceComponent.class).getLevel());
+            }
+//                oratrice.getComponent(OratriceComponent.class).rotate(oratrice, player);
+
+        }, ORATRICE_SPAWN_INTERVAL);
+        run(() -> {
+            if (skillLevels[2] >= 1) {
+                var cool = spawn("Cool");
+                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e -> e.isType(ENEMY));
+                closest.ifPresent(close -> {
+                    var e = close.getPosition();
+                    cool.setPosition(e);
+//                    System.out.println(e.getX() + ": x y: " + e.getY() + "enemy loc");
+//                    System.out.println(cool.getPosition() + "the position of cool");
+                });
+            }
+        }, COOL_SPAWN_INTERVAL);
+        run(() -> {
+            if (skillLevels[2] >= 1) {
+                var normal = spawn("Normal");
+                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e -> e.isType(ENEMY));
+
+                closest.ifPresent(close -> {
+                    var e = close.getPosition();
+                    normal.setPosition(e);
+//                    System.out.println(e.getX() + ": x y: " + e.getY() + "enemy loc");
+//                    System.out.println(normal.getPosition() + "the position of cool");
+
+                });
+            }
+        }, NORMAL_SPAWN_INTERVAL);
+        run(() -> {
+            if (skillLevels[3] >= 1) {
+                var stack = spawn("Stack");
+                List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+                if (!ents.isEmpty()) {
+                    var e = ents.get(FXGL.random(0, ents.size() - 1));
+                    stack.setPosition(e.getPosition());
+
+                }
+            }
+        }, STACK_SPAWN_INTERVAL);
 //        run(()->{
 //
 //            var e = spawn("BinaryTree");
@@ -354,44 +367,44 @@ public class GameApp extends GameApplication {
 ////            System.out.println(e.getPosition());
 //
 //        }, Duration.seconds(2));
-//        run(()->{
-//            if(skillLevels[4] >= 1){
-//                var q =spawn("Queue");
-//                Random randy = new Random(4);
-//                switch (randy.nextInt()){
-//                    case 0:
-//                        q.setPosition(player.getPosition().add(-720,-720));
-//                        break;
-//                    case 1:
-//                        q.setPosition(player.getPosition().add(720,720));
-//                        break;
-//                    case 2:
-//                        q.setPosition(player.getPosition().add(-720,720));
-//                        break;
-//                    case 3:
-//                        q.setPosition(player.getPosition().add(720,-720));
-//                        break;
-//                }
-//
-//            }
-//        },QUEUE_SPAWN_INTERVAL);
-        // debug purpopses uncomment dis or comment
         run(() -> {
-            if(skillLevels[2] >= 1){
-                var cool = spawn("Cool");
-                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
-
-                 closest.ifPresent(close->{
-                    var e = close.getPosition();
-                    cool.setPosition(e);
-                     System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
-                     System.out.println(cool.getPosition()+"the position of cool");
-
-                });
+            if (skillLevels[4] >= 1) {
+                var q = spawn("Queue");
+                Random randy = new Random(4);
+                switch (randy.nextInt()) {
+                    case 0:
+                        q.setPosition(player.getPosition().add(-720, -720));
+                        break;
+                    case 1:
+                        q.setPosition(player.getPosition().add(720, 720));
+                        break;
+                    case 2:
+                        q.setPosition(player.getPosition().add(-720, 720));
+                        break;
+                    case 3:
+                        q.setPosition(player.getPosition().add(720, -720));
+                        break;
+                }
 
             }
-
-        }, COOL_SPAWN_INTERVAL);
+        }, QUEUE_SPAWN_INTERVAL);
+        // debug purpopses uncomment dis or comment
+//        run(() -> {
+//            if(skillLevels[2] >= 1){
+//                var cool = spawn("Cool");
+//                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e->e.isType(ENEMY));
+//
+//                 closest.ifPresent(close->{
+//                    var e = close.getPosition();
+//                    cool.setPosition(e);
+//                     System.out.println(e.getX()+": x y: "+ e.getY()+"enemy loc");
+//                     System.out.println(cool.getPosition()+"the position of cool");
+//
+//                });
+//
+//            }
+//
+//        }, COOL_SPAWN_INTERVAL);
 //        run(() -> {
 //            if(skillLevels[1] >= 0){
 //                oratrice = spawn("Oratrice");
@@ -430,11 +443,37 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-        run(()->{
-//            enemies.add(spawn("Wolf"));
-            var e = spawn("Wolf");
-//            System.out.println("SPAWNNNNNNNNN");
-//            return null;
+//        run(()->{
+////            enemies.add(spawn("Wolf"));
+//            var e = spawn("Wolf");
+//        },Duration.seconds(2));
+        runOnce(()->{
+            var t3 = spawn("Turtle");
+            t3.setPosition(new Point2D(player.getX()-40,player.getY()-180));
+            var t2 = spawn("Turtle");
+            t2.setPosition(new Point2D(player.getX()-110,player.getY()-180));
+            var t5 = spawn("Turtle");
+            t5.setPosition(new Point2D(player.getX()+110,player.getY()-180));
+            var t4 = spawn("Turtle");
+            t4.setPosition(new Point2D(player.getX()+40,player.getY()-180));
+            var t1 = spawn("Turtle");
+            t1.setPosition(new Point2D(player.getX()-180,player.getY()-180));
+            var t6 = spawn("Turtle");
+            t6.setPosition(new Point2D(player.getX()+180,player.getY()-180));
+
+            var tb3 = spawn("Turtle");
+            tb3.setPosition(new Point2D(player.getX()-110,player.getY()+180));
+            var tb2 = spawn("Turtle");
+            tb2.setPosition(new Point2D(player.getX()+110,player.getY()+180));
+            var tb5 = spawn("Turtle");
+            tb5.setPosition(new Point2D(player.getX()+40,player.getY()+180));
+            var tb4 = spawn("Turtle");
+            tb4.setPosition(new Point2D(player.getX()-180,player.getY()+180));
+            var tb1 = spawn("Turtle");
+            tb1.setPosition(new Point2D(player.getX()+180,player.getY()+180));
+            var tb6 = spawn("Turtle");
+            tb6.setPosition(new Point2D(player.getX()-40,player.getY()+180));
+            return null;
         },Duration.seconds(2));
 //        run(()->{
 //            enemies.add(spawn("Wolf"));
@@ -442,17 +481,15 @@ public class GameApp extends GameApplication {
 //        run(()->{
 //            spawn("ForeskinDragon");
 //        },FORESKIN_DRAGON_SPAWN_INTERVAL);
-        run(()->{
-            spawn("HellHound");
-        }, HELL_HOUND_SPAWN_INTERVAL);
+//        run(()->{
+//            spawn("HellHound");
+//        }, HELL_HOUND_SPAWN_INTERVAL);
 
     }
 //        -------- SETS THE LEVEL ------------
 
     private void setGameLevel() {
         Level level = setLevelFromMap("tmx/2DGameTiledMap.tmx");
-
-
     }
 
 
@@ -465,7 +502,13 @@ public class GameApp extends GameApplication {
         vars.put("exp",0);
         vars.put("player_hp",PLAYER_HP);
         vars.put("lastHitTime", 0);
+        vars.put("player_level",0);
+        vars.put("exp_needed",10);
+        vars.put("hp_boost",0);
+        vars.put("dmg_boost",0);
 
+
+        //todo delete later useless nani but wa sa nako gidelete basin nause nako soemtwhree
         vars.put("Basic",1);
         vars.put("Oratrice",0);
         vars.put("Stack",0);
@@ -473,10 +516,10 @@ public class GameApp extends GameApplication {
         vars.put("Tree",0);
 
     }
-
+    public static ProgressBar exp_bar;
+        public static UIFacade facade = new UIFacade();
     @Override
     protected void initUI() {
-        UIFacade facade = new UIFacade();
 
         Text time = facade.createTimeUI();
         addUINode(time);
@@ -498,7 +541,7 @@ public class GameApp extends GameApplication {
         ProgressBar skill = facade.createSkillCdBar();
         addUINode(skill);
 
-        ProgressBar exp_bar = facade.createExpBar();
+        exp_bar = facade.createExpBar();
         addUINode(exp_bar);
 
     }
