@@ -50,13 +50,9 @@ public class WolfComponent extends Component {
     @Override
     public void onAdded() {
         wolf = entity;
-        Rectangle2D r2d = getGameScene().getViewport().getVisibleArea();
-//        System.out.println("maxX: "+r2d.getMaxX()+"maxY: "+r2d.getMaxY()+"MinX: "+r2d.getMinX()+"minY: "+r2d.getMinY());
-//        wolf.setPosition();
+
         wolf.getViewComponent().addChild(texture);
-//        for(int i=0;i<10;i++){
-//            System.out.print(FXGL.random(1,4)+", ");
-//        }
+
         //todo this spawnpoint since ebriwan has this i feel like need ni in separate class or a design pattern or something
         // to remove redundancy kay if magbalik2 mapulan rana
 
@@ -112,10 +108,7 @@ public class WolfComponent extends Component {
 //        System.out.println("Spawn at:"+wolf.getPosition());
 
 //        wolf.setPosition(new Point2D(player.getX()-360,player.getY()+360));
-        run(()->{
-//            System.out.println(entity.getPosition());
-            return null;
-        },Duration.seconds(1));
+
         adjustVelocity(0.016);
 
 

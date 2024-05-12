@@ -38,7 +38,7 @@ public final class Config {
     public static final int BASICSKILL_MOV_SPEED = 1000;
     public static final int QUEUE_MOV_SPEED = 1000;
     public static final int WOLF_MOVEMENT_SPEED = 50;
-    public static final int TURTLE_MOVEMENT_SPEED = 50;
+    public static final int TURTLE_MOVEMENT_SPEED = 10;
     public static final int FORESKIN_DRAGON_SPEED = 50;
 
     public static final int HELL_HOUND_COMPONENT = 100;

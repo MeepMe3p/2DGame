@@ -4,48 +4,36 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
-import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
-import com.almasb.fxgl.entity.level.tiled.Layer;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.ui.ProgressBar;
+import com.example.flat2d.DesignPatterns.Facade.SpawningFacade;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
-import com.example.flat2d.Misc.Database;
 import com.example.flat2d.collisions.BasicToEnemyCollision;
 import com.example.flat2d.collisions.OratriceToEnemy;
 import com.example.flat2d.collisions.PlayerToEnemyCollision;
 import com.example.flat2d.collisions.PlayerToExpCollision;
-import com.example.flat2d.components.EnemyComponent.WolfComponent;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.util.*;
 
 import static com.almasb.fxgl.dsl.FXGL.getAppHeight;
@@ -151,7 +139,7 @@ public class GameApp extends GameApplication {
                 if(skillCd >= 25/*TODO for now 25 pa ang max value deal with it later*/) {
 //                    Sound ms = FXGL.getAssetLoader().loadSound("skill_sound.mp3");
 //                    getAudioPlayer().playSound(ms);
-                    getGameWorld().removeEntities(getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON));
+                    getGameWorld().removeEntities(getGameWorld().getEntitiesByType(ENEMY));
                     set("skill_cd",0);
                     Image img = image("UltiAsset.jpg.png");
                     ImageView bgimg = new ImageView(img);
@@ -198,6 +186,7 @@ public class GameApp extends GameApplication {
     public static SoundObserver observer = new SoundObserver();
     // 0 - basic 1 - oratrice 2 - coolNor 3 - Stack 4 - queue 5- tree    6 - hp 7 - damage 8 - heal
     public static int[] skillLevels = new int[9];
+    public static SpawningFacade spawner ;
     @Override
     protected void initGame() {
 
@@ -222,6 +211,7 @@ public class GameApp extends GameApplication {
 //        -------- DEV MODE TO SHOW HITBOXES ------------
 
         player = spawn("Player");
+        spawner =  new SpawningFacade(player);
 //            player.setOnNotActive();
 //        -------- FOR THE CAMERA TO FOCUS AT THE PLAYER  ------------
         getGameScene().getViewport().setLazy(true);
@@ -234,7 +224,7 @@ public class GameApp extends GameApplication {
 //            initSpawnExp();
         Thread th = new Thread(() -> {
             initSpawnEnemies();
-//            initSpawnSkills();
+            initSpawnSkills();
 
         });
         th.start();
@@ -446,35 +436,17 @@ public class GameApp extends GameApplication {
 //        run(()->{
 ////            enemies.add(spawn("Wolf"));
 //            var e = spawn("Wolf");
+////            e.getComponent(new PhysicsComponent.class)
+//        },Duration.seconds(2));
+//        runOnce(()->{
+//            spawner.spawnTortols();
+//            return null;
 //        },Duration.seconds(2));
         runOnce(()->{
-            var t3 = spawn("Turtle");
-            t3.setPosition(new Point2D(player.getX()-40,player.getY()-180));
-            var t2 = spawn("Turtle");
-            t2.setPosition(new Point2D(player.getX()-110,player.getY()-180));
-            var t5 = spawn("Turtle");
-            t5.setPosition(new Point2D(player.getX()+110,player.getY()-180));
-            var t4 = spawn("Turtle");
-            t4.setPosition(new Point2D(player.getX()+40,player.getY()-180));
-            var t1 = spawn("Turtle");
-            t1.setPosition(new Point2D(player.getX()-180,player.getY()-180));
-            var t6 = spawn("Turtle");
-            t6.setPosition(new Point2D(player.getX()+180,player.getY()-180));
-
-            var tb3 = spawn("Turtle");
-            tb3.setPosition(new Point2D(player.getX()-110,player.getY()+180));
-            var tb2 = spawn("Turtle");
-            tb2.setPosition(new Point2D(player.getX()+110,player.getY()+180));
-            var tb5 = spawn("Turtle");
-            tb5.setPosition(new Point2D(player.getX()+40,player.getY()+180));
-            var tb4 = spawn("Turtle");
-            tb4.setPosition(new Point2D(player.getX()-180,player.getY()+180));
-            var tb1 = spawn("Turtle");
-            tb1.setPosition(new Point2D(player.getX()+180,player.getY()+180));
-            var tb6 = spawn("Turtle");
-            tb6.setPosition(new Point2D(player.getX()-40,player.getY()+180));
+           spawner.spawnSheep();
             return null;
         },Duration.seconds(2));
+
 //        run(()->{
 //            enemies.add(spawn("Wolf"));
 //        },WOLF_SPAWN_INTERVAL);

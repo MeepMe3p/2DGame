@@ -8,7 +8,10 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.util.Duration;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 
 public class HellHoundComponent extends Component {
 
@@ -18,17 +21,24 @@ public class HellHoundComponent extends Component {
     private LocalTimer adjustDirectionTimer = FXGL.newLocalTimer();
     private Duration adjustDelay = Duration.seconds(0.15);
 
+
     private int speed;
-    private AnimationChannel wolf_text,moving;
+    private AnimationChannel moving;
     private AnimatedTexture texture;
     private boolean isMoving;
     public HellHoundComponent(Entity player, int speed) {
         this.player = player;
         this.speed = speed;
+        Image image = image("hellhound.png");
+        moving = new AnimationChannel(image,7,64,42,Duration.seconds(1),0,6);
+        texture = new AnimatedTexture(moving);
+        texture.loop();
+
     }
     @Override
     public void onAdded() {
         hellHound = entity; // Naming convention to make code readable
+        hellHound.getViewComponent().addChild(texture);
 //        hellHound.getViewComponent().addChild(texture); // FOR ANIMATION
         hellHound.setPosition(new Point2D(player.getX()-360,player.getY()+360));
         adjustVelocity(0.016);
@@ -38,7 +48,7 @@ public class HellHoundComponent extends Component {
                .subtract(hellHound.getCenter())
                .normalize()
                .multiply(speed);
-        if(playerDirection.getX() > 0){
+        if(playerDirection.getX() < 0){
             hellHound.setScaleX(-1);
         }else{
             hellHound.setScaleX(1);
@@ -48,6 +58,8 @@ public class HellHoundComponent extends Component {
     }
     @Override
     public void onUpdate(double tpf) {
+        texture.setFitWidth(120);
+        texture.setFitHeight(120);
         if(adjustDirectionTimer.elapsed(adjustDelay)){
             adjustVelocity(tpf);
             adjustDirectionTimer.capture();

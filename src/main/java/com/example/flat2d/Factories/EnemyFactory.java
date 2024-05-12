@@ -12,6 +12,7 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemyComponent.*;
 import javafx.geometry.Point2D;
@@ -78,10 +79,11 @@ public class EnemyFactory implements EntityFactory {
     @Spawns("HellHound")
     public Entity spawnHellHound(SpawnData data){
         return entityBuilder()
-                .type(HELLHOUND)
-                .viewWithBBox(new Rectangle(32,32,Color.BLACK))
-                .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(32,32)))
+                .type(ENEMY)
+//                .viewWithBBox(new Rectangle(32,32,Color.BLACK))
+                .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(120,120)))
                 .with(new HellHoundComponent(FXGL.<GameApp>getAppCast().getPlayer(),HELL_HOUND_COMPONENT))
+//                .with(new HealthIntComponent())
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(HELL_HOUND_HP))
                 .build();
@@ -125,8 +127,22 @@ public class EnemyFactory implements EntityFactory {
     @Spawns("Turtle")
     public Entity spawnTurtle(SpawnData data){
         var e = entityBuilder()
+
                 .bbox(new HitBox(BoundingShape.box(64,50)))
                 .with(new TurtleComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
+                .with(new CollidableComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(5)))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("Sheep")
+    public Entity spawnSheep(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(BoundingShape.box(92,64)))
+                .with(new HealthIntComponent())
+                .with(new SheepComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .build();
         e.setReusable(true);
         return e;
