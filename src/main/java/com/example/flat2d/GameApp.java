@@ -18,10 +18,7 @@ import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
-import com.example.flat2d.collisions.BasicToEnemyCollision;
-import com.example.flat2d.collisions.OratriceToEnemy;
-import com.example.flat2d.collisions.PlayerToEnemyCollision;
-import com.example.flat2d.collisions.PlayerToExpCollision;
+import com.example.flat2d.collisions.*;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import final_project_socket.database.CreateTable;
@@ -263,18 +260,20 @@ public class GameApp extends GameApplication {
 
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
         OratriceToEnemy oToE = new OratriceToEnemy();
-
-        physics.addCollisionHandler(wolfToPlayer);
-        physics.addCollisionHandler(oToE);
-
-
-
+        PlayerToBombCollision pToB = new PlayerToBombCollision(PLAYER,BOMB);
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         BasicToEnemyCollision bsToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
         PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
+
+        physics.addCollisionHandler(wolfToPlayer);
+        physics.addCollisionHandler(oToE);
+        physics.addCollisionHandler(pToB);
         physics.addCollisionHandler(expToPlayer);
         physics.addCollisionHandler(bsToEn);
         physics.addCollisionHandler(plToEn);
+
+
+
 
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
@@ -433,19 +432,26 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-//        run(()->{
-////            enemies.add(spawn("Wolf"));
-//            var e = spawn("Wolf");
-////            e.getComponent(new PhysicsComponent.class)
-//        },Duration.seconds(2));
-//        runOnce(()->{
-//            spawner.spawnTortols();
+        run(()->{
+//            enemies.add(spawn("Wolf"));
+            var e = spawn("Wolf");
+            var b = spawn("CuteBomb");
+            b.setPosition(player.getPosition().add(new Point2D(300,300)));
+//            e.getComponent(new PhysicsComponent.class)
+        },WOLF_SPAWN_INTERVAL);
+        run(()->{
+            spawner.spawnTortols();
 //            return null;
-//        },Duration.seconds(2));
-        runOnce(()->{
+        },TURTLE_SPAWN_INTERVAL);
+        run(()->{
+            spawner.spawnCuteBomb();
+
+//            return null;
+        },BOMBSQUARE_SPAWN_INTERVAL);
+        run(()->{
            spawner.spawnSheep();
-            return null;
-        },Duration.seconds(2));
+//            return null;
+        },SHEEP_SPAWN_INTERVAL);
 
 //        run(()->{
 //            enemies.add(spawn("Wolf"));

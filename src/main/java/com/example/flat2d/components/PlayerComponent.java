@@ -20,7 +20,7 @@ import static com.example.flat2d.Misc.Config.BASIC_DELAY;
 public class PlayerComponent extends Component {
     AnimationChannel left,right,up,down,idle;
     AnimatedTexture texture;
-    private boolean isLeft,isRight,isUp,isDown;
+    private boolean isLeft,isRight,isUp,isDown,isIdle;
 //    TODO ADD COMMENTS
     private LocalTimer skills_timer = newLocalTimer();
     /** IMAGE = TO GET THE IMAGE PATHS TO BE USED FOR THE ANIMATIONS
@@ -34,7 +34,7 @@ public class PlayerComponent extends Component {
         Image left_anim = image("CatThree.png");
         Image right_anim = image("CatThree.png");
         Image up_anim = image("CatFour.png");
-//        Image idle_anim = image("lecatmoves.png");
+//        Image idle_anim = image("70x100SitSirVinceSerato.png");
 //        Image down_anim = image("SirDown.png");
 //        Image left_anim = image("SirLeft.png");
 //        Image right_anim = image("SirRight.png");
@@ -44,12 +44,13 @@ public class PlayerComponent extends Component {
         left = new AnimationChannel(left_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
         down = new AnimationChannel(down_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
         up = new AnimationChannel(up_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
-        idle = new AnimationChannel(movement, 8, 50, 120, Duration.seconds(1), 0, 7);
+        idle = new AnimationChannel(movement, 8, 32, 32, Duration.seconds(1), 0, 7);
+//        idle = new AnimationChannel(idle_anim,5,70,100,Duration.seconds(5),0,4);
 //        right = new AnimationChannel(right_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
 //        left = new AnimationChannel(left_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
 //        down = new AnimationChannel(down_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
 //        up = new AnimationChannel(up_anim, 8, 50, 90, Duration.seconds(1), 0, 7);
-        texture = new AnimatedTexture(right);
+        texture = new AnimatedTexture(idle);
         texture.loop();
     }
 /*
@@ -93,7 +94,11 @@ public class PlayerComponent extends Component {
                         texture.loopAnimationChannel(down);
 //                System.out.println("down");
                     }
-                };
+                }else if(isIdle){
+                    if(texture.getAnimationChannel()!= idle){
+                        texture.loopAnimationChannel(idle);
+                    }
+                }
             }
         });
         th.start();
@@ -134,6 +139,7 @@ public class PlayerComponent extends Component {
     public void move_down(){
         setAllFalse();
         isDown = true;
+
 //        System.out.println(entity.getY());
         if(entity.getY() <= 2270) {
 //            entity.setScaleX(1);
@@ -146,6 +152,9 @@ public class PlayerComponent extends Component {
         entity.translateX(0);
         entity.translateY(0);
         entity.setScaleX(1);
+        setAllFalse();
+        isIdle = true;
+//        System.out.println("stop");
 //        texture.stop();
     }
     public void setAllFalse(){
@@ -153,6 +162,7 @@ public class PlayerComponent extends Component {
         isDown = false;
         isLeft = false;
         isRight = false;
+        isIdle = false;
     }
     public void doBasicSkill(Point2D direction){
         Point2D position = entity.getCenter();

@@ -131,7 +131,7 @@ public class EnemyFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(64,50)))
                 .with(new TurtleComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
                 .with(new CollidableComponent())
-                .with(new ExpireCleanComponent(Duration.seconds(5)))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
                 .build();
         e.setReusable(true);
         return e;
@@ -142,7 +142,21 @@ public class EnemyFactory implements EntityFactory {
                 .type(ENEMY)
                 .bbox(new HitBox(BoundingShape.box(92,64)))
                 .with(new HealthIntComponent())
-                .with(new SheepComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new SheepComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
+                .with(new CollidableComponent())
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("CuteBomb")
+    public Entity spawnCuteBomb(SpawnData data){
+        var e = entityBuilder()
+                .type(BOMB)
+                .bbox(new HitBox(new Point2D(-21,-20),BoundingShape.circle(90)))
+                .with(new CuteBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new HealthIntComponent())
+                .with(new CollidableComponent(true))
                 .build();
         e.setReusable(true);
         return e;
