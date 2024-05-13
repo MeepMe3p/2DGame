@@ -24,7 +24,7 @@ public class CoolComponent extends Component{
         //TODO ANIMATIONS
         this.player = GameApp.getPlayer();
         level = 0;
-        Image atk = image("OhTenTacles---315-x-250.png");
+        Image atk = image("skill/OhTenTacles---315-x-250.png");
 
         animation = new AnimationChannel(atk,27,315,250, Duration.seconds(3),0,26);
         texture = new AnimatedTexture(animation);

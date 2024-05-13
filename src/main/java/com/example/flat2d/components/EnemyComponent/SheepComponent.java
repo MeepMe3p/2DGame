@@ -32,8 +32,8 @@ public class SheepComponent extends Component {
         this.player = player;
         this.speed = speed;
 
-//        Image img = image("lastBombWalk.png");
-        Image img = image("sheepCharge.png");
+//        Image img = image("midBombWalk.png");
+        Image img = image("charger/sheepCharge.png");
         charge_anim = new AnimationChannel(img, 3,106,69, Duration.seconds(0.5),0,2);
 //        charge_anim = new AnimationChannel(img, 6,63,59, Duration.seconds(2),0,5);
         texture = new AnimatedTexture(charge_anim);
@@ -56,7 +56,7 @@ public class SheepComponent extends Component {
         range.setStartY(entity.getCenter().getY());
         range.setStartX(entity.getX());
         range.setEndY(entity.getCenter().getY());
-        range.setEndX(entity.getX()-360);
+        range.setEndX(entity.getX()-getAppWidth());
         range.setOpacity(0.5);
         System.out.println(range.getStartY()+" ll "+ entity.getY());
         entity.getViewComponent().addChild(range,true);

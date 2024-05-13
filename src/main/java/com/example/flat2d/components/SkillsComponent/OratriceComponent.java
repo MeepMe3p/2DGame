@@ -27,7 +27,7 @@ public class OratriceComponent extends Component {
         this.player = GameApp.getPlayer();
         rotation = 1;
         level = 0;
-        Image atk = image("water_cannon-Sheet.png");
+        Image atk = image("skill/water_cannon-Sheet.png");
 
 
         animation = new AnimationChannel(atk,30,495,90, Duration.seconds(3),0,29);

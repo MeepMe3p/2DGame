@@ -26,7 +26,7 @@ public class TurtleComponent extends Component {
     public TurtleComponent(Entity player, int speed){
         this.player = player;
         this.speed = speed;
-        Image move = image("tortol.png");
+        Image move = image("blocker/tortol.png");
         walk_anim = new AnimationChannel(move,5, 109,89, Duration.seconds(1),0,4);
         texture = new AnimatedTexture(walk_anim);
 

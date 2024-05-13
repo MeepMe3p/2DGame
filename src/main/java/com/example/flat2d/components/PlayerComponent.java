@@ -29,16 +29,16 @@ public class PlayerComponent extends Component {
 
     public PlayerComponent() {
 
-        Image movement = image("lecatmoves.png");
-        Image down_anim = image("CatOne.png");
-        Image left_anim = image("CatThree.png");
-        Image right_anim = image("CatThree.png");
-        Image up_anim = image("CatFour.png");
-//        Image idle_anim = image("70x100SitSirVinceSerato.png");
-//        Image down_anim = image("SirDown.png");
-//        Image left_anim = image("SirLeft.png");
-//        Image right_anim = image("SirRight.png");
-//        Image up_anim = image("SirUp.png");
+        Image movement = image("player/lecatmoves.png");
+        Image down_anim = image("player/CatOne.png");
+        Image left_anim = image("player/CatThree.png");
+        Image right_anim = image("player/CatThree.png");
+        Image up_anim = image("player/CatFour.png");
+//        Image idle_anim = image("player/70x100SitSirVinceSerato.png");
+//        Image down_anim = image("player/SirDown.png");
+//        Image left_anim = image("player/SirLeft.png");
+//        Image right_anim = image("player/SirRight.png");
+//        Image up_anim = image("player/SirUp.png");
         idle = new AnimationChannel(movement, 2, 32, 32, Duration.seconds(1), 6, 7);
         right = new AnimationChannel(right_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
         left = new AnimationChannel(left_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
@@ -70,38 +70,32 @@ public class PlayerComponent extends Component {
     public void onUpdate(double tpf) {
 //        texture.setFitHeight(90);
 //        texture.setFitWidth(50);
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(isLeft){
-                    if(texture.getAnimationChannel()!=left){
-                        texture.loopAnimationChannel(left);
+        if(isLeft){
+            if(texture.getAnimationChannel()!=left){
+                texture.loopAnimationChannel(left);
 //                System.out.println("left");
-                    }
-                }else if(isRight){
-                    if(texture.getAnimationChannel()!=right){
-                        texture.loopAnimationChannel(right);
+            }
+        }else if(isRight){
+            if(texture.getAnimationChannel()!=right){
+                texture.loopAnimationChannel(right);
 //                System.out.println("right");
 
-                    }
-                }else if(isUp){
-                    if(texture.getAnimationChannel()!=up){
-                        texture.loopAnimationChannel(up);
-//                System.out.println("up");
-                    }
-                }else if(isDown){
-                    if(texture.getAnimationChannel()!=down){
-                        texture.loopAnimationChannel(down);
-//                System.out.println("down");
-                    }
-                }else if(isIdle){
-                    if(texture.getAnimationChannel()!= idle){
-                        texture.loopAnimationChannel(idle);
-                    }
-                }
             }
-        });
-        th.start();
+        }else if(isUp){
+            if(texture.getAnimationChannel()!=up){
+                texture.loopAnimationChannel(up);
+//                System.out.println("up");
+            }
+        }else if(isDown){
+            if(texture.getAnimationChannel()!=down){
+                texture.loopAnimationChannel(down);
+//                System.out.println("down");
+            }
+        }else if(isIdle){
+            if(texture.getAnimationChannel()!= idle){
+                texture.loopAnimationChannel(idle);
+            }
+        }
 
 
     }

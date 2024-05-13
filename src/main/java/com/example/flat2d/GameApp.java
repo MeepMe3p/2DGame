@@ -18,7 +18,9 @@ import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
+import com.example.flat2d.Misc.Config;
 import com.example.flat2d.collisions.*;
+import com.example.flat2d.components.EnemyComponent.WolfComponent;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import final_project_socket.database.CreateTable;
@@ -54,6 +56,7 @@ public class GameApp extends GameApplication {
         settings.setWidth(720);
         settings.setHeight(720);
         settings.setTitle("Adventures of Sir Vim Zarado");
+        settings.setConfigClass(Config.class);
 //        -------- DEV MODE TO SHOW HITBOXES ------------
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setDeveloperMenuEnabled(true);
@@ -138,7 +141,7 @@ public class GameApp extends GameApplication {
 //                    getAudioPlayer().playSound(ms);
                     getGameWorld().removeEntities(getGameWorld().getEntitiesByType(ENEMY));
                     set("skill_cd",0);
-                    Image img = image("UltiAsset.jpg.png");
+                    Image img = image("skill/UltiAsset.jpg.png");
                     ImageView bgimg = new ImageView(img);
 //                    bgimg.setVisible(false);
 
@@ -260,10 +263,11 @@ public class GameApp extends GameApplication {
 
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
         OratriceToEnemy oToE = new OratriceToEnemy();
-        PlayerToBombCollision pToB = new PlayerToBombCollision(PLAYER,BOMB);
+        PlayerToBombCollision pToB = new PlayerToBombCollision(PLAYER,SMOL_BOMB);
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         BasicToEnemyCollision bsToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
         PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
+        DinoToPlayerCollision dToPl = new DinoToPlayerCollision();
 
         physics.addCollisionHandler(wolfToPlayer);
         physics.addCollisionHandler(oToE);
@@ -271,8 +275,9 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(expToPlayer);
         physics.addCollisionHandler(bsToEn);
         physics.addCollisionHandler(plToEn);
+        physics.addCollisionHandler(dToPl);
 
-
+        physics.addCollisionHandler(pToB.copyFor(PLAYER,MID_BOMB));
 
 
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
@@ -315,12 +320,11 @@ public class GameApp extends GameApplication {
         run(() -> {
             if (skillLevels[2] >= 1) {
                 var cool = spawn("Cool");
-                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e -> e.isType(ENEMY));
+                Optional<Entity> closest = getGameWorld().getClosestEntity(player, e -> e.isType(ENEMY) /*|| e.isType(BOSS)*/);
                 closest.ifPresent(close -> {
                     var e = close.getPosition();
+
                     cool.setPosition(e);
-//                    System.out.println(e.getX() + ": x y: " + e.getY() + "enemy loc");
-//                    System.out.println(cool.getPosition() + "the position of cool");
                 });
             }
         }, COOL_SPAWN_INTERVAL);
@@ -432,33 +436,35 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-        run(()->{
-//            enemies.add(spawn("Wolf"));
-            var e = spawn("Wolf");
-            var b = spawn("CuteBomb");
-            b.setPosition(player.getPosition().add(new Point2D(300,300)));
-//            e.getComponent(new PhysicsComponent.class)
-        },WOLF_SPAWN_INTERVAL);
-        run(()->{
-            spawner.spawnTortols();
+//        runOnce(()->{
+////            enemies.add(spawn("Wolf"));
+//            var e = spawn("Wolf");
+//        var b = spawn("MidBomb");
 //            return null;
-        },TURTLE_SPAWN_INTERVAL);
-        run(()->{
-            spawner.spawnCuteBomb();
+//        },WOLF_SPAWN_INTERVAL);
+//        run(()->{
+//            spawner.spawnTortols();
+////            return null;
+//        },TURTLE_SPAWN_INTERVAL);
+//        run(()->{
+//            spawner.spawnCuteBomb();
+//
+////            return null;
+//        },BOMBSQUARE_SPAWN_INTERVAL);
+//        run(()->{
+//           spawner.spawnSheep();
+////            return null;
+//        },SHEEP_SPAWN_INTERVAL);
+        runOnce(()->{
+            spawn("Boss1");
 
-//            return null;
-        },BOMBSQUARE_SPAWN_INTERVAL);
-        run(()->{
-           spawner.spawnSheep();
-//            return null;
-        },SHEEP_SPAWN_INTERVAL);
+            return null;
+        },Duration.seconds(2));
 
 //        run(()->{
 //            enemies.add(spawn("Wolf"));
 //        },WOLF_SPAWN_INTERVAL);
-//        run(()->{
-//            spawn("ForeskinDragon");
-//        },FORESKIN_DRAGON_SPAWN_INTERVAL);
+
 //        run(()->{
 //            spawn("HellHound");
 //        }, HELL_HOUND_SPAWN_INTERVAL);
@@ -544,7 +550,7 @@ public class GameApp extends GameApplication {
 
 
     public static void main(String[] args) {
-        CreateTable.createTable();
+//        CreateTable.createTable();
         launch(args);
     }
 

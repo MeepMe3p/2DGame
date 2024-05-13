@@ -18,7 +18,7 @@ public class BasicComponent extends Component {
     Point2D velocity;
 
     public BasicComponent(){
-        Image skill = image("spr_bullet_strip.png");
+        Image skill = image("skill/spr_bullet_strip.png");
         attack = new AnimationChannel(skill, 3, 39,39, Duration.seconds(1),0,2);
         texture = new AnimatedTexture(attack);
         texture.loop();

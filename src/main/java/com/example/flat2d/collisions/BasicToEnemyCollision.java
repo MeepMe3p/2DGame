@@ -36,7 +36,7 @@ public class BasicToEnemyCollision extends CollisionHandler {
 
     @Override
     protected void onCollisionBegin(Entity basic, Entity enemy) {
-        basic.removeFromWorld();
+//        basic.removeFromWorld();
 //        System.out.println("collided with wolf basic");
         HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
         int dmg = Config.BASIC_DEFAULT_DMG + (int)(GameApp.skillLevels[0] * Config.DMG_MULTIPLIER);

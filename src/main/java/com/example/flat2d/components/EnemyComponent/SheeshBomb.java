@@ -15,7 +15,7 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 
 
-public class CuteBombComponent extends Component {
+public class SheeshBomb extends Component {
     Entity player;
     int speed;
     AnimationChannel walk_anim, explode_anim;
@@ -28,12 +28,12 @@ public class CuteBombComponent extends Component {
     LocalTimer adjustDirection = FXGL.newLocalTimer();
     Point2D velocity = Point2D.ZERO;
     Duration delay = Duration.seconds(0.15);
-    public CuteBombComponent(Entity player, int speed) {
+    public SheeshBomb(Entity player, int speed) {
         this.player = player;
         this.speed = speed;
 
-        Image walk = image("bomb/bomb_character_o_walk.png");
-        Image explode = image("bomb/bomb_character_o_explode.png");
+        Image walk = image("bomb_character_o_walk.png");
+        Image explode = image("bomb_character_o_explode.png");
         walk_anim = new AnimationChannel(walk,6,64,64,Duration.seconds(1),0,5);
         explode_anim = new AnimationChannel(explode,3,64,64,Duration.seconds(3),0,2);
         texture = new AnimatedTexture(walk_anim);
@@ -59,8 +59,8 @@ public class CuteBombComponent extends Component {
         inner.setOpacity(.25);
         inner.setVisible(false);
         outer.setVisible(false);
-            entity.getViewComponent().addChild(inner);
-            entity.getViewComponent().addChild(outer);
+        entity.getViewComponent().addChild(inner);
+        entity.getViewComponent().addChild(outer);
 
     }
 

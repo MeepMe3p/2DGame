@@ -11,8 +11,6 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemyComponent.*;
 import javafx.geometry.Point2D;
@@ -88,15 +86,7 @@ public class EnemyFactory implements EntityFactory {
                 .with(new HealthIntComponent(HELL_HOUND_HP))
                 .build();
     }
-    @Spawns("HellBeast")
-    public Entity spawnHellBeast(SpawnData data){
-        return entityBuilder()
-                .type(HELLBEAST)
-                .viewWithBBox(new Rectangle(32,32, Color.RED))
-                .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(32,32)))
-                .with(new HellBeastComponent())
-                .build();
-    }
+
     @Spawns("ForeskinDragon")
     public Entity spawnDiccDragon(SpawnData data){
 
@@ -152,11 +142,35 @@ public class EnemyFactory implements EntityFactory {
     @Spawns("CuteBomb")
     public Entity spawnCuteBomb(SpawnData data){
         var e = entityBuilder()
-                .type(BOMB)
+                .type(SMOL_BOMB)
                 .bbox(new HitBox(new Point2D(-21,-20),BoundingShape.circle(90)))
                 .with(new CuteBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
                 .with(new HealthIntComponent())
                 .with(new CollidableComponent(true))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("Boss1")
+    public Entity spawnHellBeast(SpawnData data){
+        return entityBuilder()
+                .type(BOSS)
+                .bbox(new HitBox(new Point2D(40,30),BoundingShape.circle(130)))
+//                .viewWithBBox(new Rectangle(32,32, Color.RED))
+//                .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(32,32)))
+                .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("MidBomb")
+    public Entity spawnMidBomb(SpawnData data){
+        var e = entityBuilder()
+                .type(MID_BOMB)
+                .bbox(new HitBox(new Point2D(-100,-100),BoundingShape.circle(120)))
+                .with(new MidBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent())
                 .build();
         e.setReusable(true);
         return e;

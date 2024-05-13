@@ -37,10 +37,13 @@ public final class Config {
     //  ENEMY MOVEMENT SPEEDS
     public static final int BASICSKILL_MOV_SPEED = 1000;
     public static final int QUEUE_MOV_SPEED = 1000;
+
     public static final int WOLF_MOVEMENT_SPEED = 50;
     public static final int SHEEP_MOVEMENT_SPEED = 75;
     public static final int TURTLE_MOVEMENT_SPEED = 10;
     public static final int CUTE_BOMB_MOVEMENT_SPEED = 25;
+    public static final int DINO_BOSS_MOVEMENT_SPEED = 50;
+    public static final int DINO_BOSS_CHARGE_SPEED = 100;
 
     public static final int FORESKIN_DRAGON_SPEED = 50;
 
