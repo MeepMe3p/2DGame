@@ -544,7 +544,7 @@ public class GameApp extends GameApplication {
 
 
     public static void main(String[] args) {
-//        CreateTable.createTable();
+        CreateTable.createTable();
         launch(args);
     }
 

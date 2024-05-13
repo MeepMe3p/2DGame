@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -22,6 +21,7 @@ public class SignInController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btn_submit.setOnAction(event -> AuthenticationHandler.signInUser(event, txtf_username.getText(), passf_password.getText()));
-        btn_signup.setOnAction(event -> SceneHandler.changeScene(event, "/final_project_socket/fxml/Sign_Up.fxml", "Sign Up!", null, null));
+        btn_signup.setOnAction(event -> SceneHandler.changeScene(event, "/final_project_socket/fxml/Sign_Up.fxml", "Sign Up!", null, null, null));
     }
 }
+

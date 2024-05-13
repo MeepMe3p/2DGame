@@ -1,12 +1,12 @@
 package final_project_socket.socket;
 
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientHandler implements Runnable {
     // Using a thread safe array list
-    private static CopyOnWriteArrayList<ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
+    private static CopyOnWriteArrayList<final_project_socket.socket.ClientHandler> clientHandlers = new CopyOnWriteArrayList<>();
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -23,7 +23,7 @@ public class ClientHandler implements Runnable {
             this.clientUsername = bufferedReader.readLine();
             clientHandlers.add(this);
             System.out.print("\n[Clients online: ");
-            for (ClientHandler clientHandler : clientHandlers) {
+            for (final_project_socket.socket.ClientHandler clientHandler : clientHandlers) {
                 System.out.print(clientHandler.clientUsername + ", ");
             }
             System.out.println("]");
@@ -51,7 +51,7 @@ public class ClientHandler implements Runnable {
 
     public void broadcastMessage(String messageToSend) {
         System.out.println(messageToSend);
-        for (ClientHandler clientHandler : clientHandlers) {
+        for (final_project_socket.socket.ClientHandler clientHandler : clientHandlers) {
             if (!clientHandler.equals(this) && !socket.isClosed()) {
                 try {
                     clientHandler.bufferedWriter.write(messageToSend);

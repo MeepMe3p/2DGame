@@ -1,14 +1,13 @@
 package final_project_socket.fxml_controller;
 
-import final_project_socket.handler.AlertHandler;
 import final_project_socket.handler.AuthenticationHandler;
+import final_project_socket.handler.AlertHandler;
 import final_project_socket.handler.SceneHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,6 +38,6 @@ public class SignUpController implements Initializable {
             }
         });
 
-        btn_signin.setOnAction(event -> SceneHandler.changeScene(event, "/final_project_socket/fxml/Sign_In.fxml", "Sign In!", null, null));
+        btn_signin.setOnAction(event -> SceneHandler.changeScene(event, "/final_project_socket/fxml/Sign_In.fxml", "Sign In!", null, null, null));
     }
 }

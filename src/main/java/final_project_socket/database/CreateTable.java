@@ -39,7 +39,9 @@ public class CreateTable {
                     "level INT CHECK (level BETWEEN 1 AND 10)," +
                     "highscore INT(255) DEFAULT 0," +
                     "exp_points INT(255) DEFAULT 0," +
-                    "FOREIGN KEY (player_id) REFERENCES tblusers(userid))";
+                    "FOREIGN KEY (player_id) REFERENCES tblusers(userid), " +
+                    "profileimage TINYINT(255) DEFAULT 0," +
+                    "datejoined TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
             statement.execute(query4);
 
             System.out.println("Table created successfully.");

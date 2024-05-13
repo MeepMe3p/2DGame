@@ -1,15 +1,14 @@
 package final_project_socket.socket;
 
-import final_project_socket.database.MySQLConnector;
-import final_project_socket.fxml_controller.ChatBoxController;
-import javafx.scene.layout.VBox;
-
 import java.io.*;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import final_project_socket.database.MySQLConnector;
+import final_project_socket.fxml_controller.ChatBoxController;
+import javafx.scene.layout.VBox;
 
 /*
     #########################################################################################################

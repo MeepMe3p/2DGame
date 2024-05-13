@@ -2,14 +2,11 @@ package final_project_socket.handler;
 
 import com.example.flat2d.DesignPatterns.User;
 import final_project_socket.database.MySQLConnector;
+import final_project_socket.socket.Client;
 import javafx.event.ActionEvent;
-
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /*
     #########################################################################################################
@@ -26,9 +23,11 @@ public class AuthenticationHandler {
         AlertHandler alert = new AlertHandler();
         try (Connection connection = MySQLConnector.getConnection();
              PreparedStatement psCheckUserExists = connection.prepareStatement("SELECT * FROM tblusers WHERE username = ?");
-             PreparedStatement psInsert = connection.prepareStatement("INSERT INTO tblusers (username, password) VALUES (?, ?)")) {
-            psCheckUserExists.setString(1, username);
+             PreparedStatement psInsertUser = connection.prepareStatement("INSERT INTO tblusers (username, password) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement psInsertProfile = connection.prepareStatement("INSERT INTO tblprofile (player_id, player_name) VALUES (?, ?)")) {
 
+            // Check if the username already exists
+            psCheckUserExists.setString(1, username);
             try (ResultSet resultSet = psCheckUserExists.executeQuery()) {
                 if (resultSet.next()) {
                     alert.error("Sign up attempt", "User already exists!");
@@ -36,11 +35,22 @@ public class AuthenticationHandler {
                 }
             }
 
-            psInsert.setString(1, username);
-            psInsert.setString(2, password);
-            psInsert.executeUpdate();
+            psInsertUser.setString(1, username);
+            psInsertUser.setString(2, password);
+            psInsertUser.executeUpdate();
 
-            SceneHandler.changeScene(event, "/final_project_socket/fxml/Sign_In.fxml", "Sign In!", null, null);
+            try (ResultSet generatedKeys = psInsertUser.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int player_id = generatedKeys.getInt(1);
+                    psInsertProfile.setInt(1, player_id);
+                    psInsertProfile.setString(2, username);
+                    psInsertProfile.executeUpdate();
+                    alert.information("Success", "You have successfully signed up!");
+                    SceneHandler.changeScene(event, "/final_project_socket/fxml/Sign_In.fxml", "Sign In!", null, null, null);
+                } else {
+                    throw new SQLException("Failed to get generated keys, no userid obtained.");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             alert.error("SQLException", "An error occurred. Please try again.");
@@ -66,14 +76,15 @@ public class AuthenticationHandler {
                     return;
                 }
 
-                Socket socket = new Socket("localhost", 9806);
                 if (retrievedPassword.equals(password)) {
                     try (PreparedStatement statement = connection.prepareStatement("UPDATE tblusers SET is_online = ? WHERE userid = ?")) {
                         statement.setBoolean(1, true);
                         statement.setInt(2, userId);
                         statement.executeUpdate();
                     }
-                    SceneHandler.changeScene(event, "/final_project_socket/fxml/Chat_Box.fxml", "Welcome!", username, socket);
+                    Socket socket = new Socket("localhost", 9806);
+                    Client client = new Client(socket, username);
+                    SceneHandler.changeScene(event, "/final_project_socket/fxml/Chat_Box.fxml", "Welcome!", username, socket, client);
                 } else {
                     alert.error("Failed to sign in", "Provided credentials are incorrect!");
                 }
@@ -85,7 +96,6 @@ public class AuthenticationHandler {
             throw new RuntimeException(e);
         }
     }
-
 
     // This Method is temporary
     public static Boolean userCheckerMethod(String username, String password) {
