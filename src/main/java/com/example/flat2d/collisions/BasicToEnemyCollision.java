@@ -10,6 +10,7 @@ import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.Config;
 import com.example.flat2d.Misc.EntityType;
+import com.example.flat2d.components.EnemyComponent.BasicEnemyComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -90,8 +91,9 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 e = spawn("BigExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
                 e.setPosition(enemy.getCenter()); break;
         }
-        enemy.setVisible(false);
-        enemy.removeFromWorld();
+        enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
+//        enemy.setVisible(false);
+//        enemy.removeFromWorld();
     }
 
 

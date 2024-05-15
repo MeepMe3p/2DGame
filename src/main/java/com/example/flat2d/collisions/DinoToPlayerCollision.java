@@ -18,7 +18,6 @@ public class DinoToPlayerCollision extends CollisionHandler {
     protected void onCollisionBegin(Entity player, Entity enemy) {
 //        run(() -> {
             enemy.getComponent(BossComponent.class).attack(enemy);
-            getGameScene().getViewport().shakeTranslational(50);
 //            return null;
 //        }, Duration.seconds(4));
     }

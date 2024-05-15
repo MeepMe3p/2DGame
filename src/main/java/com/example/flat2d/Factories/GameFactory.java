@@ -106,6 +106,7 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.circle(10)))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(data.get("direction"), BASICSKILL_MOV_SPEED))
+//                .with(new ProjectileComponent(new Point2D(1,0), BASICSKILL_MOV_SPEED))
                 .with(new BasicComponent())
 
                 .with(expireClean)

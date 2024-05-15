@@ -12,10 +12,13 @@ public final class Config {
     public static final Duration SHEEP_SPAWN_INTERVAL = Duration.seconds(15);
     public static final Duration TURTLE_SPAWN_INTERVAL = Duration.seconds(20);
     public static final Duration BOMBSQUARE_SPAWN_INTERVAL = Duration.seconds(25);
-//    HELL BEAST IS THE EXPLODING THING
+    public static final Duration BOSS1_SPAWN_TIME = Duration.seconds(61);
+
     public static final Duration HELL_HOUND_SPAWN_INTERVAL = Duration.seconds(3);
     public static final Duration WAVE_SPAWN_INTERVAL = Duration.seconds(60);
     public static final Duration FORESKIN_DRAGON_SPAWN_INTERVAL = Duration.seconds(10);
+
+    public  static final Duration FIRST_WAVE = Duration.seconds(45);
 //  SPAWNING INTERVALS OF EXP AND SKILLS AND STUFF
     public static final Duration SMALL_EXP_SPAWN_INTERVAL = Duration.seconds(0.25);
     public static final Duration MEDIUM_EXP_SPAWN_INTERVAL = Duration.seconds(1);
@@ -28,6 +31,7 @@ public final class Config {
     public static final Duration STACK_SPAWN_INTERVAL = Duration.seconds(2);
     public static final Duration QUEUE_SPAWN_INTERVAL = Duration.seconds(10);
     public static final Duration BASIC_DELAY = Duration.seconds(0.11);
+
 
     //  DAMAGE OF SKILLS
     public static final int BASIC_DEFAULT_DMG = 3;
@@ -44,6 +48,7 @@ public final class Config {
     public static final int CUTE_BOMB_MOVEMENT_SPEED = 25;
     public static final int DINO_BOSS_MOVEMENT_SPEED = 50;
     public static final int DINO_BOSS_CHARGE_SPEED = 100;
+
 
     public static final int FORESKIN_DRAGON_SPEED = 50;
 

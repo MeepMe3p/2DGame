@@ -1,5 +1,6 @@
 package com.example.flat2d.Factories;
 
+import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
@@ -13,9 +14,8 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemyComponent.*;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -38,14 +38,14 @@ public class EnemyFactory implements EntityFactory {
 //                .at(player.add(new Point2D(FXGL.random(-720,720),FXGL.random(-720,720))))
                 .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
 
-                .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(56,32)))
+                .bbox(new HitBox("hitbox", new Point2D(39,26), BoundingShape.box(35,57)))
 //                .viewWithBBox(new Rectangle(32,32,Color.RED))
 //                .viewWithBBox(new Rectangle(32,32, Color.BLUE))
-                .with(new WolfComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new TenshiComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new BasicEnemyComponent(1))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(WOLF_HP))
-//                .with(new PhysicsComponent())
-//                .with(new ParticleComponent(emitter))
+
                 .build();
         e.setReusable(true);
 
@@ -55,10 +55,7 @@ public class EnemyFactory implements EntityFactory {
             public void run() {
 //                getGameWorld().addEntityFactory(new EffectFactory());
                 Entity em = spawn("EnemyHit");
-                em.setPosition(e.getPosition());
-
-                spawnDeath(em,e.getCenter());
-
+                em.setPosition(e.getCenter());
             }
         });
         return e;
@@ -132,7 +129,7 @@ public class EnemyFactory implements EntityFactory {
                 .type(ENEMY)
                 .bbox(new HitBox(BoundingShape.box(92,64)))
                 .with(new HealthIntComponent())
-                .with(new SheepComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
+                .with(new PenguinComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new ExpireCleanComponent(Duration.seconds(15)))
                 .with(new CollidableComponent())
                 .build();
@@ -146,6 +143,7 @@ public class EnemyFactory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(-21,-20),BoundingShape.circle(90)))
                 .with(new CuteBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
                 .with(new HealthIntComponent())
+                .with(new BombComponent(1))
                 .with(new CollidableComponent(true))
                 .build();
         e.setReusable(true);
@@ -169,8 +167,20 @@ public class EnemyFactory implements EntityFactory {
                 .type(MID_BOMB)
                 .bbox(new HitBox(new Point2D(-100,-100),BoundingShape.circle(120)))
                 .with(new MidBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new BombComponent(2))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent())
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("MahouShoujo")
+    public Entity spawnMahouShoujo(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .with(new CollidableComponent())
+                .with(new ShoujoComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new RangeComponent(1))
                 .build();
         e.setReusable(true);
         return e;

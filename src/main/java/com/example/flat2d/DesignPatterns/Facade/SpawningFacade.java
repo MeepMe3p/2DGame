@@ -1,12 +1,9 @@
 package com.example.flat2d.DesignPatterns.Facade;
 
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.RaycastResult;
-import com.example.flat2d.GameApp;
-import com.example.flat2d.components.EnemyComponent.SheepComponent;
+import com.example.flat2d.components.EnemyComponent.RangeComponent;
+import com.example.flat2d.components.EnemyComponent.PenguinComponent;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -14,60 +11,84 @@ import java.util.ArrayList;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class SpawningFacade {
+
     Entity player;
 
     public SpawningFacade(Entity player) {
         this.player = player;
     }
 
-    public void spawnTortols(){
-        spawnSquare("Turtle");
+    public ArrayList<Entity> spawnTortols(){
+        return spawnSquare("Turtle");
     }
 
-    public void spawnSheep() {
+    public ArrayList<Entity> spawnSheep() {
+        ArrayList<Entity> entities = new ArrayList<>();
         var tr2 = spawn("Sheep");
-        tr2.setPosition(new Point2D(player.getX()+240,player.getY()-100));
-        tr2.getComponent(SheepComponent.class).setDirection(1);
+        tr2.setPosition(new Point2D(player.getX()+400,player.getY()-100));
+        tr2.getComponent(PenguinComponent.class).setDirection(1);
         var tr3 = spawn("Sheep");
-        tr3.setPosition(new Point2D(player.getX()+240,player.getY()-250));
-        tr3.getComponent(SheepComponent.class).setDirection(1);
+        tr3.setPosition(new Point2D(player.getX()+400,player.getY()-250));
+        tr3.getComponent(PenguinComponent.class).setDirection(1);
         var tr5 = spawn("Sheep");
-        tr5.setPosition(new Point2D(player.getX()+240,player.getY()+100));
-        tr5.getComponent(SheepComponent.class).setDirection(1);
+        tr5.setPosition(new Point2D(player.getX()+400,player.getY()+100));
+        tr5.getComponent(PenguinComponent.class).setDirection(1);
         var tr6 = spawn("Sheep");
-        tr6.setPosition(new Point2D(player.getX()+240,player.getY()+250));
-        tr6.getComponent(SheepComponent.class).setDirection(1);
-
+        tr6.setPosition(new Point2D(player.getX()+400,player.getY()+250));
+        tr6.getComponent(PenguinComponent.class).setDirection(1);
+        entities.add(tr2);  entities.add(tr3);  entities.add(tr5);  entities.add(tr6);
 
 
         var tl2 = spawn("Sheep");
-        tl2.setPosition(new Point2D(player.getX()-240,player.getY()));
+        tl2.setPosition(new Point2D(player.getX()-400,player.getY()));
         tl2.setScaleX(-1);
-        tl2.getComponent(SheepComponent.class).setDirection(-1);
+        tl2.getComponent(PenguinComponent.class).setDirection(-1);
         var tl3 = spawn("Sheep");
-        tl3.setPosition(new Point2D(player.getX()-240,player.getY()-175));
+        tl3.setPosition(new Point2D(player.getX()-400,player.getY()-175));
         tl3.setScaleX(-1);
-        tl3.getComponent(SheepComponent.class).setDirection(-1);
+        tl3.getComponent(PenguinComponent.class).setDirection(-1);
         var tl5 = spawn("Sheep");
-        tl5.setPosition(new Point2D(player.getX()-240,player.getY()+175));
+        tl5.setPosition(new Point2D(player.getX()-400,player.getY()+175));
         tl5.setScaleX(-1);
-        tl5.getComponent(SheepComponent.class).setDirection(-1);
+        tl5.getComponent(PenguinComponent.class).setDirection(-1);
+        entities.add(tl2);  entities.add(tl3);  entities.add(tl5);
+
 
         runOnce(()->{
-            tr2.getComponent(SheepComponent.class).setCharging(true);
-            tr3.getComponent(SheepComponent.class).setCharging(true);
-            tr5.getComponent(SheepComponent.class).setCharging(true);
-            tr6.getComponent(SheepComponent.class).setCharging(true);
-            tl2.getComponent(SheepComponent.class).setCharging(true);
-            tl3.getComponent(SheepComponent.class).setCharging(true);
-            tl5.getComponent(SheepComponent.class).setCharging(true);
+            tr2.getComponent(PenguinComponent.class).setCharging(true);
+            tr3.getComponent(PenguinComponent.class).setCharging(true);
+            tr5.getComponent(PenguinComponent.class).setCharging(true);
+            tr6.getComponent(PenguinComponent.class).setCharging(true);
+            tl2.getComponent(PenguinComponent.class).setCharging(true);
+            tl3.getComponent(PenguinComponent.class).setCharging(true);
+            tl5.getComponent(PenguinComponent.class).setCharging(true);
 
             return null;
         }, Duration.seconds(1.5));
+        return entities;
+    }
+    public ArrayList<Entity> spawnEasyRanged(){
+        ArrayList<Entity> entities = new ArrayList<>();
+        var er1 = spawn("MahouShoujo");
+        er1.setPosition(new Point2D(player.getX()+200,player.getY()));
+        var er2 = spawn("MahouShoujo");
+        er2.setPosition(new Point2D(player.getX()-200,player.getY()));
+
+        runOnce(()->{
+            er1.getComponent(RangeComponent.class).attack(er1);
+            er2.getComponent(RangeComponent.class).attack(er2);
+//            spawn("Range1Atk",er1.getPosition());
+            return null;
+        }, Duration.seconds(5));
+        entities.add(er1);
+        entities.add(er2);
+
+        return entities;
     }
 
-    public void spawnCuteBomb(){
-        spawnSquare("CuteBomb");
+
+    public ArrayList<Entity> spawnCuteBomb(){
+        return spawnSquare("CuteBomb");
     }
 /**
  *  Made this an array list in case call methods and stuff

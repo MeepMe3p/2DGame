@@ -111,6 +111,7 @@ public class DinoBossComponent extends Component {
         this.isAttacking = isAttacking;
         isLeft = false;
         isRight = false;
+        getGameScene().getViewport().shakeTranslational(50);
 
     }
 }

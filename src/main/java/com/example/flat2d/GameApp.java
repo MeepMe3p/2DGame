@@ -20,12 +20,9 @@ import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Config;
 import com.example.flat2d.collisions.*;
-import com.example.flat2d.components.EnemyComponent.WolfComponent;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
-import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -212,6 +209,7 @@ public class GameApp extends GameApplication {
 
         player = spawn("Player");
         spawner =  new SpawningFacade(player);
+
 //            player.setOnNotActive();
 //        -------- FOR THE CAMERA TO FOCUS AT THE PLAYER  ------------
         getGameScene().getViewport().setLazy(true);
@@ -436,34 +434,60 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-//        runOnce(()->{
-////            enemies.add(spawn("Wolf"));
+        runOnce(()->{
+//            enemies.add(spawn("Wolf"));
 //            var e = spawn("Wolf");
 //        var b = spawn("MidBomb");
+            return null;
+        },WOLF_SPAWN_INTERVAL);
+        run(()->{
+            enemies.addAll(spawner.spawnTortols());
+
 //            return null;
-//        },WOLF_SPAWN_INTERVAL);
-//        run(()->{
-//            spawner.spawnTortols();
-////            return null;
-//        },TURTLE_SPAWN_INTERVAL);
-//        run(()->{
-//            spawner.spawnCuteBomb();
-//
-////            return null;
-//        },BOMBSQUARE_SPAWN_INTERVAL);
-//        run(()->{
-//           spawner.spawnSheep();
-////            return null;
-//        },SHEEP_SPAWN_INTERVAL);
+        },TURTLE_SPAWN_INTERVAL);
+        run(()->{
+            enemies.addAll(spawner.spawnCuteBomb());
+
+//            return null;
+        },BOMBSQUARE_SPAWN_INTERVAL);
+        run(()->{
+           enemies.addAll(spawner.spawnSheep());
+//            return null;
+        },SHEEP_SPAWN_INTERVAL);
         runOnce(()->{
             spawn("Boss1");
-
+            getGameWorld().removeEntities(enemies);
             return null;
-        },Duration.seconds(2));
+        },BOSS1_SPAWN_TIME);
+//        runOnce(()->{
+//
+//            spawner.spawnEasyRanged();
+////            var e= spawn("EnemyHit");
+////            e.setPosition();
+////            spawn("Range1Atk", aa.getLast().getPosition());
+//            return null;
+//        }, Duration.seconds(2));
 
-//        run(()->{
-//            enemies.add(spawn("Wolf"));
-//        },WOLF_SPAWN_INTERVAL);
+        run(()->{
+            enemies.add(spawn("Wolf"));
+        },WOLF_SPAWN_INTERVAL);
+        runOnce(()-> {
+            System.out.println("First Wave");
+            enemies.clear();
+            runOnce(() -> {
+                enemies.addAll(spawner.spawnSheep());
+                return null;
+            }, Duration.seconds(1));
+            runOnce(() -> {
+                enemies.addAll(spawner.spawnTortols());
+                return null;
+            }, Duration.seconds(3));
+            runOnce(() -> {
+                enemies.addAll(spawner.spawnCuteBomb());
+                return null;
+            }, Duration.seconds(5));
+            return null;
+        }, FIRST_WAVE);
 
 //        run(()->{
 //            spawn("HellHound");

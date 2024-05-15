@@ -15,7 +15,7 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 
-public class SheepComponent extends Component {
+public class PenguinComponent extends Component {
     private Entity player;
     private int speed;
     private LocalTimer adjustDirectionTimer = FXGL.newLocalTimer();
@@ -23,20 +23,24 @@ public class SheepComponent extends Component {
     Line range;
     private int direction;
     private boolean isCharging = false;
+    private boolean isDead = false;
 
 
 
     AnimatedTexture texture;
-    AnimationChannel charge_anim;
-    public SheepComponent(Entity player, int speed){
+    AnimationChannel charge_anim, idle_anim;
+    public PenguinComponent(Entity player, int speed){
         this.player = player;
         this.speed = speed;
 
 //        Image img = image("midBombWalk.png");
+        Image idle_Left = image("charger/PengIdleLeft.png");
+        Image charge = image("charger/PengChargeLeft.png");
         Image img = image("charger/sheepCharge.png");
-        charge_anim = new AnimationChannel(img, 3,106,69, Duration.seconds(0.5),0,2);
-//        charge_anim = new AnimationChannel(img, 6,63,59, Duration.seconds(2),0,5);
-        texture = new AnimatedTexture(charge_anim);
+        idle_anim = new AnimationChannel(idle_Left,5,100,100, Duration.seconds(1),0,4);
+        charge_anim = new AnimationChannel(charge, 5,100,100, Duration.seconds(0.5),0,4);
+        texture = new AnimatedTexture(idle_anim);
+        texture.setRotate(-20);
         texture.loop();
     }
 
@@ -44,6 +48,10 @@ public class SheepComponent extends Component {
     public void onUpdate(double tpf) {
         if(isCharging){
             move();
+            if(texture.getAnimationChannel() != charge_anim){
+
+                texture.loopAnimationChannel(charge_anim);
+            }
         }
     }
 
@@ -63,6 +71,7 @@ public class SheepComponent extends Component {
 
 
     }
+
     private void move(){
         if(direction == 1){
             entity.translate(new Point2D(-1,0));
@@ -82,6 +91,9 @@ public class SheepComponent extends Component {
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+    public void setDead(boolean isDead) {
+        this.isDead = isDead;
     }
 
 }

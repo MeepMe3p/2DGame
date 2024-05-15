@@ -13,6 +13,7 @@ import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
+import static com.example.flat2d.GameApp.enemies;
 
 public class OratriceToEnemy extends CollisionHandler {
     public OratriceToEnemy() {
@@ -65,6 +66,7 @@ public class OratriceToEnemy extends CollisionHandler {
                 e.setPosition(enemy.getCenter()); break;
         }
         enemy.setVisible(false);
+        enemies.remove(enemy);
         enemy.removeFromWorld();
     }
 }

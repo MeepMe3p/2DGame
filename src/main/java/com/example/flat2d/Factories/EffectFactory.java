@@ -2,7 +2,9 @@ package com.example.flat2d.Factories;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.EntityBuilder;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -10,13 +12,17 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.particle.ParticleComponent;
 import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.texture.Texture;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.function.Function;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.random;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class EffectFactory implements EntityFactory {
     @Spawns("EnemyHit")
@@ -40,6 +46,18 @@ public class EffectFactory implements EntityFactory {
         var e = new EntityBuilder()
                 .with(new ParticleComponent(emitter))
                 .with(new ExpireCleanComponent(Duration.seconds(2)))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("Range1Atk")
+    public Entity spawnSkill1(SpawnData data){
+        Image skill = image("effect/ProjectilePink.png");
+        AnimationChannel skill_anim = new AnimationChannel(skill, 5, 50, 50, Duration.seconds(1),0,4);
+
+        var e = entityBuilder()
+                .view(new AnimatedTexture(skill_anim).loop())
+                .with(new ProjectileComponent(new Point2D(1,0),2))
                 .build();
         e.setReusable(true);
         return e;
