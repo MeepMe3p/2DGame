@@ -178,9 +178,20 @@ public class EnemyFactory implements EntityFactory {
     public Entity spawnMahouShoujo(SpawnData data){
         var e = entityBuilder()
                 .type(ENEMY)
+                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,140)))
                 .with(new CollidableComponent())
                 .with(new ShoujoComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
                 .with(new RangeComponent(1))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("LastBomb")
+    public Entity spawnLastBomb(SpawnData data){
+        var e = entityBuilder()
+                .with(new LastBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new BombComponent(2))
+                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,90)))
                 .build();
         e.setReusable(true);
         return e;

@@ -6,7 +6,6 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
-import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -20,7 +19,7 @@ public class DinoBossComponent extends Component {
     AnimationChannel walkLeft_anim, walkRight_anim, attack_anim;
     Entity player;
     int speed;
-    boolean isLeft, isRight;
+    boolean isMoving, isRight;
     boolean isAttacking = false;
 
     Point2D velocity = Point2D.ZERO;
@@ -30,21 +29,20 @@ public class DinoBossComponent extends Component {
     public DinoBossComponent(Entity player, int speed) {
         this.player = player;
         this.speed = speed;
-        Image walk_left = image("boss/LeftDino.png");
-        Image walk_right = image("boss/RightDino.png");
-        Image attack = image("boss/RightFrontWholesomeOneAttack200x200.png");
+        Image walk_left = image("boss/DinoMove.png");
+        Image attack = image("boss/DinoAttack(1).png");
 
-        walkRight_anim = new AnimationChannel(walk_right,6,200,200, Duration.seconds(1),0,5);
-        walkLeft_anim = new AnimationChannel(walk_left,6,200,200, Duration.seconds(1),0,5);
-        attack_anim = new AnimationChannel(attack,6,200,200, Duration.seconds(1),0,5);
+        walkRight_anim = new AnimationChannel(walk_left,6,300,300, Duration.seconds(1),0,5);
+        attack_anim = new AnimationChannel(attack,6,300,300, Duration.seconds(1),0,5);
 
         texture = new AnimatedTexture(walkRight_anim);
-        texture.loopReverse();
+        texture.loop();
     }
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         entity.addComponent(new BossComponent(1));
+        isMoving = true;
         adjustVelocity(0.016);
 
 
@@ -52,52 +50,46 @@ public class DinoBossComponent extends Component {
     @Override
     public void onUpdate(double tpf) {
 //      if the boss is attacking sets velocity to zero to make it stop moving
+//        texture.setFitHeight(300);
+//        texture.setFitWidth(300);
         if(direction.elapsed(delay)){
-//            System.out.println(isAttacking);
             if(isAttacking){
                 velocity = Point2D.ZERO;
-//                System.out.println(velocity);
             }else{
                 adjustVelocity(tpf);
             }
             direction.capture();
         }
-        if(isLeft){
-            if(texture.getAnimationChannel() != walkLeft_anim){
-                texture.loopAnimationChannel(walkLeft_anim);
-            }
-        }else if(isRight){
-            if(texture.getAnimationChannel() != walkRight_anim){
+        if(isMoving) {
+            if (texture.getAnimationChannel() != walkRight_anim) {
                 texture.loopAnimationChannel(walkRight_anim);
             }
-        }else if(isAttacking){
+            entity.translate(velocity);
+        }
+        else if(isAttacking){
             if(texture.getAnimationChannel() != attack_anim){
                 texture.loopAnimationChannel(attack_anim);
             }
             velocity = Point2D.ZERO;
-//            System.out.println("called");
 
             runOnce(()->{
-
                 isAttacking = false;
                 entity.getViewComponent().removeChild(explosion);
+                isMoving = true;
                 return null;
             }, Duration.seconds(1.2));
         }
-        texture.setFitHeight(300);
-        texture.setFitWidth(300);
-        entity.translate(velocity);
+
     }
 
     private void adjustVelocity(double v) {
         Point2D dir = player.getCenter().subtract(entity.getCenter()).normalize().multiply(speed);
         if(dir.getX() > 0){
-            isRight = true;
-            isLeft = false;
+            entity.setScaleX(-1);
         }else{
-            isLeft = true;
-            isRight = false;
+            entity.setScaleX(1);
         }
+
         velocity = velocity.add(dir).multiply(v);
     }
     public void setAttacking(boolean isAttacking){
@@ -109,8 +101,8 @@ public class DinoBossComponent extends Component {
         explosion.loop();
         entity.getViewComponent().addChild(explosion);
         this.isAttacking = isAttacking;
-        isLeft = false;
-        isRight = false;
+        isMoving = false;
+
         getGameScene().getViewport().shakeTranslational(50);
 
     }

@@ -6,11 +6,13 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.example.flat2d.Factories.GameFactory;
+import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
 
 public class ShoujoComponent extends Component {
     AnimatedTexture texture;
@@ -21,6 +23,7 @@ public class ShoujoComponent extends Component {
     boolean isAttacking, isIdle, isMoving;
 
     public ShoujoComponent(Entity player, int speed) {
+
         this.player = player;
         this.speed = speed;
 
@@ -38,12 +41,15 @@ public class ShoujoComponent extends Component {
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
         isIdle = true;
+        entity.setScaleOrigin(new Point2D(10,50));
+
+
+
     }
 
     @Override
     public void onUpdate(double tpf) {
-
-
+//        texture.setX(-75);
         if(isIdle){
             if(texture.getAnimationChannel()!= charge_anim){
                 texture.loopAnimationChannel(charge_anim);
@@ -54,20 +60,41 @@ public class ShoujoComponent extends Component {
             if(texture.getAnimationChannel() != shoot_anim){
                 texture.loopAnimationChannel(shoot_anim);
             }
-            texture.setX(-75);
             texture.setFitWidth(240);
             texture.setFitHeight(185);
         }
+            getDirection();
+
     }
     public void setAttacking(boolean isAttacking){
         this.isAttacking = isAttacking;
 //        todo projectile component and direction stuff
-        var e= spawn("Range1Atk");
-        e.setPosition(entity.getPosition());
-//        var e = spawn("BasicSkill", entity.getPosition());
-
-//        GameFactory.respawnSkill(e,new SpawnData(e.getPosition()));
+        entity.setScaleOrigin(new Point2D(80,0));
         isIdle = false;
+        runOnce(()-> {
+            var e = spawn("Range1Atk");
+            e.setPosition(entity.getPosition());
+            e.addComponent(new RangeFirstComponent(player, BASICSKILL_MOV_SPEED));
+            this.isAttacking = false;
+            entity.setScaleOrigin(new Point2D(10, 50));
+
+            isIdle = true;
+            return null;
+        },Duration.seconds(2));
     }
+    private void getDirection(){
+        Point2D dir = player.getCenter().subtract(entity.getCenter()).normalize().multiply(1);
+        if(dir.getX() < 0){
+            entity.setScaleX(1);
+//            System.out.println("aaa");
+//            System.out.println(entity.getPosition());
+        }else{
+
+            entity.setScaleX(-1);
+        }
+
+//        System.out.println(dir);
+    }
+
 
 }

@@ -13,6 +13,7 @@ public class RangeComponent extends Component {
     }
     public void attack(Entity range){
         if(type == 1){
+
             range.getComponent(ShoujoComponent.class).setAttacking(true);
         }
     }

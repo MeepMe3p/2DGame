@@ -70,18 +70,19 @@ public class SpawningFacade {
     public ArrayList<Entity> spawnEasyRanged(){
         ArrayList<Entity> entities = new ArrayList<>();
         var er1 = spawn("MahouShoujo");
-        er1.setPosition(new Point2D(player.getX()+200,player.getY()));
+        er1.setPosition(new Point2D(player.getX()+350,player.getY()+300));
+//        System.out.println(er1.getPosition());
         var er2 = spawn("MahouShoujo");
-        er2.setPosition(new Point2D(player.getX()-200,player.getY()));
+        er2.setPosition(new Point2D(player.getX()-350,player.getY()-300));
 
-        runOnce(()->{
+        run(()->{
             er1.getComponent(RangeComponent.class).attack(er1);
             er2.getComponent(RangeComponent.class).attack(er2);
 //            spawn("Range1Atk",er1.getPosition());
             return null;
         }, Duration.seconds(5));
         entities.add(er1);
-        entities.add(er2);
+//        entities.add(er2);
 
         return entities;
     }

@@ -3,6 +3,7 @@ package com.example.flat2d.components.EnemyComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
@@ -13,6 +14,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.runOnce;
 
 
 public class CuteBombComponent extends Component {
@@ -20,7 +22,7 @@ public class CuteBombComponent extends Component {
     int speed;
     AnimationChannel walk_anim, explode_anim;
     AnimatedTexture texture;
-    public boolean isMoving, isExploding;
+    private boolean isMoving, isExploding;
     Circle inner = new Circle();
     Circle outer = new Circle();
     double radius = 0;
@@ -43,6 +45,7 @@ public class CuteBombComponent extends Component {
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
+        isMoving = true;
         adjustVelocity(0.016);
 
         outer.setRadius(90);
@@ -71,18 +74,19 @@ public class CuteBombComponent extends Component {
         if(adjustDirection.elapsed(delay)){
             adjustVelocity(tpf);
             adjustDirection.capture();
-            if(isExploding && radius < 90){
-                inner.setRadius(radius+=5);
-
+            if(isExploding && radius < 90) {
+                inner.setRadius(radius += 10);
             }
-            if(radius >= 90){
-                if(texture.getAnimationChannel() != explode_anim){
+            if(radius >= 90) {
+
+                if (texture.getAnimationChannel() != explode_anim) {
                     texture.loopAnimationChannel(explode_anim);
                 }
             }
-
         }
-        entity.translate(velocity);
+        if(isMoving) {
+            entity.translate(velocity);
+        }
 
     }
 
@@ -103,4 +107,17 @@ public class CuteBombComponent extends Component {
     }
 
 
+    public void setExploding(boolean exploding) {
+        isExploding = exploding;
+        isMoving = false;
+        entity.removeComponent(CollidableComponent.class);
+        runOnce(()->{
+            entity.removeFromWorld();
+            return null;
+        },Duration.seconds(2));
+    }
+
+    public boolean isExploding() {
+        return isExploding;
+    }
 }

@@ -8,6 +8,7 @@ import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
@@ -435,30 +436,32 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
         runOnce(()->{
-//            enemies.add(spawn("Wolf"));
-//            var e = spawn("Wolf");
-//        var b = spawn("MidBomb");
+//            enemies.add(spawn("LastBomb"));
+
+
+            spawner.spawnEasyRanged();
+
             return null;
         },WOLF_SPAWN_INTERVAL);
-        run(()->{
-            enemies.addAll(spawner.spawnTortols());
-
+//        run(()->{
+//            enemies.addAll(spawner.spawnTortols());
+//
+////            return null;
+//        },TURTLE_SPAWN_INTERVAL);
+//        run(()->{
+//            enemies.addAll(spawner.spawnCuteBomb());
+//
+////            return null;
+//        },BOMBSQUARE_SPAWN_INTERVAL);
+//        run(()->{
+//           enemies.addAll(spawner.spawnSheep());
+////            return null;
+//        },SHEEP_SPAWN_INTERVAL);
+//        runOnce(()->{
+//            spawn("Boss1");
+//            getGameWorld().removeEntities(enemies);
 //            return null;
-        },TURTLE_SPAWN_INTERVAL);
-        run(()->{
-            enemies.addAll(spawner.spawnCuteBomb());
-
-//            return null;
-        },BOMBSQUARE_SPAWN_INTERVAL);
-        run(()->{
-           enemies.addAll(spawner.spawnSheep());
-//            return null;
-        },SHEEP_SPAWN_INTERVAL);
-        runOnce(()->{
-            spawn("Boss1");
-            getGameWorld().removeEntities(enemies);
-            return null;
-        },BOSS1_SPAWN_TIME);
+//        },BOSS1_SPAWN_TIME);
 //        runOnce(()->{
 //
 //            spawner.spawnEasyRanged();
@@ -468,26 +471,26 @@ public class GameApp extends GameApplication {
 //            return null;
 //        }, Duration.seconds(2));
 
-        run(()->{
-            enemies.add(spawn("Wolf"));
-        },WOLF_SPAWN_INTERVAL);
-        runOnce(()-> {
-            System.out.println("First Wave");
-            enemies.clear();
-            runOnce(() -> {
-                enemies.addAll(spawner.spawnSheep());
-                return null;
-            }, Duration.seconds(1));
-            runOnce(() -> {
-                enemies.addAll(spawner.spawnTortols());
-                return null;
-            }, Duration.seconds(3));
-            runOnce(() -> {
-                enemies.addAll(spawner.spawnCuteBomb());
-                return null;
-            }, Duration.seconds(5));
-            return null;
-        }, FIRST_WAVE);
+//        run(()->{
+//            enemies.add(spawn("Wolf"));
+//        },WOLF_SPAWN_INTERVAL);
+//        runOnce(()-> {
+//            System.out.println("First Wave");
+//            enemies.clear();
+//            runOnce(() -> {
+//                enemies.addAll(spawner.spawnSheep());
+//                return null;
+//            }, Duration.seconds(1));
+//            runOnce(() -> {
+//                enemies.addAll(spawner.spawnTortols());
+//                return null;
+//            }, Duration.seconds(3));
+//            runOnce(() -> {
+//                enemies.addAll(spawner.spawnCuteBomb());
+//                return null;
+//            }, Duration.seconds(5));
+//            return null;
+//        }, FIRST_WAVE);
 
 //        run(()->{
 //            spawn("HellHound");

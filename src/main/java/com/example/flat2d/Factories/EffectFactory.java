@@ -14,7 +14,8 @@ import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import com.almasb.fxgl.texture.Texture;
+import com.example.flat2d.GameApp;
+import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -23,6 +24,8 @@ import javafx.util.Duration;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
+import static com.example.flat2d.Misc.Config.CUTE_BOMB_MOVEMENT_SPEED;
 
 public class EffectFactory implements EntityFactory {
     @Spawns("EnemyHit")
@@ -45,6 +48,7 @@ public class EffectFactory implements EntityFactory {
         });
         var e = new EntityBuilder()
                 .with(new ParticleComponent(emitter))
+//                .with(new ProjectileComponent(new Point2D(1,0),BASICSKILL_MOV_SPEED))
                 .with(new ExpireCleanComponent(Duration.seconds(2)))
                 .build();
         e.setReusable(true);
@@ -58,6 +62,7 @@ public class EffectFactory implements EntityFactory {
         var e = entityBuilder()
                 .view(new AnimatedTexture(skill_anim).loop())
                 .with(new ProjectileComponent(new Point2D(1,0),2))
+                .with(new ExpireCleanComponent(Duration.seconds(8)))
                 .build();
         e.setReusable(true);
         return e;
