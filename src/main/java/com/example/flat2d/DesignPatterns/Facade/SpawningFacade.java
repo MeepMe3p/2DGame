@@ -1,6 +1,8 @@
 package com.example.flat2d.DesignPatterns.Facade;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.example.flat2d.components.EnemyComponent.ChargeEnemyComponent;
 import com.example.flat2d.components.EnemyComponent.RangeComponent;
 import com.example.flat2d.components.EnemyComponent.PenguinComponent;
 import javafx.geometry.Point2D;
@@ -9,6 +11,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.Misc.Config.SPAWN_DISTANCE;
 
 public class SpawningFacade {
 
@@ -55,13 +58,13 @@ public class SpawningFacade {
 
 
         runOnce(()->{
-            tr2.getComponent(PenguinComponent.class).setCharging(true);
-            tr3.getComponent(PenguinComponent.class).setCharging(true);
-            tr5.getComponent(PenguinComponent.class).setCharging(true);
-            tr6.getComponent(PenguinComponent.class).setCharging(true);
-            tl2.getComponent(PenguinComponent.class).setCharging(true);
-            tl3.getComponent(PenguinComponent.class).setCharging(true);
-            tl5.getComponent(PenguinComponent.class).setCharging(true);
+            tr2.getComponent(ChargeEnemyComponent.class).attack(tr2);
+            tr3.getComponent(ChargeEnemyComponent.class).attack(tr3);
+            tr5.getComponent(ChargeEnemyComponent.class).attack(tr5);
+            tr6.getComponent(ChargeEnemyComponent.class).attack(tr6);
+            tl2.getComponent(ChargeEnemyComponent.class).attack(tl2);
+            tl3.getComponent(ChargeEnemyComponent.class).attack(tl3);
+            tl5.getComponent(ChargeEnemyComponent.class).attack(tl5);
 
             return null;
         }, Duration.seconds(1.5));
@@ -77,7 +80,7 @@ public class SpawningFacade {
 
         run(()->{
             er1.getComponent(RangeComponent.class).attack(er1);
-            er2.getComponent(RangeComponent.class).attack(er2);
+//            er2.getComponent(RangeComponent.class).attack(er2);
 //            spawn("Range1Atk",er1.getPosition());
             return null;
         }, Duration.seconds(5));
@@ -90,6 +93,34 @@ public class SpawningFacade {
 
     public ArrayList<Entity> spawnCuteBomb(){
         return spawnSquare("CuteBomb");
+    }
+
+    public Entity spawnEnemy(String enemy){
+        Entity e = spawn(enemy);
+        int randy = FXGL.random(1,4);
+        double e_x,e_y;
+        switch(randy){
+            case 1:
+                e_x =  FXGL.random(0,SPAWN_DISTANCE)-(player.getX()-360);
+                e.setPosition(new Point2D(e_x,FXGL.random(player.getY()-360,player.getY()+360)));
+                break;
+            case 2:
+                e_y =  FXGL.random(0,SPAWN_DISTANCE)-(player.getY()-360);
+                e.setPosition(new Point2D(FXGL.random(player.getX()-360,player.getX()+360),e_y));
+                break;
+            case 3:
+                e_x =  FXGL.random(0,SPAWN_DISTANCE)+(player.getX()+360);
+                e.setPosition(new Point2D(e_x,FXGL.random(player.getY()-360,player.getY()+360)));
+                break;
+            case 4:
+                e_y =  FXGL.random(0,SPAWN_DISTANCE)+(player.getY()+360);
+
+                e.setPosition(new Point2D(FXGL.random(player.getX()-360,player.getX()+360),e_y));
+                break;
+
+
+        }
+        return e;
     }
 /**
  *  Made this an array list in case call methods and stuff
@@ -175,6 +206,7 @@ public class SpawningFacade {
 
         return spawned;
     }
+
 
 
 }

@@ -8,7 +8,6 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
-import com.example.flat2d.Factories.EnemyFactory;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -16,10 +15,9 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.SPAWN_DISTANCE;
 
-public class TenshiComponent extends Component {
+public class NormalTenshiComponent extends Component {
     private Point2D velocity = Point2D.ZERO;
     private Entity player;
-    private Entity wolf;
 
     private LocalTimer adjustDirectionTimer = FXGL.newLocalTimer();
     private Duration adjustDelay = Duration.seconds(0.15);
@@ -29,7 +27,7 @@ public class TenshiComponent extends Component {
     private boolean isMoving,isDead, isAttacking;
 
 
-    public TenshiComponent(Entity player, int speed) {
+    public NormalTenshiComponent(Entity player, int speed) {
 
         this.player = player;
         this.speed = speed;
@@ -46,66 +44,9 @@ public class TenshiComponent extends Component {
 
     @Override
     public void onAdded() {
-        wolf = entity;
         isMoving = true;
         entity.setScaleOrigin(new Point2D(50,50));
-        wolf.getViewComponent().addChild(texture);
-
-        //todo this spawnpoint since ebriwan has this i feel like need ni in separate class or a design pattern or something
-        // to remove redundancy kay if magbalik2 mapulan rana
-
-        /* randy returns
-         1 = left of player    = - x & + y is player.getX + 360 (example x is at 360,360 if add 360 sa x 720
-         2 = top of player
-         3 = right of player
-         4 = bottom of player
-         For more information please contact me kay ganahan ko kachat addd me on fb elijah rei
-         go to references */
-
-        int randy = FXGL.random(1,4);
-//        int randy = 4;
-        double x = player.getX() + 360;
-        double y = player.getY() + 360;
-        double e_x,e_y;
-        switch(randy){
-            case 1:
-                e_x =  FXGL.random(0,SPAWN_DISTANCE)-(player.getX()-360);
-                wolf.setPosition(new Point2D(e_x,FXGL.random(player.getY()-360,player.getY()+360)));
-//                System.out.println("left");
-//                System.out.println(wolf.getPosition()+" this is the final postion");
-                break;
-            case 2:
-//                e_y =  FXGL.random(0,SPAWN_DISTANCE)+(player.getY()+360);
-                e_y =  FXGL.random(0,SPAWN_DISTANCE)-(player.getY()-360);
-                wolf.setPosition(new Point2D(FXGL.random(player.getX()-360,player.getX()+360),e_y));
-//                System.out.println("top");
-
-//                System.out.println("Spawn at:"+wolf.getPosition());
-//                System.out.println(wolf.getPosition()+" this is the final postion");
-                break;
-            case 3:
-                e_x =  FXGL.random(0,SPAWN_DISTANCE)+(player.getX()+360);
-                wolf.setPosition(new Point2D(e_x,FXGL.random(player.getY()-360,player.getY()+360)));
-//                System.out.println("right");
-
-//                System.out.println("Spawn at:"+wolf.getPosition());
-//                System.out.println(wolf.getPosition()+" this is the final postion");
-                break;
-            case 4:
-//                e_y =  FXGL.random(0,SPAWN_DISTANCE)-(player.getY()-360);
-                e_y =  FXGL.random(0,SPAWN_DISTANCE)+(player.getY()+360);
-
-                wolf.setPosition(new Point2D(FXGL.random(player.getX()-360,player.getX()+360),e_y));
-//                System.out.println("bot");
-//                System.out.println("Spawn at:"+wolf.getPosition());
-//                System.out.println(wolf.getPosition()+" this is the final postion");
-                break;
-
-
-        }
-//        System.out.println("Spawn at:"+wolf.getPosition());
-
-//        wolf.setPosition(new Point2D(player.getX()-360,player.getY()+360));
+        entity.getViewComponent().addChild(texture);
 
         adjustVelocity(0.016);
 
@@ -115,13 +56,13 @@ public class TenshiComponent extends Component {
     private void adjustVelocity(double v) {
 
         Point2D playerDirection = player.getCenter()
-                .subtract(wolf.getCenter())
+                .subtract(entity.getCenter())
                 .normalize()
                 .multiply(speed);
         if(playerDirection.getX() > 0){
-            wolf.setScaleX(1);
+            entity.setScaleX(1);
         }else{
-            wolf.setScaleX(-1);
+            entity.setScaleX(-1);
         }
         velocity = velocity.add(playerDirection).multiply(v);
 //        isMoving = true;
@@ -138,7 +79,7 @@ public class TenshiComponent extends Component {
             if(texture.getAnimationChannel() != tenshi_move){
                 texture.loopAnimationChannel(tenshi_move);
             }
-            wolf.translate(velocity);
+            entity.translate(velocity);
         }else if(isDead){
             if(texture.getAnimationChannel()!= tenshi_dead){
                 texture.loopAnimationChannel(tenshi_dead);

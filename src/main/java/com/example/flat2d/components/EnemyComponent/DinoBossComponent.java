@@ -41,7 +41,7 @@ public class DinoBossComponent extends Component {
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
-        entity.addComponent(new BossComponent(1));
+        entity.addComponent(new BossEnemyComponent(1));
         isMoving = true;
         adjustVelocity(0.016);
 

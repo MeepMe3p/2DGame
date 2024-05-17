@@ -38,7 +38,7 @@ public class PenguinComponent extends Component {
         Image charge = image("charger/PengChargeLeft.png");
         Image img = image("charger/sheepCharge.png");
         idle_anim = new AnimationChannel(idle_Left,5,100,100, Duration.seconds(1),0,4);
-        charge_anim = new AnimationChannel(charge, 5,100,100, Duration.seconds(0.5),0,4);
+        charge_anim = new AnimationChannel(charge, 5,100,100, Duration.seconds(2),0,4);
         texture = new AnimatedTexture(idle_anim);
         texture.setRotate(-20);
         texture.loop();

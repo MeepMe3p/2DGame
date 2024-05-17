@@ -17,6 +17,9 @@ public class BasicComponent extends Component {
     private boolean isActive;
     Point2D velocity;
 
+    int limit = 3;
+    private int enemies_hit = 0;
+
     public BasicComponent(){
         Image skill = image("skill/spr_bullet_strip.png");
         attack = new AnimationChannel(skill, 3, 39,39, Duration.seconds(1),0,2);
@@ -38,5 +41,15 @@ public class BasicComponent extends Component {
                 texture.loopAnimationChannel(attack);
             }
         }
+    }
+
+    public void setEnemies_hit(int enemies_hit) {
+        this.enemies_hit += enemies_hit;
+        if(this.enemies_hit == limit){
+            entity.removeFromWorld();
+//            System.out.println(this.enemies_hit+"removed basic");
+
+        }
+//        System.out.println(enemies_hit);
     }
 }

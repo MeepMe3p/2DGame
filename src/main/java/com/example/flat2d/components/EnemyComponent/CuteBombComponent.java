@@ -62,8 +62,8 @@ public class CuteBombComponent extends Component {
         inner.setOpacity(.25);
         inner.setVisible(false);
         outer.setVisible(false);
-            entity.getViewComponent().addChild(inner);
-            entity.getViewComponent().addChild(outer);
+        entity.getViewComponent().addChild(inner);
+        entity.getViewComponent().addChild(outer);
 
     }
 
@@ -78,10 +78,10 @@ public class CuteBombComponent extends Component {
                 inner.setRadius(radius += 10);
             }
             if(radius >= 90) {
-
                 if (texture.getAnimationChannel() != explode_anim) {
                     texture.loopAnimationChannel(explode_anim);
                 }
+
             }
         }
         if(isMoving) {
@@ -101,8 +101,7 @@ public class CuteBombComponent extends Component {
     }
     public void activateCountdown(){
         isExploding = true;
-        inner.setVisible(true);
-        outer.setVisible(true);
+
 
     }
 
@@ -111,10 +110,12 @@ public class CuteBombComponent extends Component {
         isExploding = exploding;
         isMoving = false;
         entity.removeComponent(CollidableComponent.class);
+        inner.setVisible(true);
+        outer.setVisible(true);
         runOnce(()->{
             entity.removeFromWorld();
             return null;
-        },Duration.seconds(2));
+        },Duration.seconds(3));
     }
 
     public boolean isExploding() {

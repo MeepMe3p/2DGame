@@ -11,6 +11,10 @@ import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.Config;
 import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.components.EnemyComponent.BasicEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.BlockerEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.ChargeEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.EnemyComponent;
+import com.example.flat2d.components.SkillsComponent.BasicComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -23,12 +27,13 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 *   ONCE YOU KILL ENEMY DISAPPEARS DUH ANYWAY STUFFS I GUESS
 *   ADJUST LATER TEMPORARY PA
 * */
+
+
 public class BasicToEnemyCollision extends CollisionHandler {
-//    private SoundObserver observer;
-//        EntityFactory ef = addEntityFactory();
-//    GameApp.
+
     public BasicToEnemyCollision(Object a, Object b) {
         super(a,b);
+
 //        getGameWorld().addEntityFactory(new EffectFactory());
         GameApp.observer = new SoundObserver();
 
@@ -43,15 +48,7 @@ public class BasicToEnemyCollision extends CollisionHandler {
         int dmg = Config.BASIC_DEFAULT_DMG + (int)(GameApp.skillLevels[0] * Config.DMG_MULTIPLIER);
         hp.setValue(hp.getValue()-dmg);
 
-        if(enemy.getTypeComponent().isType(EntityType.WOLF)){
-//            System.out.println("wolf is hit");
-        }else if(enemy.getTypeComponent().isType(EntityType.FORESKIN_DRAGON)){
-//            System.out.println("foreskin is hit");
-        }else if(enemy.getTypeComponent().isType(EntityType.HELLHOUND)){
-            /* TODO: HP-- ? OF HELL HOUND === (elijah's response nope no need sila tanan type kay enemy ang mga minus
-             * kay mag depdend sa health int component
-             */
-        }
+
 
         if(hp.isZero()){
             killEnemy(enemy);
@@ -63,6 +60,7 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 }
             }).start();
         }
+        basic.getComponent(BasicComponent.class).setEnemies_hit(1);
     }
 
     private void killEnemy(Entity enemy) {
@@ -91,7 +89,19 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 e = spawn("BigExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
                 e.setPosition(enemy.getCenter()); break;
         }
-        enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
+        switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
+            case 1:
+                enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
+                break;
+            case 2:
+//                enemy.getComponent(ChargeEnemyComponent.class).kill(enemy);
+                System.out.println("a");
+                break;
+            case 3:
+                System.out.println("aa");
+                enemy.getComponent(BlockerEnemyComponent.class).kill(enemy);
+                break;
+        }
 //        enemy.setVisible(false);
 //        enemy.removeFromWorld();
     }

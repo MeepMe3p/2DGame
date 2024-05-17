@@ -3,10 +3,8 @@ package com.example.flat2d.collisions;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.example.flat2d.Misc.EntityType;
-import com.example.flat2d.components.EnemyComponent.BossComponent;
-import javafx.util.Duration;
+import com.example.flat2d.components.EnemyComponent.BossEnemyComponent;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.run;
 
 public class DinoToPlayerCollision extends CollisionHandler {
@@ -17,7 +15,7 @@ public class DinoToPlayerCollision extends CollisionHandler {
     @Override
     protected void onCollisionBegin(Entity player, Entity enemy) {
 //        run(() -> {
-            enemy.getComponent(BossComponent.class).attack(enemy);
+            enemy.getComponent(BossEnemyComponent.class).attack(enemy);
 //            return null;
 //        }, Duration.seconds(4));
     }

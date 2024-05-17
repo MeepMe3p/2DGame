@@ -4,6 +4,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.components.EnemyComponent.BasicEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.BlockerEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.EnemyComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.PLAYER_HP;
@@ -28,7 +30,19 @@ public class PlayerToEnemyCollision extends CollisionHandler {
             inc("player_hp", -1);
 //            System.out.println("is colliding");
         }
-        enemy.getComponent(BasicEnemyComponent.class).attack(enemy);
+        switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
+            case 1:
+                enemy.getComponent(BasicEnemyComponent.class).attack(enemy);
+                break;
+            case 2:
+//                enemy.getComponent(ChargeEnemyComponent.class).kill(enemy);
+                System.out.println("a");
+                break;
+            case 3:
+                System.out.println("blockers dont atak");
+//                enemy.getComponent(BlockerEnemyComponent.class).attack(enemy);
+                break;
+        }
 //        getGameWorld().getEntitiesInRange()
 //        player.getPosition().distance()
     }

@@ -13,22 +13,19 @@ import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 
-public class TurtleComponent extends Component {
+public class ChargeHeadThreeComponent extends Component {
     AnimatedTexture texture;
-    AnimationChannel walk_anim;
+    AnimationChannel charge_anim;
     Entity player;
     int speed;
 
     Point2D velocity = Point2D.ZERO;
-    private LocalTimer adjustDirection = FXGL.newLocalTimer();
-    private Duration adjustDelay = Duration.seconds(0.15);
-
-    public TurtleComponent(Entity player, int speed){
+    public ChargeHeadThreeComponent(Entity player, int speed){
         this.player = player;
         this.speed = speed;
-        Image move = image("blocker/tortol.png");
-        walk_anim = new AnimationChannel(move,5, 109,89, Duration.seconds(1),0,4);
-        texture = new AnimatedTexture(walk_anim);
+        Image move = image("charger/AttackThree.png");
+        charge_anim = new AnimationChannel(move,4, 70,70, Duration.seconds(1),0,3);
+        texture = new AnimatedTexture(charge_anim);
 
         texture.loop();
     }
@@ -43,21 +40,12 @@ public class TurtleComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        texture.setFitWidth(64);
-        texture.setFitHeight(64);
 
-        if(adjustDirection.elapsed(adjustDelay)){
-            adjustVelocity(tpf);
-            adjustDirection.capture();
-        }
         entity.translate(velocity);
     }
 
     private void adjustVelocity(double v) {
-        Point2D direction = player.getCenter()
-                .subtract(entity.getCenter())
-                .normalize()
-                .multiply(speed);
+        Point2D direction = player.getCenter().subtract(entity.getCenter()).normalize().multiply(speed);
         if(direction.getX() < 0){
             entity.setScaleX(1);
         }else{

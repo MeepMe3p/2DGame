@@ -277,6 +277,10 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(dToPl);
 
         physics.addCollisionHandler(pToB.copyFor(PLAYER,MID_BOMB));
+        physics.addCollisionHandler(pToB.copyFor(PLAYER,BIG_BOMB));
+
+//        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL));
+
 
 
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
@@ -435,13 +439,13 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-        runOnce(()->{
-//            enemies.add(spawn("LastBomb"));
+        run(()->{
+//            enemies.add(spawn("ThirdHead"));
+            spawner.spawnEnemy("RockGirl");
 
+//            spawner.spawnTortols();
 
-            spawner.spawnEasyRanged();
-
-            return null;
+//            return null;
         },WOLF_SPAWN_INTERVAL);
 //        run(()->{
 //            enemies.addAll(spawner.spawnTortols());

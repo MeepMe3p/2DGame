@@ -1,20 +1,19 @@
 package com.example.flat2d.Factories;
 
-import com.almasb.fxgl.animation.Interpolators;
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.dsl.components.RandomMoveComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemyComponent.*;
-import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -22,8 +21,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
 /*
-    THIS FACTORY IS FOR CREATING THE ENEMY ENTITIES WHERE getRandomSpawnPoint() RANDOMLY
-    FINDS A LOCATION FROM IN THE GAME AND SPAWNS IT THERE
+    THIS FACTORY IS FOR CREATING THE ENEMY ENTITIES
  */
 public class EnemyFactory implements EntityFactory {
 //    Point2D player = FXGL.<GameApp>getAppCast().getPlayer().getPosition();
@@ -36,12 +34,12 @@ public class EnemyFactory implements EntityFactory {
                 .type(ENEMY)
 //                .at(getRandomSpawnPoint())
 //                .at(player.add(new Point2D(FXGL.random(-720,720),FXGL.random(-720,720))))
-                .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
-
+//                .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
+                .with(new EnemyComponent(1))
                 .bbox(new HitBox("hitbox", new Point2D(39,26), BoundingShape.box(35,57)))
 //                .viewWithBBox(new Rectangle(32,32,Color.RED))
 //                .viewWithBBox(new Rectangle(32,32, Color.BLUE))
-                .with(new TenshiComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new NormalTenshiComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new BasicEnemyComponent(1))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(WOLF_HP))
@@ -60,16 +58,71 @@ public class EnemyFactory implements EntityFactory {
         });
         return e;
     }
-    private static final Point2D[] spawnPoints = new Point2D[]{
-        new Point2D(SPAWN_DISTANCE,SPAWN_DISTANCE),
-        new Point2D(getAppWidth() - SPAWN_DISTANCE, SPAWN_DISTANCE),
-        new Point2D(getAppWidth() - SPAWN_DISTANCE, getAppWidth()),
-        new Point2D(SPAWN_DISTANCE, getAppHeight()-SPAWN_DISTANCE)
+    @Spawns("RockGirl")
+    public Entity spawnRockGirl(SpawnData data){
 
-    };
-    public Point2D getRandomSpawnPoint() {
-        return spawnPoints[FXGLMath.random(0,3)];
+        var e =  entityBuilder()
+//                .type(WOLF)
+                .type(ENEMY)
+//                .at(getRandomSpawnPoint())
+//                .at(player.add(new Point2D(FXGL.random(-720,720),FXGL.random(-720,720))))
+//                .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
+                .with(new EnemyComponent(1))
+                .bbox(new HitBox("hitbox", new Point2D(39,26), BoundingShape.box(35,57)))
+//                .viewWithBBox(new Rectangle(32,32,Color.RED))
+//                .viewWithBBox(new Rectangle(32,32, Color.BLUE))
+                .with(new RockerNormalComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new BasicEnemyComponent(2))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(WOLF_HP))
+
+                .build();
+        e.setReusable(true);
+
+//        System.out.println("the position of the player is : " +FXGL.<GameApp>getAppCast().getPlayer().getPosition());
+        e.setOnNotActive(new Runnable() {
+            @Override
+            public void run() {
+//                getGameWorld().addEntityFactory(new EffectFactory());
+                Entity em = spawn("EnemyHit");
+                em.setPosition(e.getCenter());
+            }
+        });
+        return e;
     }
+    @Spawns("ThirdNormal")
+    public Entity spawnCrawler(SpawnData data){
+
+        var e =  entityBuilder()
+//                .type(WOLF)
+                .type(ENEMY)
+//                .at(getRandomSpawnPoint())
+//                .at(player.add(new Point2D(FXGL.random(-720,720),FXGL.random(-720,720))))
+//                .at(FXGLMath.random(0,2226),FXGLMath.random(0,2226))
+
+                .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(80,40)))
+                .with(new EnemyComponent(1))
+                .with(new ThirdCrawlerComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new BasicEnemyComponent(3))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(WOLF_HP))
+
+                .build();
+        e.setReusable(true);
+
+//        System.out.println("the position of the player is : " +FXGL.<GameApp>getAppCast().getPlayer().getPosition());
+        e.setOnNotActive(new Runnable() {
+            @Override
+            public void run() {
+//                getGameWorld().addEntityFactory(new EffectFactory());
+                Entity em = spawn("EnemyHit");
+                em.setPosition(e.getCenter());
+            }
+        });
+        return e;
+    }
+
+
 
     @Spawns("HellHound")
     public Entity spawnHellHound(SpawnData data){
@@ -89,7 +142,7 @@ public class EnemyFactory implements EntityFactory {
 
         var e =  entityBuilder()
                 .type(FORESKIN_DRAGON)
-                .at(getRandomSpawnPoint())
+//                .at(getRandomSpawnPoint())
                 .bbox(new HitBox("hitbox", new Point2D(0,0), BoundingShape.box(122,96)))
                 .with(new ForeskinDragonComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new HealthIntComponent(SKIN_DRAGON))
@@ -111,14 +164,15 @@ public class EnemyFactory implements EntityFactory {
         return e;
 
     }
-    @Spawns("Turtle")
-    public Entity spawnTurtle(SpawnData data){
-        var e = entityBuilder()
 
-                .bbox(new HitBox(BoundingShape.box(64,50)))
-                .with(new TurtleComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
-                .with(new CollidableComponent())
-                .with(new ExpireCleanComponent(Duration.seconds(15)))
+    @Spawns("ThirdHead")
+    public Entity spawnThirdHead(SpawnData data){
+        var e = entityBuilder()
+                .with(new CollidableComponent(true))
+                .with(new EnemyComponent(2))
+                .with(new ChargeHeadThreeComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
+                .with(new HealthIntComponent(WOLF_HP))
+//                .with(new ChargeC)
                 .build();
         e.setReusable(true);
         return e;
@@ -129,9 +183,46 @@ public class EnemyFactory implements EntityFactory {
                 .type(ENEMY)
                 .bbox(new HitBox(BoundingShape.box(92,64)))
                 .with(new HealthIntComponent())
+                .with(new EnemyComponent(2))
+
+                .with(new ChargeEnemyComponent(1))
                 .with(new PenguinComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new ExpireCleanComponent(Duration.seconds(15)))
                 .with(new CollidableComponent())
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+
+
+    @Spawns("Turtle")
+    public Entity spawnTurtle(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(BoundingShape.box(64,50)))
+                .with(new SlimeShieldComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new EnemyComponent(3))
+                .with(new BlockerEnemyComponent(1))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+        return e;
+    }    @Spawns("SpearShield")
+    public Entity spawnSpearShield(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(BoundingShape.box(64,50)))
+                .with(new RookSpearComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+//                .with(new Move)
+                .with(new EnemyComponent(3))
+
+                .with(new BlockerEnemyComponent(2))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
+                .with(new HealthIntComponent(WOLF_HP))
                 .build();
         e.setReusable(true);
         return e;
@@ -142,34 +233,39 @@ public class EnemyFactory implements EntityFactory {
                 .type(SMOL_BOMB)
                 .bbox(new HitBox(new Point2D(-21,-20),BoundingShape.circle(90)))
                 .with(new CuteBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
-                .with(new HealthIntComponent())
-                .with(new BombComponent(1))
+                .with(new EnemyComponent(4))
+                .with(new BombEnemyComponent(1))
                 .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(WOLF_HP))
                 .build();
         e.setReusable(true);
         return e;
     }
-    @Spawns("Boss1")
-    public Entity spawnHellBeast(SpawnData data){
-        return entityBuilder()
-                .type(BOSS)
-                .bbox(new HitBox(new Point2D(40,30),BoundingShape.circle(130)))
-//                .viewWithBBox(new Rectangle(32,32, Color.RED))
-//                .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.box(32,32)))
-                .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
-                .with(new CollidableComponent(true))
-                .build();
-    }
-
     @Spawns("MidBomb")
     public Entity spawnMidBomb(SpawnData data){
         var e = entityBuilder()
                 .type(MID_BOMB)
                 .bbox(new HitBox(new Point2D(-100,-100),BoundingShape.circle(120)))
                 .with(new MidBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
-                .with(new BombComponent(2))
+                .with(new BombEnemyComponent(2))
+                .with(new EnemyComponent(4))
                 .with(new CollidableComponent(true))
-                .with(new HealthIntComponent())
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("LastBomb")
+    public Entity spawnLastBomb(SpawnData data){
+        var e = entityBuilder()
+                .type(BIG_BOMB)
+                .with(new LastBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new EnemyComponent(4))
+                .with(new BombEnemyComponent(3))
+                .with(new CollidableComponent(true))
+                .bbox(new HitBox(new Point2D(-80,-80),BoundingShape.circle(120)))
+
+                .with(new HealthIntComponent(WOLF_HP))
                 .build();
         e.setReusable(true);
         return e;
@@ -180,21 +276,25 @@ public class EnemyFactory implements EntityFactory {
                 .type(ENEMY)
                 .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,140)))
                 .with(new CollidableComponent())
+                .with(new EnemyComponent(5))
                 .with(new ShoujoComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
                 .with(new RangeComponent(1))
+                .with(new HealthIntComponent(WOLF_HP))
                 .build();
         e.setReusable(true);
+//        e.addComponent(new ShoujoComponent());
         return e;
     }
-    @Spawns("LastBomb")
-    public Entity spawnLastBomb(SpawnData data){
-        var e = entityBuilder()
-                .with(new LastBombComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
-                .with(new BombComponent(2))
-                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,90)))
+    @Spawns("Boss1")
+    public Entity spawnHellBeast(SpawnData data){
+        return entityBuilder()
+                .type(BOSS)
+                .bbox(new HitBox(new Point2D(40,30),BoundingShape.circle(130)))
+                .with(new EnemyComponent(6))
+                .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(WOLF_HP))
                 .build();
-        e.setReusable(true);
-        return e;
     }
     private void spawnDeath(Entity entity, Point2D location) {
         entity.setPosition(location);

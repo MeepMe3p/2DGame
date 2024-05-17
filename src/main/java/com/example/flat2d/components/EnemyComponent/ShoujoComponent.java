@@ -60,8 +60,8 @@ public class ShoujoComponent extends Component {
             if(texture.getAnimationChannel() != shoot_anim){
                 texture.loopAnimationChannel(shoot_anim);
             }
-            texture.setFitWidth(240);
-            texture.setFitHeight(185);
+            texture.setFitWidth(240);            texture.setFitHeight(185);
+
         }
             getDirection();
 
@@ -74,7 +74,7 @@ public class ShoujoComponent extends Component {
         runOnce(()-> {
             var e = spawn("Range1Atk");
             e.setPosition(entity.getPosition());
-            e.addComponent(new RangeFirstComponent(player, BASICSKILL_MOV_SPEED));
+            e.addComponent(new RangeFirstComponent(player, entity,BASICSKILL_MOV_SPEED));
             this.isAttacking = false;
             entity.setScaleOrigin(new Point2D(10, 50));
 

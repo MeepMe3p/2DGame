@@ -13,6 +13,7 @@ open module FLAT2D.main{
     requires java.sql;
     requires mysql.connector.j;
     requires javafx.media;
+    requires com.fasterxml.jackson.databind;
 
     // Additional Exports
     exports final_project_socket.fxml_controller to javafx.fxml;
