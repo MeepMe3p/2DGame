@@ -1,6 +1,7 @@
 package final_project_socket.fxml_controller;
 
 import final_project_socket.database.Queries;
+import final_project_socket.handler.AuthenticationHandler;
 import final_project_socket.socket.Client;
 import final_project_socket.database.MySQLConnector;
 import final_project_socket.handler.SceneHandler;
@@ -27,7 +28,7 @@ import java.util.*;
 public class ChatBoxController implements Initializable {
 
     @FXML
-    private Button btn_disconnect, btn_send, btn_profile;
+    private Button btn_disconnect, btn_send, btn_home, btn_profile;
     @FXML
     private Text txt_name;
     @FXML
@@ -40,10 +41,8 @@ public class ChatBoxController implements Initializable {
     private TextField txtf_sendmsgbox;
     private Socket socket;
     private Client client;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         // runLater() ensures that txt_name.getText() retrieves the value from the FXML.
         // (See link: https://stackoverflow.com/questions/68363535/passing-data-to-another-controller-in-javafx).
         Platform.runLater(() -> {
@@ -53,10 +52,15 @@ public class ChatBoxController implements Initializable {
             loadImage(username);
             loadMessages(username);
 
-            client.listenForMessage(vb_messages);
+            client.setVbox(vb_messages);
 
             btn_profile.setOnAction(actionEvent -> {
                 SceneHandler.changeScene(actionEvent, "/final_project_socket/fxml/Profile.fxml", "Profile", txt_name.getText(), socket, client);
+                txt_name.setText("");
+            });
+
+            btn_home.setOnAction(actionEvent -> {
+                SceneHandler.changeScene(actionEvent, "/final_project_socket/fxml/Home.fxml", "Home", txt_name.getText(), socket, client);
                 txt_name.setText("");
             });
 
@@ -69,30 +73,22 @@ public class ChatBoxController implements Initializable {
                 }
             });
 
-            stage.setOnCloseRequest(actionEvent -> {
-                if (!txt_name.getText().isEmpty()) {
-                    disconnect(client, socket, 2);
-                    txt_name.setText("");
-                }
+            btn_disconnect.setOnAction(actionEvent -> {
+                AuthenticationHandler.disconnect(username);
+                txt_name.setText("");
+                SceneHandler.changeScene(actionEvent, "/final_project_socket/fxml/Sign_In.fxml", "Log in", null, null, null);
             });
 
-            // This is a temporary solution for clean up
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                if(!txt_name.getText().isEmpty()) {
-                    disconnect(client, socket, 3);
+            stage.setOnCloseRequest(actionEvent -> {
+                if (!txt_name.getText().isEmpty()) {
+                    AuthenticationHandler.disconnect(username);
                 }
-            }));
+            });
         });
 
         // This code dynamically changes the size of the message box
         vb_messages.heightProperty().addListener(
                 (observableValue, oldValue, newValue) -> sp_main.setVvalue((Double) newValue));
-
-        btn_disconnect.setOnAction(actionEvent -> {
-            disconnect(client, socket, 1);
-            txt_name.setText("");
-            SceneHandler.changeScene(actionEvent, "/final_project_socket/fxml/Sign_In.fxml", "Log in", null, null, null);
-        });
     }
 
     public void setUserInformation(String username, Socket socket, Client client) {
@@ -111,7 +107,7 @@ public class ChatBoxController implements Initializable {
         textFlow.setStyle("-fx-background-color: rgb(178, 211, 194);" +
                 "-fx-background-radius: 20px;" +
                 "-fx-font-size: 20px");
-        textFlow.setPadding(new Insets(5, 10, 5, 10));
+        textFlow.setPadding(new Insets(5, 5, 5, 10));
         hBox.getChildren().add(textFlow);
         Platform.runLater(() -> vBox.getChildren().add(hBox));
     }
@@ -120,7 +116,6 @@ public class ChatBoxController implements Initializable {
         HBox hBox = new HBox();
         Text text = new Text(message);
         TextFlow textFlow = new TextFlow(text);
-        textFlow.setPadding(new Insets(5, 10, 5, 10));
         if(!other) {
             hBox.setAlignment(Pos.CENTER_RIGHT);
             hBox.setPadding(new Insets(5, 10, 5, 150));
@@ -136,6 +131,7 @@ public class ChatBoxController implements Initializable {
                     "-fx-background-radius: 20px;" +
                     "-fx-font-size: 20px");
         }
+        textFlow.setPadding(new Insets(5, 10, 5, 10));
         hBox.getChildren().add(textFlow);
         vb_messages.getChildren().add(hBox);
     }
@@ -171,16 +167,5 @@ public class ChatBoxController implements Initializable {
     private void loadImage(String username) {
         int image = Queries.getProfilePicture(username);
         img_profile.setImage(Queries.setProfilePicture(image));
-    }
-
-    private void disconnect(Client client, Socket socket, int exitStatus) {
-        Queries.updateIsOnline(false, txt_name.getText());
-        try {
-            client.sendMessage("--DISCONNECTED--");
-            socket.close();
-            System.out.println("User disconnected [Exit Condition " + exitStatus +" ]");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

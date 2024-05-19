@@ -28,6 +28,7 @@ public class Client {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username;
+    private VBox vb_messages;
 
     public Client(Socket socket, String username) {
         try {
@@ -58,18 +59,13 @@ public class Client {
         }
     }
 
-    public void listenForMessage(VBox vBox) {
-        new Thread(() -> {
-            while(socket.isConnected()) {
-                try {
-                    String msgFromGroupChat = bufferedReader.readLine();
-                    ChatBoxController.addReceivedMessage(msgFromGroupChat, vBox);
-                } catch (IOException e) {
-                    closeEverything();
-                    break;
-                }
-            }
-        }).start();
+    public void listenForMessage() {
+        try {
+            String msgFromGroupChat = bufferedReader.readLine();
+            ChatBoxController.addReceivedMessage(msgFromGroupChat, vb_messages);
+        } catch (IOException e) {
+            closeEverything();
+        }
     }
 
     public void sendMessage(String messageToSend) {
@@ -100,6 +96,10 @@ public class Client {
             e.printStackTrace();
         }
         return userId;
+    }
+
+    public void setVbox(VBox vbox) {
+        this.vb_messages = vbox;
     }
 
     public void closeEverything() {

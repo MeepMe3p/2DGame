@@ -1,6 +1,7 @@
 package final_project_socket.handler;
 
 import com.example.flat2d.DesignPatterns.User;
+import final_project_socket.database.Queries;
 import final_project_socket.database.MySQLConnector;
 import final_project_socket.socket.Client;
 import javafx.event.ActionEvent;
@@ -18,6 +19,9 @@ import java.sql.*;
 */
 
 public class AuthenticationHandler {
+    private static Socket socket;
+    private static Client client;
+
     public static User loggedIn; // <-- Temporary
     public static void signUpUser(ActionEvent event, String username, String password) {
         AlertHandler alert = new AlertHandler();
@@ -82,9 +86,22 @@ public class AuthenticationHandler {
                         statement.setInt(2, userId);
                         statement.executeUpdate();
                     }
-                    Socket socket = new Socket("localhost", 9806);
-                    Client client = new Client(socket, username);
-                    SceneHandler.changeScene(event, "/final_project_socket/fxml/Chat_Box.fxml", "Welcome!", username, socket, client);
+                    socket = new Socket("localhost", 9806);
+                    client = new Client(socket, username);
+
+                    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                        if (!socket.isClosed()) {
+                            disconnect(username);
+                        }
+                    }));
+
+                    new Thread(() -> {
+                        while(!socket.isClosed()) {
+                            client.listenForMessage();
+                        }
+                    }).start();
+
+                    SceneHandler.changeScene(event, "/final_project_socket/fxml/Home.fxml", "Welcome!", username, socket, client);
                 } else {
                     alert.error("Failed to sign in", "Provided credentials are incorrect!");
                 }
@@ -92,6 +109,17 @@ public class AuthenticationHandler {
         } catch (SQLException e) {
             e.printStackTrace();
             alert.error("SQLException", "An error occurred. Please try again.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void disconnect(String username) {
+        try {
+            Queries.updateIsOnline(false, username);
+            client.sendMessage("--DISCONNECTED--");
+            socket.close();
+            System.out.println("[User disconnected]");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

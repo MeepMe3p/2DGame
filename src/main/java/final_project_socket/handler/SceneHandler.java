@@ -1,6 +1,7 @@
 package final_project_socket.handler;
 
 import final_project_socket.fxml_controller.ChatBoxController;
+import final_project_socket.fxml_controller.HomeController;
 import final_project_socket.fxml_controller.ProfileController;
 import final_project_socket.socket.Client;
 import javafx.event.ActionEvent;
@@ -28,15 +29,21 @@ public class SceneHandler {
             FXMLLoader loader = new FXMLLoader(AuthenticationHandler.class.getResource(fxmlFile));
             root = loader.load();
             if (username != null) {
-                if(fxmlFile.equals("/final_project_socket/fxml/Chat_Box.fxml")) {
-                    ChatBoxController chatBoxController = loader.getController();
-                    chatBoxController.setUserInformation(username, socket, client);
-                } else if(fxmlFile.equals("/final_project_socket/fxml/Profile.fxml")) {
-                    ProfileController profileController = loader.getController();
-                    profileController.setUserInformation(username, socket, client);
+                switch (fxmlFile) {
+                    case "/final_project_socket/fxml/Chat_Box.fxml" -> {
+                        ChatBoxController chatBoxController = loader.getController();
+                        chatBoxController.setUserInformation(username, socket, client);
+                    }
+                    case "/final_project_socket/fxml/Profile.fxml" -> {
+                        ProfileController profileController = loader.getController();
+                        profileController.setUserInformation(username, socket, client);
+                    }
+                    case "/final_project_socket/fxml/Home.fxml" -> {
+                        HomeController homeController = loader.getController();
+                        homeController.setUserInformation(username, socket, client);
+                    }
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

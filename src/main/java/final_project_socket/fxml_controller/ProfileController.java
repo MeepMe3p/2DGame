@@ -2,6 +2,7 @@ package final_project_socket.fxml_controller;
 
 import final_project_socket.database.Queries;
 import final_project_socket.handler.AlertHandler;
+import final_project_socket.handler.AuthenticationHandler;
 import final_project_socket.handler.SceneHandler;
 import final_project_socket.socket.Client;
 import javafx.application.Platform;
@@ -121,25 +122,17 @@ public class ProfileController implements Initializable {
                 passf_rpassword.setText("");
             });
 
-            stage.setOnCloseRequest(actionEvent -> {
-                if (!txt_name.getText().isEmpty()) {
-                    disconnect(client, socket, 5);
-                    txt_name.setText("");
-                }
+            btn_disconnect.setOnAction(actionEvent -> {
+                AuthenticationHandler.disconnect(username);
+                txt_name.setText("");
+                SceneHandler.changeScene(actionEvent, "/final_project_socket/fxml/Sign_In.fxml", "Log in", null, null, null);
             });
 
-            // This is a temporary solution for clean up
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                if(!txt_name.getText().isEmpty()) {
-                    disconnect(client, socket, 6);
+            stage.setOnCloseRequest(actionEvent -> {
+                if (!txt_name.getText().isEmpty()) {
+                    AuthenticationHandler.disconnect(username);
                 }
-            }));
-        });
-
-        btn_disconnect.setOnAction(actionEvent -> {
-            disconnect(client, socket, 4);
-            txt_name.setText("");
-            SceneHandler.changeScene(actionEvent, "/final_project_socket/fxml/Sign_In.fxml", "Log in", null, null, null);
+            });
         });
 
     }
@@ -154,16 +147,5 @@ public class ProfileController implements Initializable {
         int image = Queries.getProfilePicture(username);
         img_profile.setImage(Queries.setProfilePicture(image));
         img_edit_profile.setImage(Queries.setProfilePicture(image));
-    }
-
-    private void disconnect(Client client, Socket socket, int exitStatus) {
-        Queries.updateIsOnline(false, txt_name.getText());
-        try {
-            client.sendMessage("--DISCONNECTED--");
-            socket.close();
-            System.out.println("User disconnected [Exit Condition " + exitStatus +" ]");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
