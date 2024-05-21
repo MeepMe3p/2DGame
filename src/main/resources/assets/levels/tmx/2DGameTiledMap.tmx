@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="72" height="72" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="30">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="72" height="72" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="121">
  <tileset firstgid="1" name="GuideOne" tilewidth="32" tileheight="32" spacing="2" tilecount="1036" columns="37">
   <image source="GuideOne.png" width="1280" height="960"/>
  </tileset>
@@ -12,7 +12,7 @@
  <tileset firstgid="2109" name="hakudoggu" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="9" columns="3">
   <image source="hakudoggu.png" width="128" height="128"/>
  </tileset>
- <layer id="3" name="Floor" width="72" height="72">
+ <layer id="3" name="floor" width="72" height="72" locked="1">
   <data encoding="csv">
 43,1558,1632,1558,1558,1595,1632,1558,1558,1559,1560,1558,1558,1595,1558,1559,1560,1558,1595,1632,1558,1559,1558,1595,1558,1558,1559,1560,1558,1558,1595,1595,1558,1559,1558,1558,1559,1560,1595,1558,1559,1560,1559,1560,1559,1560,1560,79,1558,1559,1560,1559,1560,1559,1560,1559,1560,1559,1560,1559,1560,1558,1559,1560,1597,1560,1559,1560,1560,1559,1560,1559,
 1558,1595,1558,1559,1595,1632,1558,1595,1558,1559,1560,1595,1558,1632,1558,1559,1560,1595,1632,1558,1559,1558,1595,1632,1595,1558,1559,1558,1595,1595,1558,1558,1559,1560,1558,1559,1558,1558,1559,1560,1559,1560,1559,1560,1559,1560,1560,116,1558,1559,1560,1559,1560,1559,1560,1559,1560,1559,1560,1559,1560,1558,1559,1560,1634,1560,1559,1560,1560,1559,1560,1559,
@@ -88,7 +88,7 @@
 1632,1633,1634,1634,1632,1633,1634,1632,1632,1633,1634,1560,1633,1632,1633,1634,1633,1632,1633,1634,1597,1632,1558,1632,1633,1634,1597,1634,1634,1558,1559,1560,1560,1597,1634,1632,1632,1633,1634,1634,1632,1633,1634,1633,1634,1634,1632,1633,1634,1560,1597,1634,1634,1632,1633,1634,1634,1634,1632,1633,1634,1633,1632,1633,1634,1560,1633,1634,118,118,237,238
 </data>
  </layer>
- <layer id="4" name="Stuff" width="72" height="72">
+ <layer id="4" name="stuff" width="72" height="72" locked="1">
   <data encoding="csv">
 520,521,522,523,524,525,520,521,522,523,524,525,0,1063,1064,1065,1066,1067,1068,0,0,0,0,0,0,0,0,0,0,0,0,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,0,0,1063,1064,1065,1066,1067,1068,520,521,522,523,524,525,520,521,522,523,524,525,
 557,558,559,560,561,562,557,558,559,560,561,562,0,1100,1101,1102,1103,1104,1105,0,0,0,0,0,0,0,0,0,0,0,0,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,0,0,1100,1101,1102,1103,1104,1105,557,558,559,560,561,562,557,558,559,560,561,562,
@@ -164,7 +164,7 @@
 1502,1503,1504,1505,0,0,0,0,0,0,0,0,1013,1015,1016,1017,1018,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1024,1025,1028,1029,1030,1031,1032,1033,1034,1035,1036,1030,1031,1032,1033,1034,1035,1009,1010,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="wall">
+ <objectgroup id="7" name="wall" locked="1">
   <object id="4" type="wall" x="2272" y="298.667" width="36" height="2009.33"/>
   <object id="5" type="wall" x="-1.33333" y="0" width="22.3333" height="2300"/>
   <object id="10" type="wall" x="13.3333" y="-4" width="366.667" height="153.333"/>
@@ -184,8 +184,21 @@
   <object id="26" type="wall" x="34" y="1930" width="67" height="47"/>
   <object id="27" type="wall" x="31" y="2109" width="71" height="46"/>
   <object id="28" type="wall" x="23" y="2275" width="104" height="28"/>
+  <object id="107" type="wall" x="1356" y="866.667" width="170" height="122"/>
+  <object id="108" type="wall" x="1058" y="-1" width="128" height="278"/>
+  <object id="109" type="wall" x="1172" y="143" width="167" height="214"/>
+  <object id="110" type="wall" x="1361" y="119" width="28" height="161"/>
+  <object id="111" type="wall" x="1333" y="138" width="31" height="129"/>
+  <object id="112" type="wall" x="1430" y="93" width="32" height="188"/>
+  <object id="113" type="wall" x="1387" y="133" width="49" height="134"/>
+  <object id="114" type="wall" x="1461" y="93" width="43" height="196"/>
+  <object id="115" type="wall" x="1494" y="32" width="28" height="159"/>
+  <object id="116" type="wall" x="1520" y="-1" width="60" height="176"/>
+  <object id="117" type="wall" x="1920" y="-2" width="384" height="146"/>
+  <object id="119" type="wall" x="1754" y="747.333" width="57.3333" height="105.333"/>
+  <object id="120" type="opaque" x="1374.83" y="788.833" width="133.167" height="73.167"/>
  </objectgroup>
- <layer id="5" name="Decor" width="72" height="72">
+ <layer id="5" name="decor" width="72" height="72" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -261,7 +274,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="More" width="72" height="72">
+ <layer id="6" name="more" width="72" height="72" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -337,4 +350,63 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="8" name="torch" locked="1">
+  <object id="40" type="torch" x="1242.67" y="253.333" width="25.3333" height="33.3333"/>
+  <object id="47" type="torch" x="1514" y="87.3334" width="25.3333" height="33.3333"/>
+  <object id="48" type="torch" x="1951.33" y="63.3334" width="25.3333" height="33.3333"/>
+  <object id="49" type="torch" x="2042" y="59.3334" width="25.3333" height="33.3333"/>
+  <object id="50" type="torch" x="2143.33" y="63.3334" width="25.3333" height="33.3333"/>
+  <object id="51" type="torch" x="2234" y="60.6667" width="25.3333" height="33.3333"/>
+  <object id="52" type="torch" x="1772.67" y="1111.33" width="25.3333" height="33.3333"/>
+  <object id="53" type="torch" x="2015.33" y="1110" width="25.3333" height="33.3333"/>
+  <object id="54" type="torch" x="2015.33" y="1199.33" width="25.3333" height="33.3333"/>
+  <object id="55" type="torch" x="1772.67" y="1200.67" width="25.3333" height="33.3333"/>
+  <object id="56" type="torch" x="1424.67" y="968.667" width="25.3333" height="33.3333"/>
+  <object id="57" type="torch" x="1398" y="903.333" width="25.3333" height="33.3333"/>
+  <object id="58" type="torch" x="1480.67" y="1256.67" width="25.3333" height="33.3333"/>
+  <object id="59" type="torch" x="1731.33" y="1507.33" width="25.3333" height="33.3333"/>
+  <object id="60" type="torch" x="1830" y="1636.67" width="25.3333" height="33.3333"/>
+  <object id="61" type="torch" x="1062" y="1702" width="25.3333" height="33.3333"/>
+  <object id="62" type="torch" x="1066" y="1571.33" width="25.3333" height="33.3333"/>
+  <object id="63" type="torch" x="1098" y="1572.67" width="25.3333" height="33.3333"/>
+  <object id="64" type="torch" x="1223.33" y="1602" width="25.3333" height="33.3333"/>
+  <object id="65" type="torch" x="580.667" y="1758" width="25.3333" height="33.3333"/>
+  <object id="67" type="torch" x="711.333" y="1759.33" width="25.3333" height="33.3333"/>
+  <object id="68" type="torch" x="614" y="1627.33" width="25.3333" height="33.3333"/>
+  <object id="69" type="torch" x="683.333" y="1627.33" width="25.3333" height="33.3333"/>
+  <object id="70" type="torch" x="898" y="636.667" width="25.3333" height="33.3333"/>
+  <object id="71" type="torch" x="903.333" y="539.333" width="25.3333" height="33.3333"/>
+  <object id="72" type="torch" x="807.333" y="476.667" width="25.3333" height="33.3333"/>
+  <object id="73" type="torch" x="774" y="511.333" width="25.3333" height="33.3333"/>
+  <object id="74" type="torch" x="579.333" y="86" width="25.3333" height="33.3333"/>
+  <object id="75" type="torch" x="1091.33" y="244.667" width="25.3333" height="33.3333"/>
+  <object id="76" type="torch" x="32.6667" y="59.3334" width="25.3333" height="33.3333"/>
+  <object id="77" type="torch" x="120.667" y="56.6667" width="25.3333" height="33.3333"/>
+  <object id="78" type="torch" x="315.333" y="55.3334" width="25.3333" height="33.3333"/>
+  <object id="79" type="torch" x="35.3334" y="503.333" width="25.3333" height="33.3333"/>
+  <object id="80" type="torch" x="35.3334" y="568.667" width="25.3333" height="33.3333"/>
+  <object id="81" type="torch" x="1798" y="836.667" width="25.3333" height="33.3333"/>
+  <object id="82" type="torch" x="1510" y="1120.67" width="25.3333" height="33.3333"/>
+  <object id="83" type="torch" x="1891.33" y="86" width="25.3333" height="33.3333"/>
+  <object id="84" type="torch" x="1544.67" y="146" width="25.3333" height="33.3333"/>
+  <object id="85" type="torch" x="1390" y="248.667" width="25.3333" height="33.3333"/>
+ </objectgroup>
+ <objectgroup id="9" name="hole" locked="1">
+  <object id="86" type="hole" x="769.333" y="1069.33" width="236" height="272"/>
+  <object id="87" type="hole" x="1074.67" y="1613.33" width="122.667" height="106.667"/>
+  <object id="88" type="hole" x="596" y="1666.67" width="121.333" height="114.667"/>
+  <object id="90" type="hole" x="403.03" y="2200" width="1554.55" height="106.061"/>
+  <object id="91" type="hole" x="427.273" y="2160.61" width="1530.3" height="36.3636"/>
+  <object id="92" type="hole" x="1487.88" y="2100" width="466.667" height="54.5455"/>
+  <object id="93" type="hole" x="1746" y="1551" width="123" height="103"/>
+  <object id="94" type="hole" x="1490.67" y="1166.67" width="122.667" height="104"/>
+  <object id="95" type="hole" x="1798.67" y="1110.67" width="212" height="122.667"/>
+  <object id="96" type="hole" x="1838.67" y="1089.33" width="45.3333" height="20"/>
+  <object id="97" type="hole" x="1929.33" y="1089.33" width="42.6667" height="18.6667"/>
+  <object id="98" type="hole" x="2008" y="1150.67" width="22.6667" height="42.6667"/>
+  <object id="99" type="hole" x="1780" y="1150.67" width="25.3333" height="38.6667"/>
+  <object id="100" type="hole" x="1836" y="1230.67" width="46.6667" height="20"/>
+  <object id="101" type="hole" x="1928" y="1233.33" width="42.6667" height="17.3333"/>
+  <object id="102" type="hole" x="1810.67" y="736" width="122.667" height="121.333"/>
+ </objectgroup>
 </map>

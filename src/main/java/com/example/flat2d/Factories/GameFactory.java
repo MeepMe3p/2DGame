@@ -4,10 +4,7 @@ import com.almasb.fxgl.audio.Audio;
 import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
-import com.almasb.fxgl.dsl.components.ProjectileComponent;
-import com.almasb.fxgl.dsl.components.ProjectileWithAccelerationComponent;
+import com.almasb.fxgl.dsl.components.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -18,6 +15,7 @@ import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.PolygonShapeData;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.Texture;
@@ -63,22 +61,15 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox("hitbox",new Point2D(15,31), BoundingShape.box(20,57)))
                 .with(new PlayerComponent())
                 .with(new HealthIntComponent(PLAYER_HP))
+//                .with(new PhysicsComponent())
                 //        -------- 1152 X 1152 = SIZE OF THE MAP  ------------
 //                .at(new Point2D(2304/2.0,2304/2.0))
-                .at(new Point2D(360,360))
+                .at(new Point2D(720,720))
 
-                .collidable()
+                .with(new CollidableComponent(true))
                 .build();
 
         return e;
-    }
-    @Spawns("wall")
-    public Entity spawnWall(SpawnData data){
-        return entityBuilder(data)
-                .type(WALL)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .with(new CollidableComponent())
-                .build();
     }
     @Spawns("BasicSkill")
     public Entity spawnBasicSkill(SpawnData data){
@@ -96,8 +87,6 @@ public class GameFactory implements EntityFactory {
                 return Duration.seconds(2);
             }
         });
-
-
         var expireClean = new ExpireCleanComponent(Duration.seconds(0.5)).animateOpacity();
         expireClean.pause();
         var e = entityBuilder(data)
@@ -106,6 +95,7 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox("hitbox", new Point2D(0,0),BoundingShape.circle(10)))
                 .with(new CollidableComponent(true))
                 .with(new ProjectileComponent(data.get("direction"), BASICSKILL_MOV_SPEED))
+                .with(new OffscreenCleanComponent())
 //                .with(new ProjectileComponent(new Point2D(1,0), BASICSKILL_MOV_SPEED))
                 .with(new BasicComponent())
 
@@ -113,6 +103,7 @@ public class GameFactory implements EntityFactory {
 //                .with()
                 .build();
         e.addComponent(new ParticleComponent(emitter));
+
         e.setReusable(true);
         return e;
     }

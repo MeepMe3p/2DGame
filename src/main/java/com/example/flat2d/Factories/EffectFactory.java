@@ -9,23 +9,32 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.particle.ParticleComponent;
 import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
 import static com.example.flat2d.Misc.Config.CUTE_BOMB_MOVEMENT_SPEED;
+import static com.example.flat2d.Misc.EntityType.*;
 
 public class EffectFactory implements EntityFactory {
     @Spawns("EnemyHit")
@@ -66,5 +75,45 @@ public class EffectFactory implements EntityFactory {
                 .build();
         e.setReusable(true);
         return e;
+    }
+
+    @Spawns("wall")
+    public Entity spawnWall(SpawnData data){
+        return entityBuilder(data)
+                .type(WALL)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("torch")
+    public Entity spawnTorch(SpawnData data){
+        Image image = image("background/torch.gif");
+        Texture texture = new Texture(image);
+        texture.setFitHeight(30);
+        texture.setFitWidth(30);
+        texture.setX(-5);
+        return entityBuilder(data)
+                .type(TORCH)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .view(texture)
+                .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("hole")
+    public Entity spawnHole(SpawnData data){
+        return entityBuilder(data)
+                .type(HOLE)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new CollidableComponent(true))
+//                .with(new PhysicsComponent())
+                .build();
+    }
+    @Spawns("opaque")
+    public Entity spawnOpaque(SpawnData data){
+        return entityBuilder(data)
+                .type(OPAQUE)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new CollidableComponent(true))
+                .build();
     }
 }

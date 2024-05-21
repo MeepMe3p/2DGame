@@ -3,6 +3,7 @@ package com.example.flat2d.components;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
@@ -26,6 +27,7 @@ public class PlayerComponent extends Component {
     /** IMAGE = TO GET THE IMAGE PATHS TO BE USED FOR THE ANIMATIONS
      *    ANIMATIONCHANNEL = CLASS FOR HANDLING THE IMAGE AND SEPARATING THEM BY PARTS
      *    TEXTURE & ANIMATEDTEXTURE = FOR ASSETS AND LOADING THEM **/
+
 
     public PlayerComponent() {
 
@@ -108,6 +110,7 @@ public class PlayerComponent extends Component {
         if(entity.getX() >= 0 ) {
 //            entity.setScaleX(1);
             entity.translateX(-1);
+//            entity.getComponent(PhysicsComponent.class).setVelocityX(-1);
         }
     }
 
@@ -119,6 +122,8 @@ public class PlayerComponent extends Component {
 //            entity.setScaleX(1);
 //            System.out.println(entity.getX());
             entity.translateX(1);
+//            entity.getComponent(PhysicsComponent.class).setVelocityX(1);
+
         }
     }
     public void move_up(){
@@ -128,6 +133,8 @@ public class PlayerComponent extends Component {
         if(entity.getY() > 0) {
 //            entity.setScaleX(-1);
             entity.translateY(-1);
+//            entity.getComponent(PhysicsComponent.class).setVelocityY(-1);
+
         }
     }
     public void move_down(){
@@ -139,6 +146,8 @@ public class PlayerComponent extends Component {
 //            entity.setScaleX(1);
 //            System.out.println(entity.getY());
             entity.translateY(1);
+//            entity.getComponent(PhysicsComponent.class).setVelocityY(1);
+
         }
     }
 
@@ -146,6 +155,7 @@ public class PlayerComponent extends Component {
         entity.translateX(0);
         entity.translateY(0);
         entity.setScaleX(1);
+
         setAllFalse();
         isIdle = true;
 //        System.out.println("stop");

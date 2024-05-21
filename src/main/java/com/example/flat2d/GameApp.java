@@ -7,6 +7,7 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.level.Level;
@@ -24,6 +25,7 @@ import com.example.flat2d.collisions.*;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import javafx.animation.FadeTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -163,7 +165,7 @@ public class GameApp extends GameApplication {
 
                 }else{
 //                        System.out.println("skill not ready");
-                    System.out.println("Skill: "+skillCd);
+                    System.out.println("Skill: "+ skillCd);
                 }
 
             }
@@ -279,10 +281,43 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(pToB.copyFor(PLAYER,MID_BOMB));
         physics.addCollisionHandler(pToB.copyFor(PLAYER,BIG_BOMB));
 
+//        physics.addCollisionHandler(wolfToPlayer.copyFor(PLAYER, TORCH));
+        physics.addCollisionHandler(new CollisionHandler(PLAYER, WALL) {
+
+            // order of types is the same as passed into the constructor
+            @Override
+            protected void onCollision(Entity player, Entity wall) {
+//                System.out.println(coin.getCenter());
+                Point2D dir = player.getCenter().subtract(wall.getCenter()).normalize();
+//                System.out.println(dir);
+                player.setPosition(player.getPosition().add(dir));
+            }
+        });
+        physics.addCollisionHandler(new CollisionHandler(PLAYER, OPAQUE) {
+
+            // order of types is the same as passed into the constructor
+            @Override
+            protected void onCollisionBegin(Entity player, Entity coin) {
+                System.out.println("UWU");
+                player.getViewComponent().setOpacity(.2);
+            }
+
+            @Override
+            protected void onCollisionEnd(Entity a, Entity b) {
+                player.getViewComponent().setOpacity(1);
+            }
+        });
+        physics.addCollisionHandler(new CollisionHandler(PLAYER, HOLE) {
+
+            // order of types is the same as passed into the constructor
+            @Override
+            protected void onCollision(Entity player, Entity hole) {
+                System.out.println("hole2");
+                player.removeFromWorld();
+                getGameController().pauseEngine();
+            }
+        });
 //        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL));
-
-
-
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,ENEMY));
@@ -441,7 +476,7 @@ public class GameApp extends GameApplication {
         // debug purposes comment or uncomment
         run(()->{
 //            enemies.add(spawn("ThirdHead"));
-            spawner.spawnEnemy("RockGirl");
+//            spawner.spawnEnemy("RockGirl");
 
 //            spawner.spawnTortols();
 
