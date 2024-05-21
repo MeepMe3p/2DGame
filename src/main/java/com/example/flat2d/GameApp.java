@@ -13,6 +13,7 @@ import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
+import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.SpawningFacade;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
@@ -297,7 +298,7 @@ public class GameApp extends GameApplication {
 
             // order of types is the same as passed into the constructor
             @Override
-            protected void onCollisionBegin(Entity player, Entity coin) {
+            protected void onCollisionBegin(Entity player, Entity opaque) {
                 System.out.println("UWU");
                 player.getViewComponent().setOpacity(.2);
             }
@@ -312,9 +313,14 @@ public class GameApp extends GameApplication {
             // order of types is the same as passed into the constructor
             @Override
             protected void onCollision(Entity player, Entity hole) {
-                System.out.println("hole2");
-                player.removeFromWorld();
-                getGameController().pauseEngine();
+//                System.out.printf("Inside");
+                hole.getViewComponent().setOpacity(1);
+            }
+
+            @Override
+            protected void onCollisionEnd(Entity player, Entity hole) {
+//                System.out.printf("Outside");
+                hole.getViewComponent().setOpacity(0);
             }
         });
 //        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL));

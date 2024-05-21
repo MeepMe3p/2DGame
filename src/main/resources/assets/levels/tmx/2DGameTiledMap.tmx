@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="72" height="72" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="121">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="72" height="72" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="163">
  <tileset firstgid="1" name="GuideOne" tilewidth="32" tileheight="32" spacing="2" tilecount="1036" columns="37">
   <image source="GuideOne.png" width="1280" height="960"/>
  </tileset>
@@ -195,8 +195,43 @@
   <object id="115" type="wall" x="1494" y="32" width="28" height="159"/>
   <object id="116" type="wall" x="1520" y="-1" width="60" height="176"/>
   <object id="117" type="wall" x="1920" y="-2" width="384" height="146"/>
-  <object id="119" type="wall" x="1754" y="747.333" width="57.3333" height="105.333"/>
-  <object id="120" type="opaque" x="1374.83" y="788.833" width="133.167" height="73.167"/>
+  <object id="119" type="wall" x="1754" y="809.333" width="57.3333" height="43.333"/>
+  <object id="122" type="wall" x="55" y="793" width="25" height="24"/>
+  <object id="123" type="wall" x="53" y="1046" width="28" height="26"/>
+  <object id="124" type="wall" x="53" y="1302" width="29" height="30"/>
+  <object id="125" type="wall" x="53" y="1558" width="28" height="27"/>
+  <object id="126" type="wall" x="54" y="1816" width="27" height="25"/>
+  <object id="127" type="wall" x="53" y="2069" width="30" height="28"/>
+  <object id="128" type="wall" x="53" y="2253" width="28" height="31"/>
+  <object id="129" type="wall" x="536" y="1739" width="59" height="40"/>
+  <object id="130" type="wall" x="1017" y="1674" width="56" height="42"/>
+  <object id="131" type="wall" x="1435" y="1221" width="56" height="50"/>
+  <object id="132" type="wall" x="1688" y="1607" width="60" height="47"/>
+  <object id="133" type="wall" x="1892" y="1235" width="30" height="21"/>
+  <object id="134" type="wall" x="1890" y="1084" width="30" height="23"/>
+  <object id="135" type="wall" x="850" y="584" width="15" height="14"/>
+  <object id="136" type="wall" x="577" y="81" width="27" height="22"/>
+  <object id="137" type="wall" x="1001" y="161" width="53" height="40"/>
+ </objectgroup>
+ <objectgroup id="10" name="opaque">
+  <object id="142" type="opaque" x="1380" y="796" width="125" height="62"/>
+  <object id="143" type="opaque" x="1435" y="1170" width="55" height="46"/>
+  <object id="144" type="opaque" x="1896" y="1029" width="20" height="57"/>
+  <object id="145" type="opaque" x="1756" y="757" width="54" height="51"/>
+  <object id="146" type="opaque" x="1693" y="1556" width="55" height="47"/>
+  <object id="147" type="opaque" x="1018" y="1624" width="57" height="40"/>
+  <object id="148" type="opaque" x="543" y="1678" width="53" height="55"/>
+  <object id="151" type="opaque" x="853" y="523" width="12" height="60"/>
+  <object id="152" type="opaque" x="57" y="2193" width="23" height="55"/>
+  <object id="153" type="opaque" x="57" y="2011" width="24" height="56"/>
+  <object id="154" type="opaque" x="56" y="1759" width="26" height="57"/>
+  <object id="155" type="opaque" x="51" y="1502" width="23" height="53"/>
+  <object id="156" type="opaque" x="56" y="1244" width="23" height="61"/>
+  <object id="157" type="opaque" x="55" y="988" width="24" height="56"/>
+  <object id="158" type="opaque" x="55" y="732" width="24" height="60"/>
+  <object id="159" type="opaque" x="588" y="44" width="15" height="51"/>
+  <object id="160" type="opaque" x="1006" y="97" width="51" height="64"/>
+  <object id="161" type="opaque" x="1900" y="45" width="22" height="40"/>
  </objectgroup>
  <layer id="5" name="decor" width="72" height="72" locked="1">
   <data encoding="csv">
@@ -390,6 +425,7 @@
   <object id="83" type="torch" x="1891.33" y="86" width="25.3333" height="33.3333"/>
   <object id="84" type="torch" x="1544.67" y="146" width="25.3333" height="33.3333"/>
   <object id="85" type="torch" x="1390" y="248.667" width="25.3333" height="33.3333"/>
+  <object id="121" type="torch" x="223.333" y="58.3333" width="25.3333" height="33.3333"/>
  </objectgroup>
  <objectgroup id="9" name="hole" locked="1">
   <object id="86" type="hole" x="769.333" y="1069.33" width="236" height="272"/>

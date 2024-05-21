@@ -1,5 +1,6 @@
 package com.example.flat2d.Factories;
 
+import com.almasb.fxgl.app.services.FXGLAssetLoaderService;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.EntityBuilder;
 import com.almasb.fxgl.dsl.FXGL;
@@ -22,6 +23,7 @@ import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -89,21 +91,33 @@ public class EffectFactory implements EntityFactory {
     public Entity spawnTorch(SpawnData data){
         Image image = image("background/torch.gif");
         Texture texture = new Texture(image);
-        texture.setFitHeight(30);
-        texture.setFitWidth(30);
-        texture.setX(-5);
+        texture.setFitHeight(data.<Integer>get("height") * 1.1);
+        texture.setFitWidth(data.<Integer>get("width") * 1.1);
+//        texture.setX(-5);
+//        ParticleEmitter particleEmitter = ParticleEmitters.newFireEmitter();;
+//        particleEmitter.setEndColor(Color.WHITE);
+//        particleEmitter.setBlendMode(BlendMode.SRC_OVER);
+//        particleEmitter.setSourceImage(image);
+//        particleEmitter.setSize(1, 5);
         return entityBuilder(data)
                 .type(TORCH)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .view(texture)
                 .with(new CollidableComponent(true))
+//                .with(new ParticleComponent(particleEmitter))
                 .build();
     }
     @Spawns("hole")
     public Entity spawnHole(SpawnData data){
+        // TODO: EDIT GIF AND TILED
+        Image image = image("background/eyes-hole.gif");
+        Texture texture = new Texture(image);
+        texture.setFitHeight(data.<Integer>get("height"));
+        texture.setFitWidth(data.<Integer>get("width"));
         return entityBuilder(data)
                 .type(HOLE)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .view(texture)
                 .with(new CollidableComponent(true))
 //                .with(new PhysicsComponent())
                 .build();
