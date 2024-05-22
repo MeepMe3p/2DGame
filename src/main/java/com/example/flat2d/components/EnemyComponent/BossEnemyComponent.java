@@ -20,6 +20,12 @@ public class BossEnemyComponent extends Component {
         if(this.type == 1){
             System.out.println("dino attack");
             boss.getComponent(DinoBossComponent.class).setAttacking(true);
+        }else if(type == 2){
+            run(()->{
+
+            boss.getComponent(MedBossComponent.class).setAttacking(true);
+            return null;
+            },Duration.seconds(5));
         }
 
     }
@@ -30,6 +36,11 @@ public class BossEnemyComponent extends Component {
             boss.getComponent(DinoBossComponent.class).setAttacking(false);
                 return null;
             }, Duration.seconds(1));
+        }
+    }
+    public void kill(Entity boss){
+        if(this.type == 2){
+            boss.getComponent(MedBossComponent.class).setDead();
         }
     }
 }

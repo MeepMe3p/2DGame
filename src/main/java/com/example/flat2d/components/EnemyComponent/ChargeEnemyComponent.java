@@ -12,7 +12,16 @@ public class ChargeEnemyComponent extends Component {
     public void attack(Entity e){
         if(type == 1){
             e.getComponent(PenguinComponent.class).setCharging(true);
+        }else if(type ==2){
+            e.getComponent(ValkyrieChargeComponent.class).setCharging(true);
         }
         
+    }
+    public void kill(Entity e){
+        if(type ==1){
+            e.getComponent(PenguinComponent.class).setDead(true);
+        }else if(type ==2){
+            e.getComponent(ValkyrieChargeComponent.class).setDead(true);
+        }
     }
 }

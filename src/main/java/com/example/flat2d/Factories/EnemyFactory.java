@@ -182,13 +182,28 @@ public class EnemyFactory implements EntityFactory {
         var e = entityBuilder()
                 .type(ENEMY)
                 .bbox(new HitBox(BoundingShape.box(92,64)))
-                .with(new HealthIntComponent())
                 .with(new EnemyComponent(2))
 
                 .with(new ChargeEnemyComponent(1))
                 .with(new PenguinComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new ExpireCleanComponent(Duration.seconds(15)))
-                .with(new CollidableComponent())
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("Valkyrie")
+    public Entity spawnValkyrie(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(BoundingShape.box(92,64)))
+                .with(new EnemyComponent(2))
+
+                .with(new ChargeEnemyComponent(2))
+                .with(new ValkyrieChargeComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
+                .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(WOLF_HP))
                 .build();
         e.setReusable(true);
@@ -285,8 +300,23 @@ public class EnemyFactory implements EntityFactory {
 //        e.addComponent(new ShoujoComponent());
         return e;
     }
+    @Spawns("EvilArcher")
+    public Entity spawnArcher(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,140)))
+                .with(new CollidableComponent())
+                .with(new EnemyComponent(5))
+                .with(new EvilArcherComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
+                .with(new RangeComponent(2))
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+//        e.addComponent(new ShoujoComponent());
+        return e;
+    }
     @Spawns("Boss1")
-    public Entity spawnHellBeast(SpawnData data){
+    public Entity spawnDino(SpawnData data){
         return entityBuilder()
                 .type(BOSS)
                 .bbox(new HitBox(new Point2D(40,30),BoundingShape.circle(130)))
@@ -294,6 +324,18 @@ public class EnemyFactory implements EntityFactory {
                 .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(WOLF_HP))
+                .build();
+    }
+    @Spawns("Boss2")
+    public Entity spawnHellBeast(SpawnData data){
+        return entityBuilder()
+                .type(BOSS)
+                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(100,100)))
+                .with(new EnemyComponent(6))
+                .with(new BossEnemyComponent(2))
+                .with(new MedBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),BOSS_2_MOVEMENTSPEED))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(10))
                 .build();
     }
     private void spawnDeath(Entity entity, Point2D location) {

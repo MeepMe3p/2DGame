@@ -5,6 +5,7 @@ import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.EntityBuilder;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.dsl.components.OffscreenInvisibleComponent;
 import com.almasb.fxgl.dsl.components.ProjectileComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
@@ -91,21 +92,27 @@ public class EffectFactory implements EntityFactory {
     public Entity spawnTorch(SpawnData data){
         Image image = image("background/torch.gif");
         Texture texture = new Texture(image);
+
         texture.setFitHeight(data.<Integer>get("height") * 1.1);
         texture.setFitWidth(data.<Integer>get("width") * 1.1);
-//        texture.setX(-5);
-//        ParticleEmitter particleEmitter = ParticleEmitters.newFireEmitter();;
-//        particleEmitter.setEndColor(Color.WHITE);
-//        particleEmitter.setBlendMode(BlendMode.SRC_OVER);
+        texture.setX(-5);
+
+        ParticleEmitter particleEmitter = ParticleEmitters.newFireEmitter();;
+        particleEmitter.setEndColor(Color.RED);
+        particleEmitter.setEmissionRate(.02);
+
+        particleEmitter.setBlendMode(BlendMode.HARD_LIGHT);
 //        particleEmitter.setSourceImage(image);
-//        particleEmitter.setSize(1, 5);
-        return entityBuilder(data)
+        particleEmitter.setSize(1, 5);
+        var e =  entityBuilder(data)
                 .type(TORCH)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .view(texture)
                 .with(new CollidableComponent(true))
-//                .with(new ParticleComponent(particleEmitter))
+                .with(new OffscreenInvisibleComponent())
+                .with(new ParticleComponent(particleEmitter))
                 .build();
+        return  e;
     }
     @Spawns("hole")
     public Entity spawnHole(SpawnData data){
@@ -114,13 +121,17 @@ public class EffectFactory implements EntityFactory {
         Texture texture = new Texture(image);
         texture.setFitHeight(data.<Integer>get("height"));
         texture.setFitWidth(data.<Integer>get("width"));
-        return entityBuilder(data)
+        texture.setVisible(false);
+        var e =  entityBuilder(data)
                 .type(HOLE)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .view(texture)
                 .with(new CollidableComponent(true))
 //                .with(new PhysicsComponent())
                 .build();
+//        e.setOnActive();
+
+        return e;
     }
     @Spawns("opaque")
     public Entity spawnOpaque(SpawnData data){

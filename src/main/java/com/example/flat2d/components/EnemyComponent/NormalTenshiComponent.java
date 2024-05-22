@@ -94,24 +94,7 @@ public class NormalTenshiComponent extends Component {
 //        wolf.getComponent(PhysicsComponent.class).overwritePosition(velocity.add(wolf.getPosition()));
 
     }
-    public int takeDamage(double taken){
-        int hp = entity.getComponent(HealthIntComponent.class).getValue();
-        entity.getComponent(HealthIntComponent.class).setValue((int) (hp - taken));
-        return hp;
-    }
-    public void pounce(){
 
-        run(()->{
-            if(player.getPosition().distance(entity.getPosition())< 200){
-                System.out.println(player.getPosition().distance(entity.getPosition()));
-//                this.speed = 150;
-                entity.setPosition(player.getPosition());
-            }else{
-//                this.speed = 50;
-            }
-            return null;
-        }, Duration.seconds(1));
-    }
 
     public void setDead(boolean dead) {
         isDead = dead;

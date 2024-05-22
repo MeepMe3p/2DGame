@@ -16,7 +16,7 @@ import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 
-public class PenguinComponent extends Component {
+public class ValkyrieChargeComponent extends Component {
     private Entity player;
     private int speed;
     private LocalTimer adjustDirectionTimer = FXGL.newLocalTimer();
@@ -30,17 +30,17 @@ public class PenguinComponent extends Component {
 
     AnimatedTexture texture;
     AnimationChannel charge_anim, idle_anim,dead_anim;
-    public PenguinComponent(Entity player, int speed){
+    public ValkyrieChargeComponent(Entity player, int speed){
         this.player = player;
         this.speed = speed;
 
 //        Image img = image("midBombWalk.png");
-        Image idle_Left = image("charger/PengIdleLeft.png");
-        Image charge = image("charger/PengChargeLeft.png");
-        Image dead = image("charger/PengDead.png");
-        idle_anim = new AnimationChannel(idle_Left,5,100,100, Duration.seconds(1),0,4);
-        charge_anim = new AnimationChannel(charge, 5,100,100, Duration.seconds(2),0,4);
-        dead_anim = new AnimationChannel(charge, 6,100,100, Duration.seconds(2),0,5);
+        Image idle_Left = image("charger/Charge2Idle.png");
+        Image charge = image("charger/Charge2Atk.png");
+        Image dead = image("charger/Charge2Dead.png");
+        idle_anim = new AnimationChannel(idle_Left,6,200,200, Duration.seconds(1),0,5);
+        charge_anim = new AnimationChannel(charge, 8,200,200, Duration.seconds(2),0,7);
+        dead_anim = new AnimationChannel(dead, 7,200,200, Duration.seconds(2),0,6);
         texture = new AnimatedTexture(idle_anim);
         texture.setRotate(-20);
         texture.loop();
@@ -54,7 +54,7 @@ public class PenguinComponent extends Component {
 
                 texture.loopAnimationChannel(charge_anim);
             }
-        }else{
+        }else if(isDead){
             if(texture.getAnimationChannel()!=dead_anim){
                 texture.loopAnimationChannel(dead_anim);
             }
@@ -100,13 +100,14 @@ public class PenguinComponent extends Component {
     }
     public void setDead(boolean isDead) {
         this.isDead = isDead;
+
         isCharging = false;
         entity.removeComponent(CollidableComponent.class);
 
         runOnce(()->{
             entity.removeFromWorld();
             return null;
-        },Duration.seconds(1));
+        },Duration.seconds(2));
     }
 
 }

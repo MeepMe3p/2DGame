@@ -10,10 +10,7 @@ import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.Config;
 import com.example.flat2d.Misc.EntityType;
-import com.example.flat2d.components.EnemyComponent.BasicEnemyComponent;
-import com.example.flat2d.components.EnemyComponent.BlockerEnemyComponent;
-import com.example.flat2d.components.EnemyComponent.ChargeEnemyComponent;
-import com.example.flat2d.components.EnemyComponent.EnemyComponent;
+import com.example.flat2d.components.EnemyComponent.*;
 import com.example.flat2d.components.SkillsComponent.BasicComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
@@ -94,12 +91,15 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
                 break;
             case 2:
-//                enemy.getComponent(ChargeEnemyComponent.class).kill(enemy);
+                enemy.getComponent(ChargeEnemyComponent.class).kill(enemy);
                 System.out.println("a");
                 break;
             case 3:
                 System.out.println("aa");
                 enemy.getComponent(BlockerEnemyComponent.class).kill(enemy);
+                break;
+            case 6:
+                enemy.getComponent(BossEnemyComponent.class).kill(enemy);
                 break;
         }
 //        enemy.setVisible(false);

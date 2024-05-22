@@ -7,7 +7,6 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.level.Level;
@@ -166,7 +165,7 @@ public class GameApp extends GameApplication {
 
                 }else{
 //                        System.out.println("skill not ready");
-                    System.out.println("Skill: "+ skillCd);
+                    System.out.println("Skill: "+skillCd);
                 }
 
             }
@@ -282,7 +281,8 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(pToB.copyFor(PLAYER,MID_BOMB));
         physics.addCollisionHandler(pToB.copyFor(PLAYER,BIG_BOMB));
 
-//        physics.addCollisionHandler(wolfToPlayer.copyFor(PLAYER, TORCH));
+//        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL));
+
         physics.addCollisionHandler(new CollisionHandler(PLAYER, WALL) {
 
             // order of types is the same as passed into the constructor
@@ -305,6 +305,7 @@ public class GameApp extends GameApplication {
 
             @Override
             protected void onCollisionEnd(Entity a, Entity b) {
+//                hole.getViewComponent().getChildren().getFirst().setVisible(false);
                 player.getViewComponent().setOpacity(1);
             }
         });
@@ -312,18 +313,15 @@ public class GameApp extends GameApplication {
 
             // order of types is the same as passed into the constructor
             @Override
-            protected void onCollision(Entity player, Entity hole) {
-//                System.out.printf("Inside");
-                hole.getViewComponent().setOpacity(1);
+            protected void onCollisionBegin(Entity player, Entity hole) {
+                hole.getViewComponent().getChild(0, Texture.class).setVisible(true);
             }
 
             @Override
             protected void onCollisionEnd(Entity player, Entity hole) {
-//                System.out.printf("Outside");
-                hole.getViewComponent().setOpacity(0);
+                hole.getViewComponent().getChild(0, Texture.class).setVisible(false);
             }
         });
-//        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,ENEMY));
@@ -480,14 +478,14 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-        run(()->{
-//            enemies.add(spawn("ThirdHead"));
+//        run(()->{
+////            enemies.add(spawn("ThirdHead"));
 //            spawner.spawnEnemy("RockGirl");
-
-//            spawner.spawnTortols();
-
-//            return null;
-        },WOLF_SPAWN_INTERVAL);
+//
+////            spawner.spawnTortols();
+//
+////            return null;
+//        },WOLF_SPAWN_INTERVAL);
 //        run(()->{
 //            enemies.addAll(spawner.spawnTortols());
 //
