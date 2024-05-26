@@ -138,13 +138,13 @@ public class UIFacade {
         switch (check){
             case 0:
                 if(GameApp.skillLevels[0] != 2){
-                    System.out.println("Ckeck: "+ check);
+//                    System.out.println("Ckeck: "+ check);
                     text.setText("Basic Attack");
                 }
                 break;
             case 1:
                 if(GameApp.skillLevels[1] != 2){
-                    System.out.println("Ckeck: "+ check);
+//                    System.out.println("Ckeck: "+ check);
 //                    GameApp.skillLevels[1] += 1;
                     text.setText("Oratrice");
 
@@ -152,7 +152,7 @@ public class UIFacade {
                 break;
             case 2:
                 if(GameApp.skillLevels[2] != 2){
-                    System.out.println("Ckeck: "+ check);
+//                    System.out.println("Ckeck: "+ check);
 //                    GameApp.skillLevels[2] += 1;
                     text.setText("CoolAndNormal");
 
@@ -160,21 +160,21 @@ public class UIFacade {
                 break;
             case 3:
                 if(GameApp.skillLevels[3] != 2){
-                    System.out.println("Ckeck: "+ check);
+//                    System.out.println("Ckeck: "+ check);
 //                    GameApp.skillLevels[3] += 1;
                     text.setText("Stack");
                 }
                 break;
             case 4:
                 if(GameApp.skillLevels[4] != 2){
-                    System.out.println("Ckeck: "+ check);
+//                    System.out.println("Ckeck: "+ check);
 //                    GameApp.skillLevels[4] += 1;
                     text.setText("Queue");
                 }
                 break;
             case 5:
                 if(GameApp.skillLevels[5] != 2){
-                    System.out.println("Ckeck: "+ check);
+//                    System.out.println("Ckeck: "+ check);
 //                    GameApp.skillLevels[5] += 1;
                     text.setText("Tree");
 

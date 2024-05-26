@@ -46,7 +46,7 @@ public class EffectFactory implements EntityFactory {
         emitter.setMaxEmissions(10);
         emitter.setNumParticles(2);
         emitter.setColor(Color.RED);
-        emitter.setEmissionRate(0.86);
+//        emitter.setEmissionRate(0.2);
         emitter.setSize(1, 3);
 //        emitter.setScaleFunction(i -> FXGLMath.randomPoint2D().multiply(0.01));
 //        emitter.setExpireFunction(i -> Duration.seconds(random(0.25, 2.5)));
@@ -59,7 +59,7 @@ public class EffectFactory implements EntityFactory {
             }
         });
         var e = new EntityBuilder()
-                .with(new ParticleComponent(emitter))
+//                .with(new ParticleComponent(emitter))
 //                .with(new ProjectileComponent(new Point2D(1,0),BASICSKILL_MOV_SPEED))
                 .with(new ExpireCleanComponent(Duration.seconds(2)))
                 .build();
@@ -99,9 +99,9 @@ public class EffectFactory implements EntityFactory {
 
         ParticleEmitter particleEmitter = ParticleEmitters.newFireEmitter();;
         particleEmitter.setEndColor(Color.RED);
-        particleEmitter.setEmissionRate(.02);
+        particleEmitter.setEmissionRate(.01);
 
-        particleEmitter.setBlendMode(BlendMode.HARD_LIGHT);
+        particleEmitter.setBlendMode(BlendMode.SRC_OVER);
 //        particleEmitter.setSourceImage(image);
         particleEmitter.setSize(1, 5);
         var e =  entityBuilder(data)
@@ -110,7 +110,7 @@ public class EffectFactory implements EntityFactory {
                 .view(texture)
                 .with(new CollidableComponent(true))
                 .with(new OffscreenInvisibleComponent())
-                .with(new ParticleComponent(particleEmitter))
+//                .with(new ParticleComponent(particleEmitter))
                 .build();
         return  e;
     }

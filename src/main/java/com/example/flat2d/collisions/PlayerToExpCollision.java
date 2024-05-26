@@ -30,11 +30,14 @@ public class PlayerToExpCollision extends CollisionHandler {
         exp.removeFromWorld();
 
         if(exp.getTypeComponent().isType(SMALL_EXP)){
-            inc("exp",+1);
+//            inc("player_level",+1);
+            inc("exp",1);
         }else if(exp.getTypeComponent().isType(MEDIUM_EXP)){
+//            inc("player_level",+1);
             inc("exp",+2);
         }else{
             inc("exp",+3);
+//            inc("player_level",+1);
         }
         int player_exp = geti("exp");
         int player_level =  geti("player_level");
@@ -47,7 +50,7 @@ public class PlayerToExpCollision extends CollisionHandler {
             addUINode(exp_bar);
             inc("player_level",1);
             set("exp",0);
-//            getGameController().pauseEngine();
+
 //            //todo open a vbox or something
             UIFacade uiFacade = new UIFacade();
             VBox lvlup = uiFacade.createLevelBox();

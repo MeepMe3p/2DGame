@@ -172,7 +172,7 @@ public class EnemyFactory implements EntityFactory {
                 .with(new EnemyComponent(2))
                 .with(new ChargeHeadThreeComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new HealthIntComponent(WOLF_HP))
-//                .with(new ChargeC)
+                .with(new ChargeEnemyComponent(3))
                 .build();
         e.setReusable(true);
         return e;
@@ -225,7 +225,8 @@ public class EnemyFactory implements EntityFactory {
                 .build();
         e.setReusable(true);
         return e;
-    }    @Spawns("SpearShield")
+    }
+    @Spawns("SpearShield")
     public Entity spawnSpearShield(SpawnData data){
         var e = entityBuilder()
                 .type(ENEMY)
@@ -236,6 +237,22 @@ public class EnemyFactory implements EntityFactory {
                 .with(new EnemyComponent(3))
 
                 .with(new BlockerEnemyComponent(2))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("WinkWink")
+    public Entity spawnSuspicious(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(BoundingShape.box(64,50)))
+                .with(new SuspiciousBlockComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new EnemyComponent(3))
+
+                .with(new BlockerEnemyComponent(3))
                 .with(new ExpireCleanComponent(Duration.seconds(15)))
                 .with(new HealthIntComponent(WOLF_HP))
                 .build();
@@ -311,6 +328,8 @@ public class EnemyFactory implements EntityFactory {
                 .with(new RangeComponent(2))
                 .with(new HealthIntComponent(WOLF_HP))
                 .build();
+
+        
         e.setReusable(true);
 //        e.addComponent(new ShoujoComponent());
         return e;

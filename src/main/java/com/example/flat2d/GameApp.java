@@ -8,11 +8,11 @@ import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.time.TimerAction;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.SpawningFacade;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
@@ -71,6 +71,7 @@ public class GameApp extends GameApplication {
                 return new GameMainMenu();
             }
         });
+
     }
 
 
@@ -205,7 +206,6 @@ public class GameApp extends GameApplication {
 ////        FXGL.getGameController().pauseEngine();
 //      debug =========================================================================
 
-
         addEntityBuilders();
         setGameLevel();
 //        -------- DEV MODE TO SHOW HITBOXES ------------
@@ -224,9 +224,11 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
-            initSpawnEnemies();
+//            initSpawnEnemies();
+            startFirstWave();
             initSpawnSkills();
 
+//
         });
         th.start();
 //        runOnce(()->{
@@ -251,7 +253,64 @@ public class GameApp extends GameApplication {
 
     }
 
+    private void startSecondWave() {
 
+
+
+    }
+
+    private TimerAction firstWave,basicT,chargeT,bombT,randomT;
+    int wave = 1;
+    private void startFirstWave() {
+
+        firstWave = run(()->{
+//            enemies.add(spawner.spawnEnemy("Wolf"));
+            enemies.add(spawner.spawnEnemy("Wolf"));
+//            System.out.println("called nfndosfndkfn");
+//            enemies.addAll(spawner.spawnSide("CuteBomb",4,300,144));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",3,300,144));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",2,300,144));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
+
+        },WOLF_SPAWN_INTERVAL);
+        bombT = run(()->{
+            enemies.add(spawner.spawnEnemy("CuteBomb"));
+            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
+        },BOMBSQUARE_SPAWN_INTERVAL);
+        randomT = run(()->{
+            enemies.addAll(spawner.randomSpawn(wave,FXGL.random(1,3),FXGL.random(1,4)));
+        },Duration.seconds(15));
+        basicT = run(()->{
+            enemies.addAll(spawner.spawnTortols());
+        },SQUARE_SPAWN_INTERVAL);
+        chargeT = run(()->{
+//            enemies.addAll(spawner.spawnSheep());
+        },CHARGE_SPAWN_INTERVAL);
+        runOnce(()->{
+            System.out.println("cummonnnnnnnnnnnnnn");
+            spawner.spawnEnemy("Boss1");
+//            firstWave.expire();
+            basicT.expire();
+            chargeT.expire();
+            bombT.expire();
+
+            getGameWorld().removeEntities(enemies);
+            enemies.clear();
+            runOnce(()->{
+                firstWave.expire();
+                startSecondWave();
+                return null;
+
+            },Duration.seconds(10));
+
+            System.out.println(basicT.isExpired());
+            System.out.println(chargeT.isExpired());
+            System.out.println(bombT.isExpired());
+            System.out.println(enemies.size());
+            return null;
+        },BOSS1_SPAWN_TIME);
+
+    }
 
 
     @Override
@@ -270,7 +329,7 @@ public class GameApp extends GameApplication {
         PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
         DinoToPlayerCollision dToPl = new DinoToPlayerCollision();
 
-        physics.addCollisionHandler(wolfToPlayer);
+//        physics.addCollisionHandler(wolfToPlayer);
         physics.addCollisionHandler(oToE);
         physics.addCollisionHandler(pToB);
         physics.addCollisionHandler(expToPlayer);

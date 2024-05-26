@@ -14,6 +14,8 @@ public class BlockerEnemyComponent extends Component {
             e.getComponent(SlimeShieldComponent.class).setDead(true);
         }else if(type == 2){
             e.getComponent(RookSpearComponent.class).setDead(true);
+        } else if(type == 3){
+            e.getComponent(SuspiciousBlockComponent.class).setDead(true);
         }
     }
 }
