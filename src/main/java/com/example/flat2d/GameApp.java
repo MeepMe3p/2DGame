@@ -310,11 +310,24 @@ public class GameApp extends GameApplication {
             }
         });
         physics.addCollisionHandler(new CollisionHandler(PLAYER, HOLE) {
-
+            @Override
+            protected void onCollision(Entity player, Entity hole) {
+//                System.out.println(coin.getCenter());
+                Point2D dir = player.getCenter().subtract(hole.getCenter()).normalize();
+//                System.out.println(dir);
+                getGameTimer().runOnceAfter(() -> {
+                player.setPosition(player.getPosition().subtract(dir));
+                    // code to run once after 1 second
+                }, Duration.seconds(1));
+            }
             // order of types is the same as passed into the constructor
             @Override
             protected void onCollisionBegin(Entity player, Entity hole) {
                 hole.getViewComponent().getChild(0, Texture.class).setVisible(true);
+
+                Point2D dir = player.getCenter().subtract(hole.getCenter()).normalize();
+                System.out.println(dir);
+                player.setPosition(player.getPosition().add(dir));
             }
 
             @Override
@@ -478,14 +491,14 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-//        run(()->{
-////            enemies.add(spawn("ThirdHead"));
-//            spawner.spawnEnemy("RockGirl");
-//
-////            spawner.spawnTortols();
-//
-////            return null;
-//        },WOLF_SPAWN_INTERVAL);
+        run(()->{
+//            enemies.add(spawn("ThirdHead"));
+            spawner.spawnEnemy("RockGirl");
+
+//            spawner.spawnTortols();
+
+//            return null;
+        },WOLF_SPAWN_INTERVAL);
 //        run(()->{
 //            enemies.addAll(spawner.spawnTortols());
 //

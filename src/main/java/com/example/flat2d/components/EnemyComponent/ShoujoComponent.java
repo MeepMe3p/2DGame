@@ -60,8 +60,8 @@ public class ShoujoComponent extends Component {
             if(texture.getAnimationChannel() != shoot_anim){
                 texture.loopAnimationChannel(shoot_anim);
             }
-            texture.setFitWidth(240);            texture.setFitHeight(185);
-
+            texture.setFitWidth(240);
+            texture.setFitHeight(185);
         }
             getDirection();
 

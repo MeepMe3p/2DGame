@@ -22,6 +22,7 @@ public class PlayerComponent extends Component {
     AnimationChannel left,right,up,down,idle;
     AnimatedTexture texture;
     private boolean isLeft,isRight,isUp,isDown,isIdle;
+    private boolean acquireExperience;
 //    TODO ADD COMMENTS
     private LocalTimer skills_timer = newLocalTimer();
     /** IMAGE = TO GET THE IMAGE PATHS TO BE USED FOR THE ANIMATIONS
@@ -30,7 +31,6 @@ public class PlayerComponent extends Component {
 
 
     public PlayerComponent() {
-
         Image movement = image("player/lecatmoves.png");
         Image down_anim = image("player/CatOne.png");
         Image left_anim = image("player/CatThree.png");
@@ -54,6 +54,7 @@ public class PlayerComponent extends Component {
 //        up = new AnimationChannel(up_anim, 8, 50, 90, Duration.seconds(1), 0, 7);
         texture = new AnimatedTexture(idle);
         texture.loop();
+        acquireExperience = false;
     }
 /*
 *    PLACES AND SHOWS THE PLAYER TO THE GAME
@@ -199,5 +200,14 @@ public class PlayerComponent extends Component {
 
         GameFactory.respawnSkill(e,location);
         return e;
+    }
+    // Exp Handler,
+
+    public boolean getExperienceCondition() {
+        return acquireExperience;
+    }
+
+    public void setExperienceCondition(boolean getAllExperience) {
+        this.acquireExperience = getAllExperience;
     }
 }

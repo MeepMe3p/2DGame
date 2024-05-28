@@ -86,16 +86,18 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 e = spawn("BigExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
                 e.setPosition(enemy.getCenter()); break;
         }
+        getGameTimer().runAtInterval(() -> {
+            var magnet = spawn("Magnet");
+            magnet.setPosition(enemy.getPosition());
+        }, Duration.millis(1000));
         switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
             case 1:
                 enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
                 break;
             case 2:
                 enemy.getComponent(ChargeEnemyComponent.class).kill(enemy);
-                System.out.println("a");
                 break;
             case 3:
-                System.out.println("aa");
                 enemy.getComponent(BlockerEnemyComponent.class).kill(enemy);
                 break;
             case 6:

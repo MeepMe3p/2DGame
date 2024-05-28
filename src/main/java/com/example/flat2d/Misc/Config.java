@@ -69,6 +69,7 @@ public final class Config {
     public static final int HP_MULTIPLIER = 20;
     public static final int EXP_MULTIPLIER = 10;
 
-
+    // EXP
+    public static final int EXP_SPEED = 10;
 
 }

@@ -1,5 +1,6 @@
 package com.example.flat2d.DesignPatterns.Facade;
 
+import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.core.concurrent.Async;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.ui.ProgressBar;
@@ -7,6 +8,7 @@ import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.EntityType;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,12 +17,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 //import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.GameApp.getPlayer;
 import static com.example.flat2d.Misc.Config.PLAYER_HP;
 import static com.example.flat2d.Misc.EntityType.BASICSKILL;
 import static com.example.flat2d.Misc.EntityType.ORATRICE;
@@ -207,7 +210,7 @@ public class UIFacade {
 //
 //                }
                 if(check == 6){
-                    inc("hp_boose",1);
+                    inc("hp_boost",1);
                 }else if(check == 7){
                     inc("dmg_boost",1);
                 }else if(check == 8){
@@ -216,6 +219,11 @@ public class UIFacade {
                     GameApp.skillLevels[check] += 1;
 
                 }
+                var e = spawn("level-up");
+                runOnce(()->{
+                    e.removeFromWorld();
+                    return null;
+                }, Duration.seconds(.8));
             }
         });
         skill.setOnMouseEntered(new EventHandler<MouseEvent>() {

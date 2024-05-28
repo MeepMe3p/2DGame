@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.GameApp.getPlayer;
 import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
 import static com.example.flat2d.Misc.Config.CUTE_BOMB_MOVEMENT_SPEED;
 import static com.example.flat2d.Misc.EntityType.*;
@@ -43,7 +44,7 @@ public class EffectFactory implements EntityFactory {
     @Spawns("EnemyHit")
     public Entity spawnExplosion(SpawnData data){
         ParticleEmitter emitter = ParticleEmitters.newSparkEmitter();
-        emitter.setMaxEmissions(10);
+        emitter.setMaxEmissions(5);
         emitter.setNumParticles(2);
         emitter.setColor(Color.RED);
         emitter.setEmissionRate(0.86);
@@ -52,6 +53,7 @@ public class EffectFactory implements EntityFactory {
 //        emitter.setExpireFunction(i -> Duration.seconds(random(0.25, 2.5)));
         emitter.setAccelerationFunction(() -> Point2D.ZERO);
         emitter.setVelocityFunction(i -> FXGLMath.randomPoint2D().multiply(90));
+        emitter.setBlendMode(BlendMode.SRC_OVER);
         emitter.setExpireFunction(new Function<Integer, Duration>() {
             @Override
             public Duration apply(Integer integer) {
@@ -101,8 +103,8 @@ public class EffectFactory implements EntityFactory {
         particleEmitter.setEndColor(Color.RED);
         particleEmitter.setEmissionRate(.02);
 
-        particleEmitter.setBlendMode(BlendMode.HARD_LIGHT);
-//        particleEmitter.setSourceImage(image);
+        particleEmitter.setBlendMode(BlendMode.SRC_OVER);
+        particleEmitter.setSourceImage(image);
         particleEmitter.setSize(1, 5);
         var e =  entityBuilder(data)
                 .type(TORCH)
@@ -110,7 +112,7 @@ public class EffectFactory implements EntityFactory {
                 .view(texture)
                 .with(new CollidableComponent(true))
                 .with(new OffscreenInvisibleComponent())
-                .with(new ParticleComponent(particleEmitter))
+//                .with(new ParticleComponent(particleEmitter))
                 .build();
         return  e;
     }
@@ -139,6 +141,17 @@ public class EffectFactory implements EntityFactory {
                 .type(OPAQUE)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("level-up")
+    public Entity spawnLevelUpEffect(SpawnData data) {
+        Image image = image("background/skill-acquired.gif");
+        Texture texture = new Texture(image);
+        return entityBuilder()
+                .at(getPlayer().getCenter().subtract(new Point2D(image.getWidth()/2, image.getHeight()/2 + 100)))
+                .bbox(new HitBox(BoundingShape.box(image.getWidth(), image.getHeight())))
+                .type(ANGEL)
+                .view(texture)
                 .build();
     }
 }
