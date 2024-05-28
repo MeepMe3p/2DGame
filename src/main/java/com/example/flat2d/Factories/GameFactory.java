@@ -79,7 +79,7 @@ public class GameFactory implements EntityFactory {
         ParticleEmitter emitter = ParticleEmitters.newFireEmitter();
         emitter.setColor(Color.ORANGE);
         emitter.setEndColor(Color.DARKRED);
-        emitter.setBlendMode(BlendMode.HARD_LIGHT);
+        emitter.setBlendMode(BlendMode.SRC_OVER);
         emitter.setNumParticles(1);
         emitter.setMaxEmissions(15);
         AnimatedTexture texture;
@@ -195,64 +195,56 @@ public class GameFactory implements EntityFactory {
         return e;
     }
     @Spawns("Magnet")
-    public Entity spawnMagnet(){
+    public Entity spawnMagnet(SpawnData data){
         Image image = image("background/get-all-exp.gif");
         var e = entityBuilder()
                 .type(MAGNET)
-                .view(new Texture(image))
+                .viewWithBBox(new Texture(image))
                 .collidable()
                 .with(new ExperienceComponent(FXGL.<GameApp>getAppCast().getPlayer(),EXP_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new OffscreenInvisibleComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(5)))
                 .build();
         e.setReusable(true);
         return e;
     }
     @Spawns("SmallExp")
     public Entity spawnSmallExp(SpawnData data){
+        Image image = image("background/Small.gif");
         var e = entityBuilder()
-//                .at(FXGLMath.random(0,720),FXGLMath.random(0,720))
                 .type(SMALL_EXP)
-                .viewWithBBox(experienceTextureSetter())
-//                .viewWithBBox(new Circle(10, Color.BLUE))
+                .viewWithBBox(new Texture(image))
                 .collidable()
                 .with(new ExperienceComponent(FXGL.<GameApp>getAppCast().getPlayer(),EXP_SPEED))
-//                .with(new CollidableComponent())
-//                .with(new )
                 .build();
         e.setReusable(true);
         return e;
     }
     @Spawns("MediumExp")
     public Entity spawnMediumExp(SpawnData data){
+        Image image = image("background/Medium.gif");
         var e = entityBuilder()
                 .type(MEDIUM_EXP)
-                .viewWithBBox(experienceTextureSetter())
-//                .viewWithBBox(new Circle(10,Color.YELLOW))
+                .viewWithBBox(new Texture(image))
                 .collidable()
                 .with(new ExperienceComponent(FXGL.<GameApp>getAppCast().getPlayer(),EXP_SPEED))
-//                .with(new CollidableComponent())
                 .build();
         e.setReusable(true);
         return e;
     }
     @Spawns("BigExp")
     public Entity spawnBigExp(SpawnData data){
+        Image image = image("background/Large.gif");
         var e = entityBuilder()
                 .type(BIG_EXP)
-                .viewWithBBox(experienceTextureSetter())
-//                .at(getRandomSpawnPoint())
-//                .viewWithBBox(new Circle(10,Color.VIOLET))
-//                .with(new CollidableComponent())
+                .viewWithBBox(new Texture(image))
                 .collidable()
                 .with(new ExperienceComponent(FXGL.<GameApp>getAppCast().getPlayer(),EXP_SPEED))
                 .build();
         e.setReusable(true);
         return e;
     }
-    public Texture experienceTextureSetter(){
-        Image image = image("background/experience-points.gif");
-        return new Texture(image);
-    }
-
     /*
 *   THIS METHOD IS TO REUSE THE ENTITY THAT WAY YOU WONT BE ADDING AND REMOVING ENTITIES
 *   WHICH FUKS UP THE RUNTIME SIMILAR RA SHA SA KATONG PLATFORMER NATO PAGLAST

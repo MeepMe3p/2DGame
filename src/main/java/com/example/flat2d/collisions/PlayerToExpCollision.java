@@ -2,8 +2,10 @@ package com.example.flat2d.collisions;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.time.TimerAction;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.Misc.EntityType;
+import com.example.flat2d.components.PlayerComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -16,8 +18,7 @@ import java.util.Random;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.GameApp.*;
 import static com.example.flat2d.Misc.Config.*;
-import static com.example.flat2d.Misc.EntityType.MEDIUM_EXP;
-import static com.example.flat2d.Misc.EntityType.SMALL_EXP;
+import static com.example.flat2d.Misc.EntityType.*;
 
 public class PlayerToExpCollision extends CollisionHandler {
     Entity exp;
@@ -33,9 +34,11 @@ public class PlayerToExpCollision extends CollisionHandler {
         if(exp.getTypeComponent().isType(SMALL_EXP)){
             inc("exp",+ 1);
         }else if(exp.getTypeComponent().isType(MEDIUM_EXP)){
-            inc("exp",+ 1);
-        }else{
-            inc("exp",+ 1);
+            inc("exp",+ 2);
+        }else if(exp.getTypeComponent().isType(BIG_EXP)){
+            inc("exp",+ 3);
+        } else {
+            getPlayer().getComponent(PlayerComponent.class).setExperienceCondition(true);
         }
         int player_exp = geti("exp");
         int player_level =  geti("player_level");
@@ -43,15 +46,12 @@ public class PlayerToExpCollision extends CollisionHandler {
         set("exp_needed",needed);
         System.out.println(player_exp+" / " + needed);
         if(player_exp >= needed){
-            // DOES NOT WORK HUHU PERO ANG PAGKUHA SA ORB MO WORK
             play("lvl-up-sfx.wav");
             removeUINode(exp_bar);
             exp_bar = facade.createExpBar();
             addUINode(exp_bar);
             inc("player_level",1);
             set("exp",0);
-//            getGameController().pauseEngine();
-//            //todo open a vbox or something
             UIFacade uiFacade = new UIFacade();
             VBox lvlup = uiFacade.createLevelBox();
 

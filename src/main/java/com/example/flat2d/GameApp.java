@@ -342,10 +342,9 @@ public class GameApp extends GameApplication {
 
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 
+        physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MAGNET));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
-
-
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
     Entity oratrice;

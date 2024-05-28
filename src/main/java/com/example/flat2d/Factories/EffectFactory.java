@@ -112,7 +112,7 @@ public class EffectFactory implements EntityFactory {
                 .view(texture)
                 .with(new CollidableComponent(true))
                 .with(new OffscreenInvisibleComponent())
-//                .with(new ParticleComponent(particleEmitter))
+                .with(new ParticleComponent(particleEmitter))
                 .build();
         return  e;
     }

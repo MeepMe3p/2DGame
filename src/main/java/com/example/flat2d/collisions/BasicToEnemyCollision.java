@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.time.TimerAction;
 import com.example.flat2d.DesignPatterns.Observer.SoundEvent;
 import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.Factories.EffectFactory;
@@ -86,10 +87,11 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 e = spawn("BigExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
                 e.setPosition(enemy.getCenter()); break;
         }
-        getGameTimer().runAtInterval(() -> {
+        TimerAction timerAction = getGameTimer().runAtInterval(() -> {
             var magnet = spawn("Magnet");
-            magnet.setPosition(enemy.getPosition());
+            magnet.setPosition(enemy.getCenter());
         }, Duration.millis(1000));
+        System.out.println(timerAction);
         switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
             case 1:
                 enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
