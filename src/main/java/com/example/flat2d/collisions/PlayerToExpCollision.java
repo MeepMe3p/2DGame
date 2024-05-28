@@ -24,14 +24,12 @@ import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
 
 public class PlayerToExpCollision extends CollisionHandler {
-    Entity exp;
 //    SkillChecker skillChecker = new SkillChecker();
     public PlayerToExpCollision() {
         super(EntityType.PLAYER, SMALL_EXP);
     }
     @Override
     protected void onCollisionBegin(Entity player, Entity exp) {
-        this.exp = exp;
         exp.removeFromWorld();
 //        play("exp-get-sfx.wav");
         if(exp.getTypeComponent().isType(SMALL_EXP)){

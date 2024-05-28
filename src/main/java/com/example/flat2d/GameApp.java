@@ -21,6 +21,7 @@ import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Config;
+import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.collisions.*;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
@@ -333,6 +334,8 @@ public class GameApp extends GameApplication {
         PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
         DinoToPlayerCollision dToPl = new DinoToPlayerCollision();
 
+        PlayerToEnvironmentCollision playerToEnvironmentCollision = new PlayerToEnvironmentCollision(PLAYER, WALL);
+
 //        physics.addCollisionHandler(wolfToPlayer);
         physics.addCollisionHandler(oToE);
         physics.addCollisionHandler(pToB);
@@ -341,51 +344,18 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(plToEn);
         physics.addCollisionHandler(dToPl);
 
+
+        physics.addCollisionHandler(playerToEnvironmentCollision);
+        copyForCollisionHandler(playerToEnvironmentCollision, PLAYER, OPAQUE);
+        copyForCollisionHandler(playerToEnvironmentCollision, PLAYER, HOLE);
+        copyForCollisionHandler(playerToEnvironmentCollision, PLAYER, TORCH);
+        copyForCollisionHandler(playerToEnvironmentCollision, ENEMY, TORCH);
+
+
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MAGNET));
         physics.addCollisionHandler(pToB.copyFor(PLAYER,MID_BOMB));
         physics.addCollisionHandler(pToB.copyFor(PLAYER,BIG_BOMB));
 
-//        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL));
-
-        physics.addCollisionHandler(new CollisionHandler(PLAYER, WALL) {
-
-            // order of types is the same as passed into the constructor
-            @Override
-            protected void onCollision(Entity player, Entity wall) {
-//                System.out.println(coin.getCenter());
-                Point2D dir = player.getCenter().subtract(wall.getCenter()).normalize();
-//                System.out.println(dir);
-                player.setPosition(player.getPosition().add(dir));
-            }
-        });
-        physics.addCollisionHandler(new CollisionHandler(PLAYER, OPAQUE) {
-
-            // order of types is the same as passed into the constructor
-            @Override
-            protected void onCollisionBegin(Entity player, Entity opaque) {
-                System.out.println("UWU");
-                player.getViewComponent().setOpacity(.2);
-            }
-
-            @Override
-            protected void onCollisionEnd(Entity a, Entity b) {
-//                hole.getViewComponent().getChildren().getFirst().setVisible(false);
-                player.getViewComponent().setOpacity(1);
-            }
-        });
-        physics.addCollisionHandler(new CollisionHandler(PLAYER, HOLE) {
-
-            // order of types is the same as passed into the constructor
-            @Override
-            protected void onCollisionBegin(Entity player, Entity hole) {
-                hole.getViewComponent().getChild(0, Texture.class).setVisible(true);
-            }
-
-            @Override
-            protected void onCollisionEnd(Entity player, Entity hole) {
-                hole.getViewComponent().getChild(0, Texture.class).setVisible(false);
-            }
-        });
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,ENEMY));
@@ -398,6 +368,11 @@ public class GameApp extends GameApplication {
 
 
     }
+
+    private void copyForCollisionHandler(Object collisionHandler, EntityType one, EntityType two){
+        getPhysicsWorld().addCollisionHandler(((CollisionHandler)collisionHandler).copyFor(one, two));
+    }
+
     public static ArrayList<Entity> enemies = new ArrayList<>();
     Entity oratrice;
 

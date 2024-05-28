@@ -154,4 +154,15 @@ public class EffectFactory implements EntityFactory {
                 .view(texture)
                 .build();
     }
+    @Spawns("burn")
+    public Entity spawnBurnEffect(SpawnData data) {
+        Image image = image("background/burn.gif");
+        Texture texture = new Texture(image);
+        return entityBuilder()
+                .at(getPlayer().getCenter().subtract(new Point2D(image.getWidth()/2, image.getHeight()/2)))
+                .bbox(new HitBox(BoundingShape.box(image.getWidth(), image.getHeight())))
+                .type(BURN)
+                .view(texture)
+                .build();
+    }
 }
