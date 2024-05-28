@@ -8,11 +8,11 @@ import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.texture.Texture;
+import com.almasb.fxgl.time.TimerAction;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.SpawningFacade;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
@@ -71,6 +71,7 @@ public class GameApp extends GameApplication {
                 return new GameMainMenu();
             }
         });
+
     }
 
 
@@ -181,7 +182,7 @@ public class GameApp extends GameApplication {
     }
 //        -------- INITIATING THE GAME AND THE GAME LOOP ------------
 
-//    public static Map <String, Integer> skills;
+    //    public static Map <String, Integer> skills;
     // global observer design pattern for all sounds
     public static SoundObserver observer = new SoundObserver();
     // 0 - basic 1 - oratrice 2 - coolNor 3 - Stack 4 - queue 5- tree    6 - hp 7 - damage 8 - heal
@@ -205,7 +206,6 @@ public class GameApp extends GameApplication {
 ////        FXGL.getGameController().pauseEngine();
 //      debug =========================================================================
 
-
         addEntityBuilders();
         setGameLevel();
 //        -------- DEV MODE TO SHOW HITBOXES ------------
@@ -224,9 +224,11 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
-            initSpawnEnemies();
+//            initSpawnEnemies();
+            startFirstWave();
             initSpawnSkills();
 
+//
         });
         th.start();
 //        runOnce(()->{
@@ -251,7 +253,68 @@ public class GameApp extends GameApplication {
 
     }
 
+    private void startSecondWave() {
 
+
+
+    }
+
+    private TimerAction firstWave,basicT,chargeT,bombT,randomT;
+    int wave = 1;
+    private void startFirstWave() {
+//        getGameTimer().runAtInterval(()->{
+//            var e = spawn("Wolf");
+//            e.setPosition(player.getPosition());
+//        },Duration.seconds(5));
+
+        firstWave = run(()->{
+//            enemies.add(spawner.spawnEnemy("Wolf"));
+            enemies.add(spawner.spawnEnemy("Wolf"));
+//            System.out.println("called nfndosfndkfn");
+//            enemies.addAll(spawner.spawnSide("CuteBomb",4,300,144));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",3,300,144));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",2,300,144));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
+
+        },WOLF_SPAWN_INTERVAL);
+        bombT = run(()->{
+            enemies.add(spawner.spawnEnemy("CuteBomb"));
+            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
+        },BOMBSQUARE_SPAWN_INTERVAL);
+        randomT = run(()->{
+            enemies.addAll(spawner.randomSpawn(wave,FXGL.random(1,3),FXGL.random(1,4)));
+        },Duration.seconds(15));
+        basicT = run(()->{
+            enemies.addAll(spawner.spawnTortols());
+        },SQUARE_SPAWN_INTERVAL);
+        chargeT = run(()->{
+//            enemies.addAll(spawner.spawnSheep());
+        },CHARGE_SPAWN_INTERVAL);
+        runOnce(()->{
+            System.out.println("cummonnnnnnnnnnnnnn");
+            spawner.spawnEnemy("Boss1");
+//            firstWave.expire();
+            basicT.expire();
+            chargeT.expire();
+            bombT.expire();
+
+            getGameWorld().removeEntities(enemies);
+            enemies.clear();
+            runOnce(()->{
+                firstWave.expire();
+                startSecondWave();
+                return null;
+
+            },Duration.seconds(10));
+
+            System.out.println(basicT.isExpired());
+            System.out.println(chargeT.isExpired());
+            System.out.println(bombT.isExpired());
+            System.out.println(enemies.size());
+            return null;
+        },BOSS1_SPAWN_TIME);
+
+    }
 
 
     @Override
@@ -270,7 +333,7 @@ public class GameApp extends GameApplication {
         PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
         DinoToPlayerCollision dToPl = new DinoToPlayerCollision();
 
-        physics.addCollisionHandler(wolfToPlayer);
+//        physics.addCollisionHandler(wolfToPlayer);
         physics.addCollisionHandler(oToE);
         physics.addCollisionHandler(pToB);
         physics.addCollisionHandler(expToPlayer);
@@ -278,6 +341,7 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(plToEn);
         physics.addCollisionHandler(dToPl);
 
+        physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MAGNET));
         physics.addCollisionHandler(pToB.copyFor(PLAYER,MID_BOMB));
         physics.addCollisionHandler(pToB.copyFor(PLAYER,BIG_BOMB));
 
@@ -310,24 +374,11 @@ public class GameApp extends GameApplication {
             }
         });
         physics.addCollisionHandler(new CollisionHandler(PLAYER, HOLE) {
-            @Override
-            protected void onCollision(Entity player, Entity hole) {
-//                System.out.println(coin.getCenter());
-                Point2D dir = player.getCenter().subtract(hole.getCenter()).normalize();
-//                System.out.println(dir);
-                getGameTimer().runOnceAfter(() -> {
-                player.setPosition(player.getPosition().subtract(dir));
-                    // code to run once after 1 second
-                }, Duration.seconds(1));
-            }
+
             // order of types is the same as passed into the constructor
             @Override
             protected void onCollisionBegin(Entity player, Entity hole) {
                 hole.getViewComponent().getChild(0, Texture.class).setVisible(true);
-
-                Point2D dir = player.getCenter().subtract(hole.getCenter()).normalize();
-                System.out.println(dir);
-                player.setPosition(player.getPosition().add(dir));
             }
 
             @Override
@@ -342,9 +393,10 @@ public class GameApp extends GameApplication {
 
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 
-        physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MAGNET));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,MEDIUM_EXP));
         physics.addCollisionHandler(expToPlayer.copyFor(PLAYER,BIG_EXP));
+
+
     }
     public static ArrayList<Entity> enemies = new ArrayList<>();
     Entity oratrice;
@@ -490,14 +542,14 @@ public class GameApp extends GameApplication {
     private void initSpawnEnemies() {
 //        -------- SPAWNS THE ENEMY ENTITIES EVERY X_SPAWN_INTERVAL ------------
         // debug purposes comment or uncomment
-        run(()->{
-//            enemies.add(spawn("ThirdHead"));
-            spawner.spawnEnemy("RockGirl");
-
-//            spawner.spawnTortols();
-
-//            return null;
-        },WOLF_SPAWN_INTERVAL);
+//        run(()->{
+////            enemies.add(spawn("ThirdHead"));
+//            spawner.spawnEnemy("RockGirl");
+//
+////            spawner.spawnTortols();
+//
+////            return null;
+//        },WOLF_SPAWN_INTERVAL);
 //        run(()->{
 //            enemies.addAll(spawner.spawnTortols());
 //
@@ -583,7 +635,7 @@ public class GameApp extends GameApplication {
 
     }
     public static ProgressBar exp_bar;
-        public static UIFacade facade = new UIFacade();
+    public static UIFacade facade = new UIFacade();
     @Override
     protected void initUI() {
 

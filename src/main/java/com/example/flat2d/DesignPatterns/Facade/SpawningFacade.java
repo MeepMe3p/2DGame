@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.SPAWN_DISTANCE;
@@ -122,11 +123,11 @@ public class SpawningFacade {
         }
         return e;
     }
-/**
- *  Made this an array list in case call methods and stuff
- * */
+    /**
+     *  Made this an array list in case call methods and stuff
+     * */
     private ArrayList<Entity> spawnSquare(String entityName){
-        //todo works but hugaw... i think pwede ni maloop but ugh kapoy huna2 ug algorithm so kani lang sa cuz dobol time hapit na 28
+        //todo works but hugaw... i think pwede ni maloop but ugh kapoy huna2 ug algorithm so kani lang sa cuz dobol time hapit na 30
         ArrayList<Entity> spawned = new ArrayList<>();
 
         var t3 = spawn(entityName);
@@ -206,7 +207,97 @@ public class SpawningFacade {
 
         return spawned;
     }
+    /**
+     * 1 = TOP
+     * 2 = RIGHT
+     * 3 = BOTTOM
+     * 4 = LEFT
+     */
+    public ArrayList<Entity> spawnSide(String enemy, int side, float distance, int size){
+        ArrayList<Entity> spawned = new ArrayList<>();
+        switch(side){
+            case 1:
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()+(i*(size)),player.getY()-distance);
+                    spawned.add(e);
+                }
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()+(-1*(i*(size))),player.getY()-distance);
+                    spawned.add(e);
+                }
+                break;
+            case 2:
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()+distance,player.getY()+(-1*(i*(size))));
+                    spawned.add(e);
+                }
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()+distance,player.getY()+(i*(size)));
+                    spawned.add(e);
+                }
+                break;
+            case 3:
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()+(i*(size)),player.getY()+distance);
+                    spawned.add(e);
+                }
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()+(-1*(i*(size))),player.getY()+distance);
+                    spawned.add(e);
+                }
+                break;
+            case 4:
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()-distance,player.getY()+(i*(size)));
+                    spawned.add(e);
+                }
+                for(int i=1;i<=2;i++){
+                    var e = spawn(enemy);
+                    e.setPosition(player.getX()-distance,player.getY()+(-1*(i*(size))));
+                    spawned.add(e);
+                }
+                break;
+        }
 
+        return spawned;
 
+    }
 
+    /***
+     * ENEMYTYOE 1 = BASIC
+     * ENEMYTYPE 2 = BLOCKER
+     * ENEMYTYPE 3 = BOMB
+     *
+     *
+     *
+     */
+
+    public ArrayList<Entity> randomSpawn(int wave,int enemyType, int randomSpawn) {
+//        String randomEnt =;
+
+        return new ArrayList<>(spawnSide(enemySpawn(enemyType,wave), randomSpawn, 180, 144));
+    }
+    private String enemySpawn(int type,int wave){
+        String[] wave1 = {"Wolf", "Turtle","CuteBomb"};
+        String[] wave2 = {"RockGirl", "SpearShield","MidBomb "};
+        String[] wave3 = {"ThirdHead","WinkWink","LastBomb"};
+        String chosen="";
+        switch(wave){
+            case 1:
+                return wave1[type-1];
+            case 2:
+                return wave2[type-1];
+            case 3:
+                return wave3[type-1];
+        }
+
+        return chosen;
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.flat2d.collisions;
 
+import com.almasb.fxgl.audio.Audio;
+import com.almasb.fxgl.audio.Sound;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.time.TimerAction;
@@ -30,7 +33,7 @@ public class PlayerToExpCollision extends CollisionHandler {
     protected void onCollisionBegin(Entity player, Entity exp) {
         this.exp = exp;
         exp.removeFromWorld();
-        play("exp-get-sfx.wav");
+//        play("exp-get-sfx.wav");
         if(exp.getTypeComponent().isType(SMALL_EXP)){
             inc("exp",+ 1);
         }else if(exp.getTypeComponent().isType(MEDIUM_EXP)){
@@ -46,7 +49,10 @@ public class PlayerToExpCollision extends CollisionHandler {
         set("exp_needed",needed);
         System.out.println(player_exp+" / " + needed);
         if(player_exp >= needed){
-            play("lvl-up-sfx.wav");
+//            play("lvl-up-sfx.wav");
+
+            Sound ms = FXGL.getAssetLoader().loadSound("level-up-sfx.wav");
+            getAudioPlayer().playSound(ms);
             removeUINode(exp_bar);
             exp_bar = facade.createExpBar();
             addUINode(exp_bar);

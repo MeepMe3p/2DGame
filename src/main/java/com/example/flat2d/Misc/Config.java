@@ -12,6 +12,7 @@ public final class Config {
     public static final Duration SHEEP_SPAWN_INTERVAL = Duration.seconds(15);
     public static final Duration TURTLE_SPAWN_INTERVAL = Duration.seconds(20);
     public static final Duration BOMBSQUARE_SPAWN_INTERVAL = Duration.seconds(25);
+
     public static final Duration BOSS1_SPAWN_TIME = Duration.seconds(61);
 
     public static final Duration HELL_HOUND_SPAWN_INTERVAL = Duration.seconds(3);
@@ -25,6 +26,9 @@ public final class Config {
     public static final Duration BIG_EXP_SPAWN_INTERVAL = Duration.seconds(3);
 
     public static final Duration BASICATTACK_SPAWN_INTERVAL = Duration.seconds(0.8);
+    public static final Duration SQUARE_SPAWN_INTERVAL = Duration.seconds(10);
+    public static final Duration CHARGE_SPAWN_INTERVAL = Duration.seconds(15);
+
     public static final Duration ORATRICE_SPAWN_INTERVAL = Duration.seconds(6);
     public static final Duration COOL_SPAWN_INTERVAL = Duration.seconds(7);
     public static final Duration NORMAL_SPAWN_INTERVAL = Duration.seconds(7);

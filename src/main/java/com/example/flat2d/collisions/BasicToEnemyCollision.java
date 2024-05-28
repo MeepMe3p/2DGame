@@ -91,6 +91,10 @@ public class BasicToEnemyCollision extends CollisionHandler {
             var magnet = spawn("Magnet");
             magnet.setPosition(enemy.getCenter());
         }, Duration.millis(1000));
+        runOnce(()->{
+            timerAction.expire();
+            return null;
+        },Duration.seconds(1));
         System.out.println(timerAction);
         switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
             case 1:

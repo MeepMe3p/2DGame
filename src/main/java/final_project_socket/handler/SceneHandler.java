@@ -6,9 +6,11 @@ import final_project_socket.fxml_controller.ProfileController;
 import final_project_socket.socket.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.Socket;
@@ -33,6 +35,7 @@ public class SceneHandler {
                     case "/final_project_socket/fxml/Chat_Box.fxml" -> {
                         ChatBoxController chatBoxController = loader.getController();
                         chatBoxController.setUserInformation(username, socket, client);
+
                     }
                     case "/final_project_socket/fxml/Profile.fxml" -> {
                         ProfileController profileController = loader.getController();
@@ -52,6 +55,9 @@ public class SceneHandler {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
+            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
             stage.show();
         }
     }
