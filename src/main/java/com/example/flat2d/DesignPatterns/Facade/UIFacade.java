@@ -101,7 +101,7 @@ public class UIFacade {
     }
     public VBox createLevelBox(){
         VBox container = new VBox();
-        BackgroundFill bgColor = new BackgroundFill(Color.YELLOW, new CornerRadii(1), new Insets(1));
+        BackgroundFill bgColor = new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY);
         Background bg = new Background(bgColor);
         container.setBackground(bg);
         container.setPrefWidth(360);
@@ -120,18 +120,22 @@ public class UIFacade {
     }
     public HBox createSkillBox(String url, int lvl) {
         HBox skill = new HBox();
+        skill.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, new CornerRadii(1.5), BorderWidths.DEFAULT)));
         Image img = image(url);
-        BackgroundFill bgColor = new BackgroundFill(Color.BEIGE, new CornerRadii(1), new Insets(1));
-        Background bg = new Background(bgColor);
-        skill.setBackground(bg);
-        System.out.println(lvl+"gsdgdsgdsg");
+        Image hBox = image("background/skill-icon-bg.gif");
+//        BackgroundFill bgColor = new BackgroundFill(Color.BEIGE, new CornerRadii(1), new Insets(1));
+//        Background bg = new Background(bgColor);
+        BackgroundImage bgImage = new BackgroundImage(hBox, null, null, null, null);
+        skill.setBackground(new Background(bgImage));
+//        System.out.println(lvl+"gsdgdsgdsg");
 
         ImageView img_view = new ImageView(img);
         img_view.setFitHeight(100);
         img_view.setFitWidth(100);
         Text text = new Text();
         text.setFont(new Font(20));
-        skill.setAlignment(Pos.CENTER);
+        skill.setAlignment(Pos.CENTER_LEFT);
         skill.setSpacing(10);
         skill.setPadding(new Insets(10));
 

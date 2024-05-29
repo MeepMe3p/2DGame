@@ -1,6 +1,5 @@
 package com.example.flat2d.Factories;
 
-import com.almasb.fxgl.app.services.FXGLAssetLoaderService;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.EntityBuilder;
 import com.almasb.fxgl.dsl.FXGL;
@@ -17,27 +16,21 @@ import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.GameApp;
-import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 import static com.example.flat2d.GameApp.getPlayer;
-import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
-import static com.example.flat2d.Misc.Config.CUTE_BOMB_MOVEMENT_SPEED;
 import static com.example.flat2d.Misc.EntityType.*;
 
 public class EffectFactory implements EntityFactory {
@@ -124,16 +117,12 @@ public class EffectFactory implements EntityFactory {
         texture.setFitHeight(data.<Integer>get("height"));
         texture.setFitWidth(data.<Integer>get("width"));
         texture.setVisible(false);
-        var e =  entityBuilder(data)
+        return entityBuilder(data)
                 .type(HOLE)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .view(texture)
                 .with(new CollidableComponent(true))
-//                .with(new PhysicsComponent())
                 .build();
-//        e.setOnActive();
-
-        return e;
     }
     @Spawns("opaque")
     public Entity spawnOpaque(SpawnData data){
@@ -151,17 +140,6 @@ public class EffectFactory implements EntityFactory {
                 .at(getPlayer().getCenter().subtract(new Point2D(image.getWidth()/2, image.getHeight()/2 + 100)))
                 .bbox(new HitBox(BoundingShape.box(image.getWidth(), image.getHeight())))
                 .type(ANGEL)
-                .view(texture)
-                .build();
-    }
-    @Spawns("burn")
-    public Entity spawnBurnEffect(SpawnData data) {
-        Image image = image("background/burn.gif");
-        Texture texture = new Texture(image);
-        return entityBuilder()
-                .at(getPlayer().getCenter().subtract(new Point2D(image.getWidth()/2, image.getHeight()/2)))
-                .bbox(new HitBox(BoundingShape.box(image.getWidth(), image.getHeight())))
-                .type(BURN)
                 .view(texture)
                 .build();
     }

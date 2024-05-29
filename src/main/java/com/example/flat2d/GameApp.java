@@ -245,9 +245,9 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
-//            initSpawnEnemies();
-//            startFirstWave();
-            initSpawnDebug();
+            initSpawnEnemies();
+            startFirstWave();
+//            initSpawnDebug();
             initSpawnSkills();
 
 //

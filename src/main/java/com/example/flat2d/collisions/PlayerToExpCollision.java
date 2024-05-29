@@ -66,9 +66,23 @@ public class PlayerToExpCollision extends CollisionHandler {
                 set.add( randy.nextInt(5));
             }
             Iterator<Integer> it = set.iterator();
-            HBox sk1 = uiFacade.createSkillBox("skil.png", it.next());
-            HBox sk2 = uiFacade.createSkillBox("skil.png", it.next());
-            HBox sk3 = uiFacade.createSkillBox("skil.png", it.next());
+            String[] skillNameList = {
+                    "skills-icon/0 - Basic.png",
+                    "skills-icon/1 - Oratrice.png",
+                    "skills-icon/2 - Cool and Normal.png",
+                    "skills-icon/3 - Stack.png",
+                    "skills-icon/4 - Queue.png",
+                    "skills-icon/5 - Tree.png",
+                    "skills-icon/6 - Health Plus PLus.png",
+                    "skills-icon/7 - Damage.png",
+                    "skills-icon/8 - Heal.png"
+            };
+            int indexOne = it.next();
+            int indexTwo = it.next();
+            int indexThree = it.next();
+            HBox sk1 = uiFacade.createSkillBox(skillNameList[indexOne], indexOne);
+            HBox sk2 = uiFacade.createSkillBox(skillNameList[indexTwo], indexTwo);
+            HBox sk3 = uiFacade.createSkillBox(skillNameList[indexThree], indexThree);
             lvlup.getChildren().addAll(sk1,sk2,sk3);
             addUINode(lvlup);
 

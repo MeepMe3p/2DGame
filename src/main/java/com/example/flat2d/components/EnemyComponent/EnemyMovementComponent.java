@@ -9,5 +9,4 @@ import com.almasb.fxgl.entity.component.Component;
 public class EnemyMovementComponent extends Component {
     int speed;
     Entity player;
-
 }
