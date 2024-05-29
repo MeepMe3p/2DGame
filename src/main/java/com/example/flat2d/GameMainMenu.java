@@ -8,6 +8,8 @@ import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
 import com.example.flat2d.DesignPatterns.User;
 import com.example.flat2d.Misc.Database;
+import final_project_socket.database.CreateTable;
+import final_project_socket.database.MySQLConnector;
 import final_project_socket.handler.AuthenticationHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -45,8 +47,7 @@ public class GameMainMenu extends FXGLMenu {
         customMenuButton btnPlayGame = new customMenuButton("PLAY", ()->{
             getAudioPlayer().stopAllMusic();
             Music m = loopBGM("game-music.mp3");
-            //TODO NIGEL SUP MA MEHN
-            System.out.println(loggedIn.getUsername()+"NIGEL MAO NI ANG USERNAME UWU");
+
             m.setDisposed$fxgl_core(true);
 
             fireNewGame();

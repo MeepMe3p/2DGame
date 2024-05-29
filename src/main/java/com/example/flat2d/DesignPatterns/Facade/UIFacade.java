@@ -123,12 +123,9 @@ public class UIFacade {
         skill.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, new CornerRadii(1.5), BorderWidths.DEFAULT)));
         Image img = image(url);
-        Image hBox = image("background/skill-icon-bg.gif");
-//        BackgroundFill bgColor = new BackgroundFill(Color.BEIGE, new CornerRadii(1), new Insets(1));
-//        Background bg = new Background(bgColor);
+        Image hBox = image("background/skill-icon-bg.png");
         BackgroundImage bgImage = new BackgroundImage(hBox, null, null, null, null);
         skill.setBackground(new Background(bgImage));
-//        System.out.println(lvl+"gsdgdsgdsg");
 
         ImageView img_view = new ImageView(img);
         img_view.setFitHeight(100);

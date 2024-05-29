@@ -245,9 +245,9 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
-            initSpawnEnemies();
-            startFirstWave();
-//            initSpawnDebug();
+//            initSpawnEnemies();
+//            startFirstWave();
+            initSpawnDebug();
             initSpawnSkills();
 
 //
@@ -296,7 +296,8 @@ public class GameApp extends GameApplication {
             spawner.spawnEnemy("RockGirl");
             spawner.spawnEnemy("RockGirl");
             spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
             spawner.spawnEnemy("RockGirl");
             spawner.spawnEnemy("RockGirl");
             spawner.spawnEnemy("RockGirl");
@@ -485,9 +486,6 @@ public class GameApp extends GameApplication {
                 closest.ifPresent(close -> {
                     var e = close.getPosition();
                     normal.setPosition(e);
-//                    System.out.println(e.getX() + ": x y: " + e.getY() + "enemy loc");
-//                    System.out.println(normal.getPosition() + "the position of cool");
-
                 });
             }
         }, NORMAL_SPAWN_INTERVAL);
@@ -497,7 +495,7 @@ public class GameApp extends GameApplication {
                 List<Entity> ents = getGameWorld().getEntitiesByType(ENEMY, FORESKIN_DRAGON);
                 if (!ents.isEmpty()) {
                     var e = ents.get(FXGL.random(0, ents.size() - 1));
-                    stack.setPosition(e.getPosition().subtract(new Point2D(123/2.0 - e.getWidth()/2.0, 280)));
+                    stack.setPosition(e.getPosition().subtract(new Point2D(stack.getWidth()/2 - e.getWidth()/2.0, stack.getHeight())));
                 }
             }
         }, STACK_SPAWN_INTERVAL);
@@ -726,7 +724,7 @@ public class GameApp extends GameApplication {
 
 
     public static void main(String[] args) {
-//        CreateTable.createTable();
+        CreateTable.createTable();
         launch(args);
     }
 

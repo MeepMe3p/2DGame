@@ -8,6 +8,12 @@ public class CreateTable {
     public static void createTable() {
         try(Connection connection = MySQLConnector.getConnection();
             Statement statement = connection.createStatement()) {
+            String query = "CREATE TABLE IF NOT EXISTS tbluserhighscore (" +
+                    "userID INT AUTO_INCREMENT PRIMARY KEY," +
+                    "username VARCHAR(50) NOT NULL," +
+                    "killScore INT(10) NOT NULL DEFAULT 0)";
+            statement.execute(query);
+
             String query1 = "CREATE TABLE IF NOT EXISTS tblusers (" +
                     "userid INT AUTO_INCREMENT PRIMARY KEY," +
                     "username VARCHAR(50) NOT NULL," +

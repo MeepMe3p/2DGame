@@ -136,9 +136,8 @@ public class GameFactory implements EntityFactory {
     public Entity spawnNormal(SpawnData data){
         var e = entityBuilder()
                 .viewWithBBox(new Circle(80,Color.RED))
-//                .viewWithBBox(new Texture(new Image("bug")))
                 .with(new NormalComponent())
-                .with(new ExpireCleanComponent(Duration.seconds(4)))
+                .with(new ExpireCleanComponent(Duration.seconds(2)))
                 .with(new CollidableComponent())
                 .build();
         e.setReusable(true);

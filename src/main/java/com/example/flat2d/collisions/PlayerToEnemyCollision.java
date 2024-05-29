@@ -3,9 +3,20 @@ package com.example.flat2d.collisions;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.example.flat2d.Misc.Database;
 import com.example.flat2d.Misc.EntityType;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static final_project_socket.handler.AuthenticationHandler.loggedIn;
 
 public class PlayerToEnemyCollision extends CollisionHandler {
     public PlayerToEnemyCollision() {
@@ -45,10 +56,13 @@ public class PlayerToEnemyCollision extends CollisionHandler {
 //        player.getPosition().distance()
     }
 
+    private static void killPlayer() {
+//        todo create a scoreboard
 
-
-    private void killPlayer() {
-//        todo create a lose menu
+        ArrayList<String> listOfUsers = Database.getAllUsersKillsScore();
+        for(String user : listOfUsers){
+            String[] parts = user.split(" : ");
+        }
         getGameController().pauseEngine();
     }
 }
