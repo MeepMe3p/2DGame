@@ -64,7 +64,7 @@ public class GameApp extends GameApplication {
         settings.setDeveloperMenuEnabled(true);
 //        -------- FOR MAIN MENU PURPOSES ------------
 
-        settings.setMainMenuEnabled(true);
+//        settings.setMainMenuEnabled(true);
 
 //        GAME_STATE = 1;
         settings.setSceneFactory(new SceneFactory(){
@@ -233,7 +233,7 @@ public class GameApp extends GameApplication {
                     public void run() {
                         if(e.isActive()){
                             //wa ko kaagi ug error pero just in case haha
-                            var mag= spawn("Magnet");
+                            var mag = spawn("Magnet");
                             mag.setPosition(e.getPosition());
                             System.out.println("this shit ran");
                         }
@@ -246,7 +246,8 @@ public class GameApp extends GameApplication {
 //            initSpawnExp();
         Thread th = new Thread(() -> {
 //            initSpawnEnemies();
-            startFirstWave();
+//            startFirstWave();
+            initSpawnDebug();
             initSpawnSkills();
 
 //
@@ -272,6 +273,14 @@ public class GameApp extends GameApplication {
 //        },Duration.seconds(10));
 
 
+    }
+
+    private void initSpawnDebug() {
+        runOnce(()->{
+            var e = spawn("Boss3");
+            e.setPosition(player.getPosition());
+            return null;
+        },Duration.seconds(2));
     }
 
     private void startSecondWave() {

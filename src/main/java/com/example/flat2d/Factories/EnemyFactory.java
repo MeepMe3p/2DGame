@@ -23,6 +23,7 @@ import com.example.flat2d.components.EnemyComponent.Bomb.LastBombComponent;
 import com.example.flat2d.components.EnemyComponent.Bomb.MidBombComponent;
 import com.example.flat2d.components.EnemyComponent.Boss.BossEnemyComponent;
 import com.example.flat2d.components.EnemyComponent.Boss.DinoBossComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.FinalBossComponent;
 import com.example.flat2d.components.EnemyComponent.Boss.MedBossComponent;
 import com.example.flat2d.components.EnemyComponent.Charge.ChargeEnemyComponent;
 import com.example.flat2d.components.EnemyComponent.Charge.ChargeHeadThreeComponent;
@@ -366,11 +367,28 @@ public class EnemyFactory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(100,100)))
                 .with(new EnemyComponent(6))
                 .with(new BossEnemyComponent(2))
-                .with(new MedBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),BOSS_2_MOVEMENTSPEED))
+                .with(new MedBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),BOSS_3_CHARGESPEED))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(10))
                 .build();
     }
+    @Spawns("Boss3")
+    public Entity spawnFinalBeast(SpawnData data){
+        var e =  entityBuilder()
+                .type(BOSS)
+                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(100,100)))
+                .with(new EnemyComponent(6))
+                .with(new BossEnemyComponent(3))
+                .with(new FinalBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new HealthIntComponent(10))
+                .build();
+        e.setScaleOrigin(e.getCenter());
+        e.setX(-90);
+        return e;
+
+    }
+
     private void spawnDeath(Entity entity, Point2D location) {
         entity.setPosition(location);
         entity.setOpacity(1);

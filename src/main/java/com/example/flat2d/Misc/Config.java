@@ -53,6 +53,7 @@ public final class Config {
     public static final int DINO_BOSS_MOVEMENT_SPEED = 50;
     public static final int DINO_BOSS_CHARGE_SPEED = 100;
     public static final int BOSS_2_MOVEMENTSPEED = 200;
+    public static final int BOSS_3_CHARGESPEED = 1000;
 
 
     public static final int FORESKIN_DRAGON_SPEED = 50;
