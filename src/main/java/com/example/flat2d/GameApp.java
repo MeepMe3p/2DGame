@@ -278,6 +278,43 @@ public class GameApp extends GameApplication {
     private void initSpawnDebug() {
         runOnce(()->{
             var e = spawn("Boss3");
+
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+            spawner.spawnEnemy("RockGirl");
+//            var e = spawn("EvilArcher");
 //            var e = spawn("EvilArcher");
             e.setPosition(player.getPosition());
             return null;
@@ -390,6 +427,7 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,ENEMY));
         physics.addCollisionHandler(oToE.copyFor(ORATRICE,ENEMY));
+        physics.addCollisionHandler(oToE.copyFor(STACK,ENEMY));
 
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 
@@ -456,11 +494,10 @@ public class GameApp extends GameApplication {
         run(() -> {
             if (skillLevels[3] >= 1) {
                 var stack = spawn("Stack");
-                List<Entity> ents = getGameWorld().getEntitiesByType(WOLF, FORESKIN_DRAGON);
+                List<Entity> ents = getGameWorld().getEntitiesByType(ENEMY, FORESKIN_DRAGON);
                 if (!ents.isEmpty()) {
                     var e = ents.get(FXGL.random(0, ents.size() - 1));
-                    stack.setPosition(e.getPosition());
-
+                    stack.setPosition(e.getPosition().subtract(new Point2D(123/2.0 - e.getWidth()/2.0, 280)));
                 }
             }
         }, STACK_SPAWN_INTERVAL);

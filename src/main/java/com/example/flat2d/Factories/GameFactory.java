@@ -147,9 +147,10 @@ public class GameFactory implements EntityFactory {
     @Spawns("Stack")
     public Entity spawnStack(SpawnData data){
         var e = entityBuilder()
-                .viewWithBBox(new Rectangle(30,90,Color.PINK))
-                .bbox(new HitBox(new Point2D(0,0),BoundingShape.circle(20)))
-                .with(new CollidableComponent())
+                .type(STACK)
+//                .viewWithBBox(new Rectangle(123,280,Color.PINK))
+                .bbox(new HitBox(new Point2D(123/2.0,280),BoundingShape.circle(20)))
+                .with(new CollidableComponent(true))
                 .with(new StackComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(1)))
                 .build();
