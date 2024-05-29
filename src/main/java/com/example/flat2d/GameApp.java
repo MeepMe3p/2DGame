@@ -64,7 +64,7 @@ public class GameApp extends GameApplication {
         settings.setDeveloperMenuEnabled(true);
 //        -------- FOR MAIN MENU PURPOSES ------------
 
-//        settings.setMainMenuEnabled(true);
+        settings.setMainMenuEnabled(true);
 
 //        GAME_STATE = 1;
         settings.setSceneFactory(new SceneFactory(){

@@ -22,7 +22,7 @@ public class AuthenticationHandler {
     private static Socket socket;
     private static Client client;
 
-    public static User loggedIn; // <-- Temporary
+    public static User loggedIn = User.getInstance(); // <-- Temporary
     public static void signUpUser(ActionEvent event, String username, String password) {
         AlertHandler alert = new AlertHandler();
         try (Connection connection = MySQLConnector.getConnection();
@@ -85,6 +85,7 @@ public class AuthenticationHandler {
                         statement.setBoolean(1, true);
                         statement.setInt(2, userId);
                         statement.executeUpdate();
+                        loggedIn.setUsername(username);
                     }
                     socket = new Socket("localhost", 9806);
                     client = new Client(socket, username);

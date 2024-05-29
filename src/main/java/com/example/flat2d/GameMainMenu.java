@@ -45,6 +45,8 @@ public class GameMainMenu extends FXGLMenu {
         customMenuButton btnPlayGame = new customMenuButton("PLAY", ()->{
             getAudioPlayer().stopAllMusic();
             Music m = loopBGM("game-music.mp3");
+            //TODO NIGEL SUP MA MEHN
+            System.out.println(loggedIn.getUsername()+"NIGEL MAO NI ANG USERNAME UWU");
             m.setDisposed$fxgl_core(true);
 
             fireNewGame();
