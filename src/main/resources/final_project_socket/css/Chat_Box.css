@@ -2,14 +2,99 @@
     -fx-background-color: linear-gradient(to bottom, rgb(112, 128, 144), rgb(0, 0, 0));
 }
 
+.background2 {
+    -fx-background-image: url('../images/background2.png');
+}
+
+.background3 {
+    -fx-background-image: url('../images/background3.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.background4 {
+    -fx-background-image: url('../images/background4.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 0.0 10.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+ .scroll-bar .increment-arrow,
+ .scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.chat_background {
+    -fx-background-image: url('../images/chat_background.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.picture_frame {
+    -fx-background-image: url('../images/picture_frame.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
 .background {
     -fx-background-color: linear-gradient(to bottom, rgb(122, 138, 154), rgb(0, 0, 0));
 }
 
 .text-background {
-    -fx-background-color: rgb(0, 0, 0, 0);
+    -fx-background-color: rgb(50, 50, 50, 0.9);
     -fx-border-color: rgb(169, 169, 169);
+    -fx-background-radius: 10 10 10 10;
     -fx-border-radius: 10 10 10 10;
+    -fx-text-fill: rgb(255, 255, 255);
     -fx-border-width: 2px;
 }
 
@@ -18,13 +103,26 @@
     -fx-background-radius: 10 10 10 10;
 }
 
-.button-transparent {
-    -fx-background-color: rgb(0, 0, 0, 0);
+.button-background2 {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-image: url('../images/button1.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
 }
 
+.button-background3 {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-image: url('../images/button1.png');
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
 
-.background-effect1 {
-    -fx-background-image: url('../images/torn_effect.png');
+.button-transparent {
+    -fx-background-color: rgb(0, 0, 0, 0);
 }
 
 .text-background {
