@@ -19,7 +19,7 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
      * @param player entity type of the first entity
      * @param environmentObject entity type of the second entity
      */
-    private Entity player;
+//    private Entity player;
 
     public PlayerToEnvironmentCollision(Object player, Object environmentObject) {
         super(player, environmentObject);
@@ -30,6 +30,7 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
         if(environmentObject.isType(WALL)) {
             Point2D dir = player.getCenter().subtract(environmentObject.getCenter()).normalize();
             player.setPosition(player.getPosition().add(dir));
+//            System.out.println("fnosidfhauilthe9o tubten9IWRW");
         } else if(environmentObject.isType(HOLE)) {
             Point2D dir = player.getCenter().subtract(environmentObject.getCenter()).normalize();
             getGameTimer().runOnceAfter(() -> {
@@ -71,7 +72,7 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
 //                System.out.println("called");
                 GameApp.getPlayer().getComponent(PlayerComponent.class).stopBurning();
                 return null;
-            },Duration.seconds(4));
+            },Duration.seconds(2));
 
         }
     }

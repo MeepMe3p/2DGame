@@ -6,11 +6,15 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
+import com.almasb.fxgl.time.TimerAction;
+import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
+import com.example.flat2d.components.EnemySkillsComponent.RangeSecondComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
 
 
 public class FinalBossComponent extends Component {
@@ -47,7 +51,7 @@ public class FinalBossComponent extends Component {
         Image idle = image("boss/ThirdIdle.png");
 
         walkAnim = new AnimationChannel(walk_left,19,230,220,Duration.seconds(6),0,18);
-        attackAnim = new AnimationChannel(attack,12,300,180,Duration.seconds(1),0,11);
+        attackAnim = new AnimationChannel(attack,12,300,180,Duration.seconds(3),0,11);
         blinkAnim = new AnimationChannel(blink,9,140,180,Duration.seconds(3),0,8);
         deathAnim = new AnimationChannel(dead,17,140,190,Duration.seconds(3),0,16);
         idleAnim = new AnimationChannel(idle,7,126,180,Duration.seconds(2),0,6);
@@ -74,6 +78,14 @@ public class FinalBossComponent extends Component {
             if(texture.getAnimationChannel() != idleAnim){
                 texture.loopAnimationChannel(idleAnim);
             }
+        } else if(isBlinking){
+            if(texture.getAnimationChannel() != blinkAnim){
+                texture.loopAnimationChannel(blinkAnim);
+            }
+        } else if(isAttacking){
+            if(texture.getAnimationChannel() != attackAnim){
+                texture.loopAnimationChannel(attackAnim);
+            }
         }
 
         entity.translate(velocity);
@@ -94,10 +106,17 @@ public class FinalBossComponent extends Component {
     public void chargeAttack(){
         setAllFalse();
         isCharging = true;
-        runOnce(()->{
+        run(()->{
+            var e = spawn("Range1Atk");
+            e.setPosition(entity.getPosition());
+            e.addComponent(new RangeSecondComponent(player, entity,BASICSKILL_MOV_SPEED));
+            return null;
+        },Duration.seconds(1));
+        TimerAction a = runOnce(()->{
            idling();
            return null;
         },Duration.seconds(5));
+//        a.expire();
     }
     public void idling(){
         setAllFalse();
@@ -107,7 +126,9 @@ public class FinalBossComponent extends Component {
             adjustVelocity(0.015);
             if(calculateDistance() < 500){
                 chargeAttack();
+//                teleport();
                 System.out.println("sfoaifhoasfknasfnaklsfjklasfnklsnfkla ");
+//                velocity = Point2D.ZERO;
             }else{
                 teleport();
                 velocity = Point2D.ZERO;
@@ -121,6 +142,13 @@ public class FinalBossComponent extends Component {
 
     private void teleport() {
         System.out.println("YOU BE TELEPORTING!!");
+        setAllFalse();
+        isBlinking = true;
+        runOnce(()->{
+            entity.setPosition(player.getPosition().add(new Point2D(FXGL.random(-75,75),FXGL.random(-75,75))));
+            idling();
+            return null;
+        },Duration.seconds(1.5));
     }
 
     public void setAllFalse(){
@@ -139,5 +167,18 @@ public class FinalBossComponent extends Component {
 //        }
         return distance;
 
+    }
+    public void setAttacking(){
+        if(!isCharging) {
+
+            setAllFalse();
+            isAttacking = true;
+        }
+
+    }
+
+    public void stopAttacking() {
+        setAllFalse();
+        idling();
     }
 }

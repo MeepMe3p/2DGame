@@ -26,6 +26,8 @@ public class BossEnemyComponent extends Component {
             boss.getComponent(MedBossComponent.class).setAttacking(true);
             return null;
             },Duration.seconds(5));
+        }else if(type == 3){
+            boss.getComponent(FinalBossComponent.class).setAttacking();
         }
 
     }
@@ -36,6 +38,10 @@ public class BossEnemyComponent extends Component {
             boss.getComponent(DinoBossComponent.class).setAttacking(false);
                 return null;
             }, Duration.seconds(1));
+        }else if(type == 2){
+
+        }else if(type == 3){
+            boss.getComponent(FinalBossComponent.class).stopAttacking();
         }
     }
     public void kill(Entity boss){

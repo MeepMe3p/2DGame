@@ -13,6 +13,7 @@ import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.EntityType;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
@@ -216,7 +217,7 @@ public class PlayerComponent extends Component {
     Texture txt;
     public void burn(){
         if(!isBurning){
-
+            System.out.println("ifoifnOINFJFNJNFNIONIOKAFDDSF,KDSFMOSDKFNAOSDFJJIDSFNSDJANFKJADSBFJKANFKDSF");
             Image image = image("background/burn.gif");
             txt = new Texture(image);
             entity.getViewComponent().addChild(txt);
@@ -238,8 +239,12 @@ public class PlayerComponent extends Component {
 
     public void stopBurning() {
         burnTime.expire();
-        System.out.println("THIEFOIASJFKASNFLKASNVKO;ADFNODLNK");
-        entity.getViewComponent().removeChild(txt);
+//        System.out.println("THIEFOIASJFKASNFLKASNVKO;ADFNODLNK");
+        System.out.println(entity.getViewComponent().getChildren().getLast()+"kjfbsaf giudhfdb fairshi");
+        Node nudes = entity.getViewComponent().getChildren().getLast();
+        entity.getViewComponent().removeChild(nudes);
+        System.out.println(entity.getViewComponent().getChildren().getLast()+"2nd haha");
+
         isBurning = false;
     }
 }

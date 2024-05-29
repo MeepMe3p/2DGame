@@ -278,6 +278,7 @@ public class GameApp extends GameApplication {
     private void initSpawnDebug() {
         runOnce(()->{
             var e = spawn("Boss3");
+//            var e = spawn("EvilArcher");
             e.setPosition(player.getPosition());
             return null;
         },Duration.seconds(2));
