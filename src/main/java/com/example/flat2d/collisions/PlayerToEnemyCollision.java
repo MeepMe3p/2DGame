@@ -1,16 +1,11 @@
 package com.example.flat2d.collisions;
 
-import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.example.flat2d.Misc.EntityType;
-import com.example.flat2d.components.EnemyComponent.BasicEnemyComponent;
-import com.example.flat2d.components.EnemyComponent.BlockerEnemyComponent;
-import com.example.flat2d.components.EnemyComponent.EnemyComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.example.flat2d.Misc.Config.PLAYER_HP;
 
 public class PlayerToEnemyCollision extends CollisionHandler {
     public PlayerToEnemyCollision() {

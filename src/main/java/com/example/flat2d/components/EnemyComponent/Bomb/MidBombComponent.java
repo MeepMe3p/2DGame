@@ -1,11 +1,10 @@
-package com.example.flat2d.components.EnemyComponent;
+package com.example.flat2d.components.EnemyComponent.Bomb;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.LocalTimer;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;

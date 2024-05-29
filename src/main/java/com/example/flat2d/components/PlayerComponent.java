@@ -6,8 +6,11 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.LocalTimer;
+import com.almasb.fxgl.time.TimerAction;
 import com.example.flat2d.Factories.GameFactory;
+import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.EntityType;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -22,6 +25,7 @@ public class PlayerComponent extends Component {
     AnimationChannel left,right,up,down,idle;
     AnimatedTexture texture;
     private boolean isLeft,isRight,isUp,isDown,isIdle;
+    private boolean isBurning;
     private boolean acquireExperience;
 //    TODO ADD COMMENTS
     private LocalTimer skills_timer = newLocalTimer();
@@ -62,9 +66,7 @@ public class PlayerComponent extends Component {
     @Override
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(16, 16));
-//        texture.setFitHeight(60);
         entity.getViewComponent().addChild(texture);
-//        texture.setFitHeight();
     }
 /*
  *   FOR UPDATING THE PLAYER DEPENDING ON WHAT IS THE STATE IT IS IN
@@ -209,5 +211,35 @@ public class PlayerComponent extends Component {
 
     public void setExperienceCondition(boolean getAllExperience) {
         this.acquireExperience = getAllExperience;
+    }
+    TimerAction burnTime;
+    Texture txt;
+    public void burn(){
+        if(!isBurning){
+
+            Image image = image("background/burn.gif");
+            txt = new Texture(image);
+            entity.getViewComponent().addChild(txt);
+            burnTime = run(()->{
+                inc("player_hp",-2);
+//                System.out.println(geti("player_hp"));
+                return null;
+            },Duration.seconds(2));
+        }
+    }
+
+    public void setBurn(boolean b) {
+        isBurning = b;
+    }
+
+    public boolean isBurning() {
+        return isBurning;
+    }
+
+    public void stopBurning() {
+        burnTime.expire();
+        System.out.println("THIEFOIASJFKASNFLKASNVKO;ADFNODLNK");
+        entity.getViewComponent().removeChild(txt);
+        isBurning = false;
     }
 }

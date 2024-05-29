@@ -3,17 +3,34 @@ package com.example.flat2d.Factories;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
-import com.almasb.fxgl.dsl.components.RandomMoveComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.components.EnemyComponent.*;
+import com.example.flat2d.components.EnemyComponent.Basic.*;
+import com.example.flat2d.components.EnemyComponent.Block.BlockerEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Block.RookSpearComponent;
+import com.example.flat2d.components.EnemyComponent.Block.SlimeShieldComponent;
+import com.example.flat2d.components.EnemyComponent.Block.SuspiciousBlockComponent;
+import com.example.flat2d.components.EnemyComponent.Bomb.BombEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Bomb.CuteBombComponent;
+import com.example.flat2d.components.EnemyComponent.Bomb.LastBombComponent;
+import com.example.flat2d.components.EnemyComponent.Bomb.MidBombComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.BossEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.DinoBossComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.MedBossComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.ChargeEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.ChargeHeadThreeComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.PenguinComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.ValkyrieChargeComponent;
+import com.example.flat2d.components.EnemyComponent.Range.EvilArcherComponent;
+import com.example.flat2d.components.EnemyComponent.Range.RangeComponent;
+import com.example.flat2d.components.EnemyComponent.Range.ShoujoComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -169,7 +186,7 @@ public class EnemyFactory implements EntityFactory {
     public Entity spawnThirdHead(SpawnData data){
         var e = entityBuilder()
                 .with(new CollidableComponent(true))
-                .with(new EnemyComponent(2))
+                .with(new EnemyComponent(3))
                 .with(new ChargeHeadThreeComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new HealthIntComponent(WOLF_HP))
 //                .with(new ChargeC)
@@ -236,6 +253,22 @@ public class EnemyFactory implements EntityFactory {
                 .with(new EnemyComponent(3))
 
                 .with(new BlockerEnemyComponent(2))
+                .with(new ExpireCleanComponent(Duration.seconds(15)))
+                .with(new HealthIntComponent(WOLF_HP))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+    @Spawns("WinkWink")
+    public Entity spawnSuspicious(SpawnData data){
+        var e = entityBuilder()
+                .type(ENEMY)
+                .bbox(new HitBox(BoundingShape.box(64,50)))
+                .with(new SuspiciousBlockComponent(FXGL.<GameApp>getAppCast().getPlayer(),TURTLE_MOVEMENT_SPEED))
+                .with(new CollidableComponent(true))
+                .with(new EnemyComponent(3))
+
+                .with(new BlockerEnemyComponent(3))
                 .with(new ExpireCleanComponent(Duration.seconds(15)))
                 .with(new HealthIntComponent(WOLF_HP))
                 .build();

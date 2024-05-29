@@ -124,6 +124,7 @@ public class UIFacade {
         BackgroundFill bgColor = new BackgroundFill(Color.BEIGE, new CornerRadii(1), new Insets(1));
         Background bg = new Background(bgColor);
         skill.setBackground(bg);
+        System.out.println(lvl+"gsdgdsgdsg");
 
         ImageView img_view = new ImageView(img);
         img_view.setFitHeight(100);

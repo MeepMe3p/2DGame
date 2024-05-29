@@ -2,14 +2,13 @@ package com.example.flat2d.DesignPatterns.Facade;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.example.flat2d.components.EnemyComponent.ChargeEnemyComponent;
-import com.example.flat2d.components.EnemyComponent.RangeComponent;
-import com.example.flat2d.components.EnemyComponent.PenguinComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.ChargeEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Range.RangeComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.PenguinComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.SPAWN_DISTANCE;

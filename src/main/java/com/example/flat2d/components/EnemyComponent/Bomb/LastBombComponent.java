@@ -1,4 +1,4 @@
-package com.example.flat2d.components.EnemyComponent;
+package com.example.flat2d.components.EnemyComponent.Bomb;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;

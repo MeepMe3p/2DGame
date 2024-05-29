@@ -1,7 +1,6 @@
-package com.example.flat2d.components.EnemyComponent;
+package com.example.flat2d.components.EnemyComponent.Basic;
 
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.CollidableComponent;
@@ -13,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.example.flat2d.Misc.Config.SPAWN_DISTANCE;
 
 public class NormalTenshiComponent extends Component {
     private Point2D velocity = Point2D.ZERO;

@@ -1,8 +1,5 @@
 package com.example.flat2d.Factories;
 
-import com.almasb.fxgl.audio.Audio;
-import com.almasb.fxgl.audio.Sound;
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.*;
 import com.almasb.fxgl.entity.Entity;
@@ -15,31 +12,21 @@ import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.PolygonShapeData;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.Texture;
-import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
 import com.example.flat2d.GameApp;
-import com.example.flat2d.components.EnemyComponent.ShoujoComponent;
 import com.example.flat2d.components.ExperienceComponent;
 import com.example.flat2d.components.SkillsComponent.*;
 import com.example.flat2d.components.PlayerComponent;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.awt.*;
-import java.util.Random;
 import java.util.function.Function;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;

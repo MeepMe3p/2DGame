@@ -3,7 +3,7 @@ package com.example.flat2d.collisions;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.example.flat2d.Misc.EntityType;
-import com.example.flat2d.components.EnemyComponent.BossEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.BossEnemyComponent;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.run;
 

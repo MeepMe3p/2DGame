@@ -25,6 +25,7 @@ import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.collisions.*;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
+import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -221,6 +222,25 @@ public class GameApp extends GameApplication {
         getGameScene().getViewport().bindToEntity(player, getAppWidth() / 2.0, getAppHeight() / 2.0);
 //        -------- INCREMENTS THE TIME ------------
         run(() -> inc("time", +1), Duration.seconds(1));
+        run(()->{
+            //EVERY 20 SECS ONE ENEMY WILL DROP A MAGNET WHEN KILLED todo me want it to be null object but eh no more time kapoy research haha
+            System.out.println("this sheeshabol raaaan");
+            if(!enemies.isEmpty()){
+                var e = enemies.get(FXGL.random(0,enemies.size()-1));
+                System.out.println(e.getType().toString()+" this mf is so sheesh");
+                e.setOnNotActive(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(e.isActive()){
+                            //wa ko kaagi ug error pero just in case haha
+                            var mag= spawn("Magnet");
+                            mag.setPosition(e.getPosition());
+                            System.out.println("this shit ran");
+                        }
+                    }
+                });
+            }
+        },Duration.seconds(20));
 
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
@@ -286,7 +306,7 @@ public class GameApp extends GameApplication {
             enemies.addAll(spawner.randomSpawn(wave,FXGL.random(1,3),FXGL.random(1,4)));
         },Duration.seconds(15));
         basicT = run(()->{
-            enemies.addAll(spawner.spawnTortols());
+//            enemies.addAll(spawner.spawnTortols());
         },SQUARE_SPAWN_INTERVAL);
         chargeT = run(()->{
 //            enemies.addAll(spawner.spawnSheep());

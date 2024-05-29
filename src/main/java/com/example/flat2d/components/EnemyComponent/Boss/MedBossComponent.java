@@ -1,4 +1,4 @@
-package com.example.flat2d.components.EnemyComponent;
+package com.example.flat2d.components.EnemyComponent.Boss;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -13,8 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
-
-import javax.swing.plaf.DimensionUIResource;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 

@@ -1,4 +1,4 @@
-package com.example.flat2d.components.EnemyComponent;
+package com.example.flat2d.components.EnemyComponent.Block;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -16,7 +16,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.runOnce;
 import static com.example.flat2d.GameApp.enemies;
 
-public class RookSpearComponent extends Component {
+public class SlimeShieldComponent extends Component {
     AnimatedTexture texture;
     AnimationChannel walk_anim, death_anim;
     Entity player;
@@ -27,13 +27,13 @@ public class RookSpearComponent extends Component {
     private LocalTimer adjustDirection = FXGL.newLocalTimer();
     private Duration adjustDelay = Duration.seconds(0.15);
 
-    public RookSpearComponent(Entity player, int speed){
+    public SlimeShieldComponent(Entity player, int speed){
         this.player = player;
         this.speed = speed;
-        Image move = image("blocker/WalkBlocker2.png");
-        Image dead = image("blocker/DeadBlocker2.png");
+        Image move = image("blocker/WalkShield1.png");
+        Image dead = image("blocker/DeadShield1.png");
         walk_anim = new AnimationChannel(move,6, 100,100, Duration.seconds(1),0,5);
-        death_anim = new AnimationChannel(dead,4, 100,100, Duration.seconds(2),0,3);
+        death_anim = new AnimationChannel(dead,6, 100,100, Duration.seconds(1),0,5);
         texture = new AnimatedTexture(walk_anim);
 
         texture.loop();
@@ -70,7 +70,7 @@ public class RookSpearComponent extends Component {
                 .subtract(entity.getCenter())
                 .normalize()
                 .multiply(speed);
-        if(direction.getX() > 0){
+        if(direction.getX() < 0){
             entity.setScaleX(-1);
         }else{
             entity.setScaleX(1);
@@ -85,6 +85,6 @@ public class RookSpearComponent extends Component {
             entity.removeFromWorld();
             enemies.remove(entity);
             return null;
-        },Duration.seconds(2));
+        },Duration.seconds(1));
     }
 }

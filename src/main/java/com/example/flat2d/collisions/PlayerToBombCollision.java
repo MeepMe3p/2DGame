@@ -2,7 +2,7 @@ package com.example.flat2d.collisions;
 
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.example.flat2d.components.EnemyComponent.BombEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Bomb.BombEnemyComponent;
 
 public class PlayerToBombCollision extends CollisionHandler {
     public PlayerToBombCollision(Object a, Object b) {

@@ -4,6 +4,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.TimerAction;
+import com.example.flat2d.GameApp;
+import com.example.flat2d.components.PlayerComponent;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -17,8 +19,11 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
      * @param player entity type of the first entity
      * @param environmentObject entity type of the second entity
      */
+    private Entity player;
+
     public PlayerToEnvironmentCollision(Object player, Object environmentObject) {
         super(player, environmentObject);
+//        this.player = player;
     }
     @Override
     protected void onCollision(Entity player, Entity environmentObject) {
@@ -30,13 +35,6 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
             getGameTimer().runOnceAfter(() -> {
                 player.setPosition(player.getPosition().subtract(dir));
             }, Duration.seconds(1));
-        } else if (environmentObject.isType(TORCH)){
-            TimerAction time = runOnce(()->{
-                System.out.println("SUNOG PLAYER NIMO CHUY!");
-                inc("player_hp",-69);
-                spawn("burn");
-                return null;
-            }, Duration.seconds(5));
         }
     }
     @Override
@@ -45,6 +43,20 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
             player.getViewComponent().setOpacity(.2);
         } else if(environmentObject.isType(HOLE)) {
             environmentObject.getViewComponent().getChild(0, Texture.class).setVisible(true);
+        } else if (environmentObject.isType(TORCH)){
+
+//            TimerAction time = runOnce(()->{
+//                System.out.println("SUNOG PLAYER NIMO CHUY!");
+//                inc("player_hp",-69);
+//                player.getComponent(PlayerComponent.class).setBurn(true);
+//                return null;
+//            }, Duration.seconds(5));\\s
+//            S+"sfnafjsbasfjkafnsflnslfna");
+
+//                System.out.println("called");
+               GameApp.getPlayer().getComponent(PlayerComponent.class).burn();
+
+
         }
     }
     @Override
@@ -53,6 +65,14 @@ public class PlayerToEnvironmentCollision extends CollisionHandler {
             player.getViewComponent().setOpacity(1);
         } else if(environmentObject.isType(HOLE)) {
             environmentObject.getViewComponent().getChild(0, Texture.class).setVisible(false);
+        } else if (environmentObject.isType(TORCH)){
+
+            runOnce(()->{
+//                System.out.println("called");
+                GameApp.getPlayer().getComponent(PlayerComponent.class).stopBurning();
+                return null;
+            },Duration.seconds(4));
+
         }
     }
 }

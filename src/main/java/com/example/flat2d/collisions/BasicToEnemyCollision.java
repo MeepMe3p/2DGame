@@ -1,20 +1,18 @@
 package com.example.flat2d.collisions;
 
-import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.time.TimerAction;
 import com.example.flat2d.DesignPatterns.Observer.SoundEvent;
 import com.example.flat2d.DesignPatterns.Observer.SoundObserver;
-import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.Config;
-import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.components.EnemyComponent.*;
+import com.example.flat2d.components.EnemyComponent.Basic.BasicEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Block.BlockerEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.BossEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.ChargeEnemyComponent;
 import com.example.flat2d.components.SkillsComponent.BasicComponent;
-import javafx.geometry.Point2D;
-import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -87,15 +85,15 @@ public class BasicToEnemyCollision extends CollisionHandler {
                 e = spawn("BigExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
                 e.setPosition(enemy.getCenter()); break;
         }
-        TimerAction timerAction = getGameTimer().runAtInterval(() -> {
-            var magnet = spawn("Magnet");
-            magnet.setPosition(enemy.getCenter());
-        }, Duration.millis(1000));
-        runOnce(()->{
-            timerAction.expire();
-            return null;
-        },Duration.seconds(1));
-        System.out.println(timerAction);
+//        TimerAction timerAction = getGameTimer().runAtInterval(() -> {
+//            var magnet = spawn("Magnet");
+//            magnet.setPosition(enemy.getCenter());
+//        }, Duration.millis(1000));
+//        runOnce(()->{
+//            timerAction.expire();
+//            return null;
+//        },Duration.seconds(1));
+//        System.out.println(timerAction);
         switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
             case 1:
                 enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
