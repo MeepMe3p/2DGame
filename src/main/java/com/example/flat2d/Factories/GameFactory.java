@@ -134,8 +134,12 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("Normal")
     public Entity spawnNormal(SpawnData data){
+        int radius = 20;
+        int height = 100;
+        int width = 60;
         var e = entityBuilder()
-                .viewWithBBox(new Circle(80,Color.RED))
+//                .viewWithBBox(new Circle(radius,Color.RED))
+                .bbox(new HitBox(new Point2D(width / 2.0 - radius,height - radius*2),BoundingShape.circle(radius)))
                 .with(new NormalComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(2)))
                 .with(new CollidableComponent())
@@ -145,10 +149,11 @@ public class GameFactory implements EntityFactory {
     }
     @Spawns("Stack")
     public Entity spawnStack(SpawnData data){
+        int width = 123;
         var e = entityBuilder()
                 .type(STACK)
-//                .viewWithBBox(new Rectangle(123,280,Color.PINK))
-                .bbox(new HitBox(new Point2D(123/2.0,280),BoundingShape.circle(20)))
+//                .viewWithBBox(new Rectangle(123,280,Color.TRANSPARENT))
+                .bbox(new HitBox(new Point2D(123 / 2.0 - width / 2.0,280 - 25),BoundingShape.box(123, 30)))
                 .with(new CollidableComponent(true))
                 .with(new StackComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(1)))

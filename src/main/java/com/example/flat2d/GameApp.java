@@ -245,9 +245,9 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
-//            initSpawnEnemies();
-//            startFirstWave();
-            initSpawnDebug();
+            initSpawnEnemies();
+            startFirstWave();
+//            initSpawnDebug();
             initSpawnSkills();
 
 //
@@ -276,49 +276,26 @@ public class GameApp extends GameApplication {
     }
 
     private void initSpawnDebug() {
-        runOnce(()->{
-            var e = spawn("Boss3");
-
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-            spawner.spawnEnemy("RockGirl");
-//            var e = spawn("EvilArcher");
-//            var e = spawn("EvilArcher");
-            e.setPosition(player.getPosition());
-            return null;
+        run(()->{
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+            spawn("RockGirl");
+//            var e = spawn("Normal");
+//            e.setPosition(player.getPosition().subtract(new Point2D(e.getWidth()/2 - e.getWidth()/2.0, e.getHeight())));
         },Duration.seconds(2));
     }
 
