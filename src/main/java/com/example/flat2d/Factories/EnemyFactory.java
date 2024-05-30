@@ -188,6 +188,7 @@ public class EnemyFactory implements EntityFactory {
         var e = entityBuilder()
                 .with(new CollidableComponent(true))
                 .with(new EnemyComponent(3))
+                .with(new ChargeEnemyComponent(3))
                 .with(new ChargeHeadThreeComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new HealthIntComponent(WOLF_HP))
 //                .with(new ChargeC)
@@ -324,7 +325,7 @@ public class EnemyFactory implements EntityFactory {
         var e = entityBuilder()
                 .type(ENEMY)
                 .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,140)))
-                .with(new CollidableComponent())
+                .with(new CollidableComponent(true))
                 .with(new EnemyComponent(5))
                 .with(new ShoujoComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
                 .with(new RangeComponent(1))
@@ -338,8 +339,7 @@ public class EnemyFactory implements EntityFactory {
     public Entity spawnArcher(SpawnData data){
         var e = entityBuilder()
                 .type(ENEMY)
-                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(90,140)))
-                .with(new CollidableComponent())
+                .with(new CollidableComponent(true))
                 .with(new EnemyComponent(5))
                 .with(new EvilArcherComponent(FXGL.<GameApp>getAppCast().getPlayer(),CUTE_BOMB_MOVEMENT_SPEED))
                 .with(new RangeComponent(2))
@@ -357,7 +357,7 @@ public class EnemyFactory implements EntityFactory {
                 .with(new EnemyComponent(6))
                 .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
                 .with(new CollidableComponent(true))
-                .with(new HealthIntComponent(WOLF_HP))
+                .with(new HealthIntComponent(BOSS1_HP))
                 .build();
     }
     @Spawns("Boss2")
@@ -376,12 +376,12 @@ public class EnemyFactory implements EntityFactory {
     public Entity spawnFinalBeast(SpawnData data){
         var e =  entityBuilder()
                 .type(BOSS)
-                .bbox(new HitBox(new Point2D(0,0),BoundingShape.box(100,100)))
+                .bbox(new HitBox(new Point2D(60,0),BoundingShape.box(75,180)))
                 .with(new EnemyComponent(6))
                 .with(new BossEnemyComponent(3))
                 .with(new FinalBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
                 .with(new CollidableComponent(true))
-                .with(new HealthIntComponent(10))
+                .with(new HealthIntComponent(BOSS3_HP))
                 .build();
         e.setScaleOrigin(e.getCenter());
         e.setX(-90);

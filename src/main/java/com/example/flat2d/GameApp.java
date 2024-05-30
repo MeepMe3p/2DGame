@@ -245,7 +245,7 @@ public class GameApp extends GameApplication {
 //        -------- SPAWNS THE ENTITIES ------------
 //            initSpawnExp();
         Thread th = new Thread(() -> {
-            initSpawnEnemies();
+//            initSpawnEnemies();
             startFirstWave();
 //            initSpawnDebug();
             initSpawnSkills();
@@ -276,31 +276,93 @@ public class GameApp extends GameApplication {
     }
 
     private void initSpawnDebug() {
-        run(()->{
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-            spawn("RockGirl");
-//            var e = spawn("Normal");
-//            e.setPosition(player.getPosition().subtract(new Point2D(e.getWidth()/2 - e.getWidth()/2.0, e.getHeight())));
+        runOnce(()->{
+            var e = spawn("Boss3");
+//            var e = spawn("EvilArcher");
+            e.setPosition(player.getPosition());
+//            var boss2 = spawner.spawnEnemy("Boss2");
+            e.setOnNotActive(new Runnable() {
+                @Override
+                public void run() {
+//                    startSecondWave();
+
+                    randomT.expire();
+                    firstWave.expire();
+                    //endgame
+                }
+            });
+            return null;
         },Duration.seconds(2));
+
     }
 
     private void startSecondWave() {
+        firstWave = run(()->{
+            enemies.add(spawner.spawnEnemy("RockGirl"));
+            if(geti("time") > 180){
+                enemies.add(spawner.spawnEnemy("ThirdNormal"));
+            }
 
+        },Duration.seconds(2));
+
+        basicT = run(()->{
+                enemies.add(spawner.spawnEnemy("RockGirl"));
+
+        }, WOLF_SPAWN_INTERVAL);
+
+        chargeT = run(()->{
+            enemies.addAll(spawner.spawnSheep("Valkyrie"));
+            if(geti("time")>180){
+                enemies.addAll(spawner.spawnSheep("ThirdHead"));
+            }
+        },SHEEP_SPAWN_INTERVAL);
+        bombT = run(()->{
+            enemies.addAll(spawner.spawnCuteBomb(player,"MidBomb"));
+            if(geti("time")>180){
+                enemies.addAll(spawner.spawnCuteBomb(player,"LastBomb"));
+            }
+        },BOMBSQUARE_SPAWN_INTERVAL);
+        randomT = run(()->{
+            enemies.addAll(spawner.randomSpawn(2,FXGL.random(1,3),FXGL.random(1,4)));
+            if(geti("time")>200){
+                enemies.addAll(spawner.randomSpawn(3,FXGL.random(1,3),FXGL.random(1,4)));
+
+            }
+        },Duration.seconds(15));
+
+        runOnce(()->{
+            var boss3 = spawn("Boss3");
+//            initSpawnDebug();
+            boss3.setPosition(player.getPosition().add(400,200));
+//            var boss2 = spawner.spawnEnemy("Boss2");
+            boss3.setOnNotActive(new Runnable() {
+                @Override
+                public void run() {
+//                    startSecondWave();
+
+                    randomT.expire();
+                    firstWave.expire();
+                    //endgame
+                }
+            });
+//            firstWave,basicT,chargeT,bombT,randomT
+            firstWave.expire();
+            basicT.expire();
+            chargeT.expire();
+            bombT.expire();
+//            randomT.expire();
+
+            getGameWorld().removeEntities(enemies);
+            enemies.clear();
+
+
+            System.out.println(basicT.isExpired());
+            System.out.println(chargeT.isExpired());
+            System.out.println(bombT.isExpired());
+            System.out.println(enemies.size());
+            return null;
+
+        }, BOSS1_SPAWN_TIME);
 
 
     }
@@ -308,50 +370,51 @@ public class GameApp extends GameApplication {
     private TimerAction firstWave,basicT,chargeT,bombT,randomT;
     int wave = 1;
     private void startFirstWave() {
-//        getGameTimer().runAtInterval(()->{
-//            var e = spawn("Wolf");
-//            e.setPosition(player.getPosition());
-//        },Duration.seconds(5));
 
         firstWave = run(()->{
-//            enemies.add(spawner.spawnEnemy("Wolf"));
+
             enemies.add(spawner.spawnEnemy("Wolf"));
-//            System.out.println("called nfndosfndkfn");
-//            enemies.addAll(spawner.spawnSide("CuteBomb",4,300,144));
-//            enemies.addAll(spawner.spawnSide("CuteBomb",3,300,144));
-//            enemies.addAll(spawner.spawnSide("CuteBomb",2,300,144));
-//            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
+
 
         },WOLF_SPAWN_INTERVAL);
+
         bombT = run(()->{
-            enemies.add(spawner.spawnEnemy("CuteBomb"));
-            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
+//            enemies.add(spawner.spawnEnemy("CuteBomb"));
+//            enemies.addAll(spawner.spawnSide("CuteBomb",1,300,144));
         },BOMBSQUARE_SPAWN_INTERVAL);
+
         randomT = run(()->{
             enemies.addAll(spawner.randomSpawn(wave,FXGL.random(1,3),FXGL.random(1,4)));
         },Duration.seconds(15));
+
         basicT = run(()->{
 //            enemies.addAll(spawner.spawnTortols());
         },SQUARE_SPAWN_INTERVAL);
         chargeT = run(()->{
-//            enemies.addAll(spawner.spawnSheep());
+            enemies.addAll(spawner.spawnSheep("Sheep"));
         },CHARGE_SPAWN_INTERVAL);
+
         runOnce(()->{
             System.out.println("cummonnnnnnnnnnnnnn");
-            spawner.spawnEnemy("Boss1");
+            var e = spawner.spawnEnemy("Boss1");
+            e.setOnNotActive(new Runnable() {
+                @Override
+                public void run() {
+                    startSecondWave();
+                    randomT.expire();
+                    firstWave.expire();
+                }
+            });
+//            firstWave,basicT,chargeT,bombT,randomT
 //            firstWave.expire();
             basicT.expire();
             chargeT.expire();
             bombT.expire();
+//            randomT.expire();
 
             getGameWorld().removeEntities(enemies);
             enemies.clear();
-            runOnce(()->{
-                firstWave.expire();
-                startSecondWave();
-                return null;
 
-            },Duration.seconds(10));
 
             System.out.println(basicT.isExpired());
             System.out.println(chargeT.isExpired());
@@ -373,21 +436,23 @@ public class GameApp extends GameApplication {
 
         PlayerToEnemyCollision wolfToPlayer = new PlayerToEnemyCollision();
         OratriceToEnemy oToE = new OratriceToEnemy();
+        StackToEnemyCollision sToE = new StackToEnemyCollision();
         PlayerToBombCollision pToB = new PlayerToBombCollision(PLAYER,SMOL_BOMB);
         PlayerToExpCollision expToPlayer = new PlayerToExpCollision();
         BasicToEnemyCollision bsToEn = new BasicToEnemyCollision(BASICSKILL,WOLF);
         PlayerToEnemyCollision plToEn = new PlayerToEnemyCollision();
         DinoToPlayerCollision dToPl = new DinoToPlayerCollision();
 
+
         PlayerToEnvironmentCollision playerToEnvironmentCollision = new PlayerToEnvironmentCollision(PLAYER, WALL);
 
-//        physics.addCollisionHandler(wolfToPlayer);
         physics.addCollisionHandler(oToE);
         physics.addCollisionHandler(pToB);
         physics.addCollisionHandler(expToPlayer);
         physics.addCollisionHandler(bsToEn);
         physics.addCollisionHandler(plToEn);
         physics.addCollisionHandler(dToPl);
+        physics.addCollisionHandler(sToE);
 
 
         physics.addCollisionHandler(playerToEnvironmentCollision);
@@ -402,10 +467,12 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(pToB.copyFor(PLAYER,BIG_BOMB));
 
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,FORESKIN_DRAGON));
-        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,HELLHOUND));
+        physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,BOSS));
         physics.addCollisionHandler(bsToEn.copyFor(BASICSKILL,ENEMY));
         physics.addCollisionHandler(oToE.copyFor(ORATRICE,ENEMY));
-        physics.addCollisionHandler(oToE.copyFor(STACK,ENEMY));
+        physics.addCollisionHandler(oToE.copyFor(ORATRICE,BOSS));
+        physics.addCollisionHandler(sToE.copyFor(ORATRICE,ENEMY));
+        physics.addCollisionHandler(sToE.copyFor(ORATRICE,BOSS));
 
 //        -------- COPIES THE COLLISION OF SMOL TO BIGU AND MEDIOWM ------------
 

@@ -7,6 +7,11 @@ import com.example.flat2d.DesignPatterns.Observer.SoundEvent;
 import com.example.flat2d.GameApp;
 import com.example.flat2d.Misc.Config;
 import com.example.flat2d.Misc.EntityType;
+import com.example.flat2d.components.EnemyComponent.Basic.BasicEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Block.BlockerEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Boss.BossEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.Charge.ChargeEnemyComponent;
+import com.example.flat2d.components.EnemyComponent.EnemyComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 
 import java.util.Random;
@@ -14,6 +19,7 @@ import java.util.Random;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.spawn;
 import static com.example.flat2d.GameApp.enemies;
+import static com.example.flat2d.Misc.EntityType.BOSS;
 
 public class OratriceToEnemy extends CollisionHandler {
     public OratriceToEnemy() {
@@ -27,7 +33,9 @@ public class OratriceToEnemy extends CollisionHandler {
         HealthIntComponent hp = enemy.getComponent(HealthIntComponent.class);
         // todo: for now kay wala pay defense ang kontra so all take the same damage implement dis later ohkeh
         hp.setValue(hp.getValue() - damage);
-
+        if(enemy.getTypeComponent().isType(BOSS)){
+            System.out.println("the hp of boss is: "+hp);
+        }
         if(hp.isZero()){
             killEnemy(enemy);
 //            new Thread(new Runnable() {
@@ -65,8 +73,22 @@ public class OratriceToEnemy extends CollisionHandler {
                 e = spawn("BigExp"/*,(int) enemy.getX(),(int)enemy.getY()*/);
                 e.setPosition(enemy.getCenter()); break;
         }
-        enemy.setVisible(false);
-        enemies.remove(enemy);
-        enemy.removeFromWorld();
+        switch(enemy.getComponent(EnemyComponent.class).getEnemy_type()) {
+            case 1:
+                enemy.getComponent(BasicEnemyComponent.class).kill(enemy);
+                break;
+            case 2:
+                enemy.getComponent(ChargeEnemyComponent.class).kill(enemy);
+                break;
+            case 3:
+                enemy.getComponent(BlockerEnemyComponent.class).kill(enemy);
+                break;
+            case 6:
+                enemy.getComponent(BossEnemyComponent.class).kill(enemy);
+                break;
+        }
+//        enemy.setVisible(false);
+//        enemies.remove(enemy);
+//        enemy.removeFromWorld();
     }
 }

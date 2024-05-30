@@ -3,17 +3,23 @@ package com.example.flat2d.components.EnemyComponent.Boss;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
 import com.almasb.fxgl.time.TimerAction;
 import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
 import com.example.flat2d.components.EnemySkillsComponent.RangeSecondComponent;
+import com.example.flat2d.components.EnemySkillsComponent.RangeThirdComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.GameApp.enemies;
+import static com.example.flat2d.GameApp.spawner;
 import static com.example.flat2d.Misc.Config.BASICSKILL_MOV_SPEED;
 
 
@@ -94,28 +100,42 @@ public class FinalBossComponent extends Component {
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
-        adjustVelocity(0.015);
+//        adjustVelocity(0.015);
+//        runOnce(()->{
+//
+//        },Duration.seconds(1));
         idling();
     }
 
     private void adjustVelocity(double v) {
         Point2D dir = player.getCenter().subtract(entity.getCenter()).normalize().multiply(speed);
         velocity = velocity.add(dir).multiply(v);
-        System.out.println(dir+"direceiton of ofasn flas");
+//        System.out.println(dir+"direceiton of ofasn flas");
     }
     public void chargeAttack(){
         setAllFalse();
         isCharging = true;
-        run(()->{
-            var e = spawn("Range1Atk");
-            e.setPosition(entity.getPosition());
-            e.addComponent(new RangeSecondComponent(player, entity,BASICSKILL_MOV_SPEED));
-            return null;
-        },Duration.seconds(1));
         TimerAction a = runOnce(()->{
            idling();
+//            runOnce(()->{
+                ArrayList<Entity> proj;
+
+//                var e = spawn("Range3Atk");
+            enemies.addAll(spawner.spawnSide("LastBomb",1,20,90));
+            enemies.addAll(spawner.spawnSide("LastBomb",4,20,90));
+
+//                for(Entity e: proj){
+//                    e.addComponent(new RangeThirdComponent(player,entity,99));
+////                    e.addComponent();
+//                }
+
+//                e.setPosition(entity.getPosition());
+//                e.addComponent(new RangeThirdComponent(player, entity,BASICSKILL_MOV_SPEED));
+//                e.getComponent(RangeThirdComponent.class).fire();
+//                return null;
+//            },Duration.seconds(1));
            return null;
-        },Duration.seconds(5));
+        },Duration.seconds(/*5*/3));
 //        a.expire();
     }
     public void idling(){
@@ -127,7 +147,7 @@ public class FinalBossComponent extends Component {
             if(calculateDistance() < 500){
                 chargeAttack();
 //                teleport();
-                System.out.println("sfoaifhoasfknasfnaklsfjklasfnklsnfkla ");
+//                System.out.println("sfoaifhoasfknasfnaklsfjklasfnklsnfkla ");
 //                velocity = Point2D.ZERO;
             }else{
                 teleport();
@@ -145,7 +165,16 @@ public class FinalBossComponent extends Component {
         setAllFalse();
         isBlinking = true;
         runOnce(()->{
+            AnimatedTexture explosion;
+            AnimationChannel exp_anim;
             entity.setPosition(player.getPosition().add(new Point2D(FXGL.random(-75,75),FXGL.random(-75,75))));
+            Image explode = image("effect/dinoStomp.png");
+            exp_anim = new AnimationChannel(explode,10,760,760,Duration.seconds(1.5),0,10);
+            explosion = new AnimatedTexture(exp_anim);
+            explosion.setX(-200);
+            explosion.setY(-200);
+            explosion.play();
+            entity.getViewComponent().addChild(explosion);
             idling();
             return null;
         },Duration.seconds(1.5));
@@ -161,7 +190,7 @@ public class FinalBossComponent extends Component {
     }
     public double calculateDistance(){
         distance = entity.distance(player);
-        System.out.println("the distance of the player and enemy is: "+distance);
+//        System.out.println("the distance of the player and enemy is: "+distance);
 //        if(distance > 500){
 //            
 //        }
@@ -179,6 +208,20 @@ public class FinalBossComponent extends Component {
 
     public void stopAttacking() {
         setAllFalse();
+//        entity.getViewComponent().getChildren().removeLast();
         idling();
+    }
+
+    public void setDead() {
+        isDead = true;
+        isAttacking = false;
+        isIdle = false;
+        isCharging = false;
+        entity.removeComponent(CollidableComponent.class);
+        System.out.println("call");
+        runOnce(()->{
+            entity.removeFromWorld();
+            return null;
+        },Duration.seconds(3));
     }
 }

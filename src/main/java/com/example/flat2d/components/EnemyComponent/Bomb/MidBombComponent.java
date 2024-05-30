@@ -13,6 +13,8 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.runOnce;
+import static com.example.flat2d.GameApp.enemies;
 
 public class MidBombComponent extends Component {
     Entity player;
@@ -94,5 +96,18 @@ public class MidBombComponent extends Component {
         isExploding = true;
         inner.setVisible(true);
         outer.setVisible(true);
+    }
+
+    public void setExploding(boolean b) {
+        isExploding = b;
+//        isMoving = false;
+        entity.setX(200);
+        System.out.println("sulod here");
+        runOnce(()->{
+
+            entity.removeFromWorld();
+            enemies.remove(entity);
+            return null;
+        },Duration.seconds(2));
     }
 }

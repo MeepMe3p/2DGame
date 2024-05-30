@@ -87,5 +87,6 @@ public class ThirdCrawlerComponent extends Component {
     public void setDead(boolean dead) {
         isDead = dead;
         isMoving = false;
+        entity.removeFromWorld();
     }
 }

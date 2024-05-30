@@ -45,8 +45,13 @@ public class BossEnemyComponent extends Component {
         }
     }
     public void kill(Entity boss){
-        if(this.type == 2){
+        if(this.type == 1){
+            boss.getComponent(DinoBossComponent.class).setDead();
+        }
+        else if(this.type == 2){
             boss.getComponent(MedBossComponent.class).setDead();
+        }else if(this.type == 3){
+            boss.getComponent(FinalBossComponent.class).setDead();
         }
     }
 }

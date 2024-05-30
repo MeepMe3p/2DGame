@@ -9,8 +9,10 @@ public class ChargeEnemyComponent extends Component {
     public ChargeEnemyComponent(int type) {
         this.type = type;
     }
-    public void attack(Entity e){
+    public void attack(Entity e, int direction){
         if(type == 1){
+            e.getComponent(PenguinComponent.class).setDirection(direction);
+
             e.getComponent(PenguinComponent.class).setCharging(true);
         }else if(type ==2){
             e.getComponent(ValkyrieChargeComponent.class).setCharging(true);
@@ -23,5 +25,8 @@ public class ChargeEnemyComponent extends Component {
         }else if(type ==2){
             e.getComponent(ValkyrieChargeComponent.class).setDead(true);
         }
+    }
+
+    public void setDirection(int i) {
     }
 }

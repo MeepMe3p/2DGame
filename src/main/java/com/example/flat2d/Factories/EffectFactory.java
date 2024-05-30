@@ -20,6 +20,8 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.Texture;
 import com.example.flat2d.GameApp;
+import com.example.flat2d.components.EnemySkillsComponent.RangeFirstComponent;
+import com.example.flat2d.components.EnemySkillsComponent.RangeThirdComponent;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -69,6 +71,21 @@ public class EffectFactory implements EntityFactory {
         var e = entityBuilder()
                 .view(new AnimatedTexture(skill_anim).loop())
                 .with(new ProjectileComponent(new Point2D(1,0),2))
+                .with(new ExpireCleanComponent(Duration.seconds(8)))
+                .build();
+        e.setReusable(true);
+        return e;
+    }
+
+    @Spawns("Range3Atk")
+    public Entity spawnSkill3(SpawnData data){
+//        Image skill = image("effect/ProjectilePink.png");
+//        AnimationChannel skill_anim = new AnimationChannel(skill, 5, 50, 50, Duration.seconds(1),0,4);
+
+        var e = entityBuilder()
+//                .view(new AnimatedTexture(skill_anim).loop())
+                .bbox(new HitBox(new Point2D(30,15),BoundingShape.circle(10)))
+//                .with(new ProjectileComponent(new Point2D(1,0),2))
                 .with(new ExpireCleanComponent(Duration.seconds(8)))
                 .build();
         e.setReusable(true);

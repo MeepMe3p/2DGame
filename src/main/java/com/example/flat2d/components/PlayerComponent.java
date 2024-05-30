@@ -36,29 +36,32 @@ public class PlayerComponent extends Component {
 
 
     public PlayerComponent() {
-        Image movement = image("player/lecatmoves.png");
-        Image down_anim = image("player/CatOne.png");
-        Image left_anim = image("player/CatThree.png");
-        Image right_anim = image("player/CatThree.png");
-        Image up_anim = image("player/CatFour.png");
-//        Image idle_anim = image("player/70x100SitSirVinceSerato.png");
-//        Image down_anim = image("player/SirDown.png");
-//        Image left_anim = image("player/SirLeft.png");
-//        Image right_anim = image("player/SirRight.png");
-//        Image up_anim = image("player/SirUp.png");
-        idle = new AnimationChannel(movement, 2, 32, 32, Duration.seconds(1), 6, 7);
-        right = new AnimationChannel(right_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
-        left = new AnimationChannel(left_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
-        down = new AnimationChannel(down_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
-        up = new AnimationChannel(up_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
-        idle = new AnimationChannel(movement, 8, 32, 32, Duration.seconds(1), 0, 7);
-//        idle = new AnimationChannel(idle_anim,5,70,100,Duration.seconds(5),0,4);
-//        right = new AnimationChannel(right_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
-//        left = new AnimationChannel(left_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
-//        down = new AnimationChannel(down_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
-//        up = new AnimationChannel(up_anim, 8, 50, 90, Duration.seconds(1), 0, 7);
+//        Image movement = image("player/lecatmoves.png");
+//        Image down_anim = image("player/CatOne.png");
+//        Image left_anim = image("player/CatThree.png");
+//        Image right_anim = image("player/CatThree.png");
+//        Image up_anim = image("player/CatFour.png");
+
+        Image idle_anim = image("player/70x100SitSirVinceSerato.png");
+        Image down_anim = image("player/SirDown.png");
+        Image left_anim = image("player/SirLeft.png");
+        Image right_anim = image("player/SirRight.png");
+        Image up_anim = image("player/SirUp.png");
+
+//        idle = new AnimationChannel(movement, 2, 32, 32, Duration.seconds(1), 6, 7);
+//        right = new AnimationChannel(right_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
+//        left = new AnimationChannel(left_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
+//        down = new AnimationChannel(down_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
+//        up = new AnimationChannel(up_anim, 3, 32, 32, Duration.seconds(1), 0, 2);
+//        idle = new AnimationChannel(movement, 8, 32, 32, Duration.seconds(1), 0, 7);
+
+        idle = new AnimationChannel(idle_anim,5,70,100,Duration.seconds(5),0,4);
+        right = new AnimationChannel(right_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
+        left = new AnimationChannel(left_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
+        down = new AnimationChannel(down_anim, 8, 50, 120, Duration.seconds(1), 0, 7);
+        up = new AnimationChannel(up_anim, 8, 50, 90, Duration.seconds(1), 0, 7);
         texture = new AnimatedTexture(idle);
-        texture.loop();
+        texture.loopReverse();
         acquireExperience = false;
     }
 /*
@@ -68,6 +71,7 @@ public class PlayerComponent extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(16, 16));
         entity.getViewComponent().addChild(texture);
+        entity.setScaleOrigin(new Point2D(25,60));
     }
 /*
  *   FOR UPDATING THE PLAYER DEPENDING ON WHAT IS THE STATE IT IS IN
@@ -82,11 +86,11 @@ public class PlayerComponent extends Component {
 //                System.out.println("left");
             }
         }else if(isRight){
-            if(texture.getAnimationChannel()!=right){
-                texture.loopAnimationChannel(right);
-//                System.out.println("right");
-
-            }
+//            if(texture.getAnimationChannel()!=right){
+//                texture.loopAnimationChannel(right);
+////                System.out.println("right");
+//
+//            }
         }else if(isUp){
             if(texture.getAnimationChannel()!=up){
                 texture.loopAnimationChannel(up);
@@ -120,10 +124,10 @@ public class PlayerComponent extends Component {
 
     public void move_right(){
         setAllFalse();
-        isRight = true;
+        isLeft = true;
 //        System.out.println(entity.getX());
         if(entity.getX() < 2226) {
-//            entity.setScaleX(1);
+            entity.setScaleX(-1);
 //            System.out.println(entity.getX());
             entity.translateX(1);
 //            entity.getComponent(PhysicsComponent.class).setVelocityX(1);
@@ -217,7 +221,7 @@ public class PlayerComponent extends Component {
     Texture txt;
     public void burn(){
         if(!isBurning){
-            System.out.println("ifoifnOINFJFNJNFNIONIOKAFDDSF,KDSFMOSDKFNAOSDFJJIDSFNSDJANFKJADSBFJKANFKDSF");
+//            System.out.println("ifoifnOINFJFNJNFNIONIOKAFDDSF,KDSFMOSDKFNAOSDFJJIDSFNSDJANFKJADSBFJKANFKDSF");
             Image image = image("background/burn.gif");
             txt = new Texture(image);
             entity.getViewComponent().addChild(txt);

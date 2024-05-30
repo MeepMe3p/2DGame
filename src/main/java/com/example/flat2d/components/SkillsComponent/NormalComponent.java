@@ -20,7 +20,7 @@ public class NormalComponent extends Component {
         this.player = GameApp.getPlayer();
         level = 0;
         Image atk = image("skill/Hode-Normal.png");
-        animation = new AnimationChannel(atk,5,60,100, Duration.seconds(2),0,4);
+        animation = new AnimationChannel(atk,5,60,100, Duration.seconds(0.5),0,4);
         texture = new AnimatedTexture(animation);
         texture.loop();
     }

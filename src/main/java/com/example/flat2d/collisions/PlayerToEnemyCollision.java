@@ -58,6 +58,11 @@ public class PlayerToEnemyCollision extends CollisionHandler {
 
     private static void killPlayer() {
 //        todo create a scoreboard
+        Database.insertOrUpdateUserHighScore(loggedIn.username,geti("kills"));
+        ArrayList<String> list = Database.getAllUsersKillsScore();
+        for(String s: list){
+            System.out.println(s);
+        }
         getGameController().pauseEngine();
     }
 }

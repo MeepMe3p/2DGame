@@ -16,10 +16,10 @@ public class DinoBossComponent extends Component {
     AnimatedTexture texture;
     AnimatedTexture explosion;
     AnimationChannel exp_anim;
-    AnimationChannel walkLeft_anim, walkRight_anim, attack_anim;
+    AnimationChannel death_anim, walkRight_anim, attack_anim;
     Entity player;
     int speed;
-    boolean isMoving, isRight;
+    boolean isMoving, isDead;
     boolean isAttacking = false;
 
     Point2D velocity = Point2D.ZERO;
@@ -31,10 +31,11 @@ public class DinoBossComponent extends Component {
         this.speed = speed;
         Image walk_left = image("boss/DinoMove.png");
         Image attack = image("boss/DinoAttack(1).png");
+        Image death = image("boss/DinoDed.png");
 
         walkRight_anim = new AnimationChannel(walk_left,6,300,300, Duration.seconds(1),0,5);
         attack_anim = new AnimationChannel(attack,6,300,300, Duration.seconds(1),0,5);
-
+        death_anim = new AnimationChannel(death,8,300,210,Duration.seconds(1),0,7);
         texture = new AnimatedTexture(walkRight_anim);
         texture.loop();
     }
@@ -78,6 +79,10 @@ public class DinoBossComponent extends Component {
                 isMoving = true;
                 return null;
             }, Duration.seconds(1.2));
+        }else if(isDead){
+            if(texture.getAnimationChannel() != death_anim){
+                texture.loopAnimationChannel(death_anim);
+            }
         }
 
     }
@@ -105,5 +110,11 @@ public class DinoBossComponent extends Component {
 
         getGameScene().getViewport().shakeTranslational(50);
 
+    }
+
+    public void setDead() {
+        isMoving = false;
+        isAttacking = false;
+        isDead = true;
     }
 }

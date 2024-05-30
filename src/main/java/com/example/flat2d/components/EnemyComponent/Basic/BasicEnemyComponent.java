@@ -17,7 +17,7 @@ public class BasicEnemyComponent extends Component {
             e.getComponent(RockerNormalComponent.class).setDead(true);
 
         }else if(type== 3) {
-//            e.getComponent(ThirdCrawlerComponent.class).setDead(true);
+            e.getComponent(ThirdCrawlerComponent.class).setDead(true);
         }
     }
 

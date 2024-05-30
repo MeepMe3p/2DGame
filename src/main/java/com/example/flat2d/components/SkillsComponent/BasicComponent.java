@@ -41,6 +41,7 @@ public class BasicComponent extends Component {
                 texture.loopAnimationChannel(attack);
             }
         }
+//        System.out.println("is actives");
     }
 
     public void setEnemies_hit(int enemies_hit) {

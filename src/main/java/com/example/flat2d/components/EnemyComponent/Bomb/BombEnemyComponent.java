@@ -18,6 +18,7 @@ public class BombEnemyComponent extends Component {
             e.getComponent(CuteBombComponent.class).setExploding(true);
 
         }else if(type ==2){
+            e.getComponent(MidBombComponent.class).setExploding(true);
 
         }else if(type ==3){
             System.out.println("sulod here");

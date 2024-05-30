@@ -17,6 +17,8 @@ import com.example.flat2d.components.SkillsComponent.BasicComponent;
 import java.util.Random;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+import static com.example.flat2d.GameApp.enemies;
+import static com.example.flat2d.Misc.EntityType.BOSS;
 
 /**  FOR THE COLLISION OF THE ENEMY AND BASIC SKILL AND THE ENEMY
 *   HEALTHINTCOMPONENT IS BASICALLY A FXGL THING FOR HP PURPOSES
@@ -44,7 +46,9 @@ public class BasicToEnemyCollision extends CollisionHandler {
         int dmg = Config.BASIC_DEFAULT_DMG + (int)(GameApp.skillLevels[0] * Config.DMG_MULTIPLIER);
         hp.setValue(hp.getValue()-dmg);
 
-
+        if(enemy.getTypeComponent().isType(BOSS)){
+            System.out.println("the hp of boss is: "+hp);
+        }
 
         if(hp.isZero()){
             killEnemy(enemy);
@@ -110,6 +114,11 @@ public class BasicToEnemyCollision extends CollisionHandler {
         }
 //        enemy.setVisible(false);
 //        enemy.removeFromWorld();
+    }
+    public void removeMeKudasai(Entity enemy){
+        enemy.setVisible(false);
+        enemies.remove(enemy);
+        enemy.removeFromWorld();
     }
 
 

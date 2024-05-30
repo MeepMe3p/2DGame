@@ -219,6 +219,7 @@ public class GameFactory implements EntityFactory {
         var e = entityBuilder()
                 .type(MEDIUM_EXP)
                 .viewWithBBox(new Texture(image))
+                .with(new ExpireCleanComponent(Duration.seconds(20)))
                 .collidable()
                 .with(new ExperienceComponent(FXGL.<GameApp>getAppCast().getPlayer(),EXP_SPEED))
                 .build();
@@ -231,6 +232,7 @@ public class GameFactory implements EntityFactory {
         var e = entityBuilder()
                 .type(BIG_EXP)
                 .viewWithBBox(new Texture(image))
+                .with(new ExpireCleanComponent(Duration.seconds(20)))
                 .collidable()
                 .with(new ExperienceComponent(FXGL.<GameApp>getAppCast().getPlayer(),EXP_SPEED))
                 .build();

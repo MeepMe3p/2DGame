@@ -135,6 +135,7 @@ public class UIFacade {
         skill.setAlignment(Pos.CENTER_LEFT);
         skill.setSpacing(10);
         skill.setPadding(new Insets(10));
+        text.setFill(Color.WHITE);
 
 //        skill.setPrefWidth(100);
 //        skill.setPrefHeight(100);

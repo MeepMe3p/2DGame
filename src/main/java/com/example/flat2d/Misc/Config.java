@@ -8,12 +8,12 @@ public final class Config {
 
 
 //    SPAWN INTERVALS FOR ENEMIES AND RANDOM SHIZZ
-    public static final Duration WOLF_SPAWN_INTERVAL = Duration.seconds(2.5);
+    public static final Duration WOLF_SPAWN_INTERVAL = Duration.seconds(2);
     public static final Duration SHEEP_SPAWN_INTERVAL = Duration.seconds(15);
     public static final Duration TURTLE_SPAWN_INTERVAL = Duration.seconds(20);
     public static final Duration BOMBSQUARE_SPAWN_INTERVAL = Duration.seconds(25);
 
-    public static final Duration BOSS1_SPAWN_TIME = Duration.seconds(61);
+    public static final Duration BOSS1_SPAWN_TIME = Duration.seconds(31);
 
     public static final Duration HELL_HOUND_SPAWN_INTERVAL = Duration.seconds(3);
     public static final Duration WAVE_SPAWN_INTERVAL = Duration.seconds(60);
@@ -40,6 +40,7 @@ public final class Config {
     //  DAMAGE OF SKILLS
     public static final int BASIC_DEFAULT_DMG = 3;
     public static final int ORATRICE_DEFAULT_DMG = 5;
+    public static final int STACK_DEFAULT_DAMAGE = 9;
 
 
     //  ENEMY MOVEMENT SPEEDS
@@ -62,7 +63,9 @@ public final class Config {
 
     // ENTITY HPS
     public static final int IMMUNITY = Integer.MAX_VALUE;
-    public static final int PLAYER_HP = 20;
+    public static final int PLAYER_HP = 60;
+    public static final int BOSS1_HP = 60;
+    public static final int BOSS3_HP = 120;
     public static final int WOLF_HP = 2;
     public static final int SKIN_DRAGON = 5;
     public static final int HELL_HOUND_HP = 10;
