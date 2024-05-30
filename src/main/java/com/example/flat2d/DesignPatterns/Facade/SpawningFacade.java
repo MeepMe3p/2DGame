@@ -288,7 +288,7 @@ public class SpawningFacade {
     }
     private String enemySpawn(int type,int wave){
         String[] wave1 = {"Wolf", "Turtle","CuteBomb"};
-        String[] wave2 = {"RockGirl", "SpearShield","MidBomb "};
+        String[] wave2 = {"RockGirl", "SpearShield","MidBomb"};
         String[] wave3 = {"ThirdHead","WinkWink","LastBomb"};
         String chosen="";
         switch(wave){

@@ -355,7 +355,7 @@ public class EnemyFactory implements EntityFactory {
                 .type(BOSS)
                 .bbox(new HitBox(new Point2D(40,30),BoundingShape.circle(130)))
                 .with(new EnemyComponent(6))
-                .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),WOLF_MOVEMENT_SPEED))
+                .with(new DinoBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),BOSS_2_MOVEMENTSPEED))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(BOSS1_HP))
                 .build();
@@ -379,7 +379,7 @@ public class EnemyFactory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(60,0),BoundingShape.box(75,180)))
                 .with(new EnemyComponent(6))
                 .with(new BossEnemyComponent(3))
-                .with(new FinalBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),SHEEP_MOVEMENT_SPEED))
+                .with(new FinalBossComponent(FXGL.<GameApp>getAppCast().getPlayer(),BOSS_3_CHARGESPEED))
                 .with(new CollidableComponent(true))
                 .with(new HealthIntComponent(BOSS3_HP))
                 .build();

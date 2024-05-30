@@ -13,7 +13,7 @@ public final class Config {
     public static final Duration TURTLE_SPAWN_INTERVAL = Duration.seconds(20);
     public static final Duration BOMBSQUARE_SPAWN_INTERVAL = Duration.seconds(25);
 
-    public static final Duration BOSS1_SPAWN_TIME = Duration.seconds(31);
+    public static final Duration BOSS1_SPAWN_TIME = Duration.seconds(61);
 
     public static final Duration HELL_HOUND_SPAWN_INTERVAL = Duration.seconds(3);
     public static final Duration WAVE_SPAWN_INTERVAL = Duration.seconds(60);
@@ -53,8 +53,8 @@ public final class Config {
     public static final int CUTE_BOMB_MOVEMENT_SPEED = 25;
     public static final int DINO_BOSS_MOVEMENT_SPEED = 50;
     public static final int DINO_BOSS_CHARGE_SPEED = 100;
-    public static final int BOSS_2_MOVEMENTSPEED = 200;
-    public static final int BOSS_3_CHARGESPEED = 1000;
+    public static final int BOSS_2_MOVEMENTSPEED = 75;
+    public static final int BOSS_3_CHARGESPEED = 200;
 
 
     public static final int FORESKIN_DRAGON_SPEED = 50;

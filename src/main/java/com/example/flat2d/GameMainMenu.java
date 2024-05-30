@@ -15,15 +15,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.util.ArrayList;
+
 import static final_project_socket.handler.AuthenticationHandler.loggedIn;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
@@ -53,11 +58,11 @@ public class GameMainMenu extends FXGLMenu {
             fireNewGame();
             GAME_STATE = 0;
         });
-        customMenuButton btnAccount = new customMenuButton("Account", ()->{
+        customMenuButton btnAccount = new customMenuButton("HighScore", ()->{
             vbAccount.setVisible(true);
             vbMainMenu.setVisible(false);
         });
-        customMenuButton btnMultiplayer= new customMenuButton("MULTIPLAYER", ()->{
+        customMenuButton btnMultiplayer= new customMenuButton("Chat", ()->{
                 GAME_STATE = 1;
             try {
                 // Load the existing FXML file
@@ -134,13 +139,26 @@ public class GameMainMenu extends FXGLMenu {
 // ==========================================================================================//
 
 //      Account Related Stuff for sign in and register
-
-        vbAccount = new VBox(10,
-                tfUsername,
-                tfPassword,
-                btnLogin,
-                btnRegister,
-                btnReturn);
+        vbAccount = new VBox(10
+//                tfUsername,
+//                tfPassword,
+//                btnLogin,
+//                btnRegister,
+               /* btnReturn*/);
+        ArrayList<String> li = Database.getAllUsersKillsScore();
+        int size;
+        if(li.size() > 5){
+            size = 5;
+        }else{
+            size = li.size();
+        }
+        for(int i=0;i<size;i++){
+            Text text = new Text("Number "+i+": "+li.get(i));
+            text.setFill(Color.WHITE);
+            text.setFont(new Font(10));
+            vbAccount.getChildren().add(text);
+        }
+        vbAccount.getChildren().add(btnReturn);
         vbAccount.setTranslateY(500);
         vbAccount.setTranslateX(50);
         vbAccount.setVisible(false);

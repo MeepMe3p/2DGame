@@ -3,6 +3,7 @@ package com.example.flat2d.components.EnemyComponent.Boss;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.time.LocalTimer;
@@ -72,13 +73,15 @@ public class DinoBossComponent extends Component {
                 texture.loopAnimationChannel(attack_anim);
             }
             velocity = Point2D.ZERO;
+            if(entity.isActive()) {
 
-            runOnce(()->{
-                isAttacking = false;
-                entity.getViewComponent().removeChild(explosion);
-                isMoving = true;
-                return null;
-            }, Duration.seconds(1.2));
+                runOnce(() -> {
+                    isAttacking = false;
+                    entity.getViewComponent().removeChild(explosion);
+                    isMoving = true;
+                    return null;
+                }, Duration.seconds(1.2));
+            }
         }else if(isDead){
             if(texture.getAnimationChannel() != death_anim){
                 texture.loopAnimationChannel(death_anim);
@@ -116,5 +119,10 @@ public class DinoBossComponent extends Component {
         isMoving = false;
         isAttacking = false;
         isDead = true;
+        entity.removeComponent(CollidableComponent.class);
+        runOnce(()->{
+            entity.removeFromWorld();
+            return null;
+        },Duration.seconds(1));
     }
 }

@@ -73,10 +73,6 @@ public class FinalBossComponent extends Component {
     public void onUpdate(double tpf) {
 
         if(isCharging){
-//            if(delay.elapsed(time)){
-//                adjustVelocity(0.015);
-//                delay.capture();
-//            }
             if(texture.getAnimationChannel() != walkAnim){
                 texture.loopAnimationChannel(walkAnim);
             }
@@ -115,14 +111,16 @@ public class FinalBossComponent extends Component {
     public void chargeAttack(){
         setAllFalse();
         isCharging = true;
-        TimerAction a = runOnce(()->{
-           idling();
+//        if(entity.isActive()) {
+
+            TimerAction a = runOnce(() -> {
+                idling();
 //            runOnce(()->{
                 ArrayList<Entity> proj;
 
 //                var e = spawn("Range3Atk");
-            enemies.addAll(spawner.spawnSide("LastBomb",1,20,90));
-            enemies.addAll(spawner.spawnSide("LastBomb",4,20,90));
+                enemies.addAll(spawner.spawnSide("CuteBomb", 1, 20, 90));
+                enemies.addAll(spawner.spawnSide("CuteBomb", 4, 20, 90));
 
 //                for(Entity e: proj){
 //                    e.addComponent(new RangeThirdComponent(player,entity,99));
@@ -134,29 +132,33 @@ public class FinalBossComponent extends Component {
 //                e.getComponent(RangeThirdComponent.class).fire();
 //                return null;
 //            },Duration.seconds(1));
-           return null;
-        },Duration.seconds(/*5*/3));
+                return null;
+            }, Duration.seconds(/*5*/2));
+//        }
 //        a.expire();
     }
     public void idling(){
         setAllFalse();
         isIdle = true;
         velocity = Point2D.ZERO;
-        runOnce(()->{
-            adjustVelocity(0.015);
-            if(calculateDistance() < 500){
-                chargeAttack();
-//                teleport();
-//                System.out.println("sfoaifhoasfknasfnaklsfjklasfnklsnfkla ");
-//                velocity = Point2D.ZERO;
-            }else{
-                teleport();
-                velocity = Point2D.ZERO;
-            }
-//            System.out.println(distance-Math.abs(player.getX()));
-//            System.out.println(distance+"went here but did fucking nothing");
-            return null;
-        },Duration.seconds(5));
+//        if(entity.isActive()){
+
+            runOnce(()->{
+                adjustVelocity(0.015);
+                if(calculateDistance() < 500){
+                    chargeAttack();
+    //                teleport();
+    //                System.out.println("sfoaifhoasfknasfnaklsfjklasfnklsnfkla ");
+    //                velocity = Point2D.ZERO;
+                }else{
+                    teleport();
+                    velocity = Point2D.ZERO;
+                }
+    //            System.out.println(distance-Math.abs(player.getX()));
+    //            System.out.println(distance+"went here but did fucking nothing");
+                return null;
+            },Duration.seconds(5));
+//        }
 
     }
 
@@ -164,6 +166,7 @@ public class FinalBossComponent extends Component {
         System.out.println("YOU BE TELEPORTING!!");
         setAllFalse();
         isBlinking = true;
+//        if(enem)
         runOnce(()->{
             AnimatedTexture explosion;
             AnimationChannel exp_anim;
@@ -216,12 +219,13 @@ public class FinalBossComponent extends Component {
         isDead = true;
         isAttacking = false;
         isIdle = false;
+        isMoving = false;
         isCharging = false;
         entity.removeComponent(CollidableComponent.class);
         System.out.println("call");
         runOnce(()->{
             entity.removeFromWorld();
             return null;
-        },Duration.seconds(3));
+        },Duration.seconds(1));
     }
 }

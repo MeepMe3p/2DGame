@@ -13,6 +13,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.*;
 import com.almasb.fxgl.texture.Texture;
 import com.almasb.fxgl.time.TimerAction;
+import com.almasb.fxgl.ui.FXGLUIFactoryServiceProvider;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.example.flat2d.DesignPatterns.Facade.SpawningFacade;
 import com.example.flat2d.DesignPatterns.Facade.UIFacade;
@@ -21,17 +22,23 @@ import com.example.flat2d.Factories.EffectFactory;
 import com.example.flat2d.Factories.EnemyFactory;
 import com.example.flat2d.Factories.GameFactory;
 import com.example.flat2d.Misc.Config;
+import com.example.flat2d.Misc.Database;
 import com.example.flat2d.Misc.EntityType;
 import com.example.flat2d.collisions.*;
 import com.example.flat2d.components.PlayerComponent;
 import com.example.flat2d.components.SkillsComponent.OratriceComponent;
 import final_project_socket.database.CreateTable;
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -48,6 +55,7 @@ import static com.almasb.fxgl.dsl.FXGL.setLevelFromMap;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.example.flat2d.Misc.Config.*;
 import static com.example.flat2d.Misc.EntityType.*;
+import static final_project_socket.handler.AuthenticationHandler.loggedIn;
 
 public class GameApp extends GameApplication {
     public static GameSettings sets;
@@ -284,7 +292,7 @@ public class GameApp extends GameApplication {
             e.setOnNotActive(new Runnable() {
                 @Override
                 public void run() {
-//                    startSecondWave();
+
 
                     randomT.expire();
                     firstWave.expire();
@@ -299,7 +307,7 @@ public class GameApp extends GameApplication {
     private void startSecondWave() {
         firstWave = run(()->{
             enemies.add(spawner.spawnEnemy("RockGirl"));
-            if(geti("time") > 180){
+            if(geti("time") > 150){
                 enemies.add(spawner.spawnEnemy("ThirdNormal"));
             }
 
@@ -312,19 +320,19 @@ public class GameApp extends GameApplication {
 
         chargeT = run(()->{
             enemies.addAll(spawner.spawnSheep("Valkyrie"));
-            if(geti("time")>180){
+            if(geti("time")>150){
                 enemies.addAll(spawner.spawnSheep("ThirdHead"));
             }
         },SHEEP_SPAWN_INTERVAL);
         bombT = run(()->{
             enemies.addAll(spawner.spawnCuteBomb(player,"MidBomb"));
-            if(geti("time")>180){
+            if(geti("time")>150){
                 enemies.addAll(spawner.spawnCuteBomb(player,"LastBomb"));
             }
         },BOMBSQUARE_SPAWN_INTERVAL);
         randomT = run(()->{
             enemies.addAll(spawner.randomSpawn(2,FXGL.random(1,3),FXGL.random(1,4)));
-            if(geti("time")>200){
+            if(geti("time")>180){
                 enemies.addAll(spawner.randomSpawn(3,FXGL.random(1,3),FXGL.random(1,4)));
 
             }
@@ -339,6 +347,26 @@ public class GameApp extends GameApplication {
                 @Override
                 public void run() {
 //                    startSecondWave();
+                    UIFacade uiFacade = new UIFacade();
+                    Button btn = new Button("Exit game");
+                    btn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            FXGL.getGameController().gotoMainMenu();
+                        }
+                    });
+                    getGameController().pauseEngine();
+                    Database.insertOrUpdateUserHighScore(loggedIn.username,geti("kills"));
+                    ArrayList<String> list = Database.getAllUsersKillsScore();
+                    for(String s: list){
+                        System.out.println(s);
+                    }
+                    VBox vox = uiFacade.createLevelBox();
+                    vox.getChildren().add(new HBox(btn));
+                    vox.setPrefHeight(10);
+                    vox.setPrefHeight(250);
+
+                    addUINode(vox);
 
                     randomT.expire();
                     firstWave.expire();
@@ -401,6 +429,7 @@ public class GameApp extends GameApplication {
                 @Override
                 public void run() {
                     startSecondWave();
+                    wave = 2;
                     randomT.expire();
                     firstWave.expire();
                 }
@@ -421,7 +450,7 @@ public class GameApp extends GameApplication {
             System.out.println(bombT.isExpired());
             System.out.println(enemies.size());
             return null;
-        },BOSS1_SPAWN_TIME);
+        },BOSS1_SPAWN_TIME/*Duration.seconds(10)*/);
 
     }
 
